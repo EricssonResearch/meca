@@ -6,9 +6,10 @@ This Repository contains the source-code of the [Multipurpose Enhanced Cognitive
 
 The image above illustrates how the MECA elements are connected and tied together.
 
-<br />
+&NewLine;
+
 For more information, refer to the original paper.
-<br />
-<br />
+&NewLine;
+&NewLine;
 This Software was developed in a partnership with [Ericsson Research](https://github.com/EricssonResearch)
 
