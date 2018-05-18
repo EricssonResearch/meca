@@ -10,4 +10,5 @@ The image above illustrates the how the MECA elements are connected and tied tog
 <br />
 For more information, refer to the original paper.
 
+This Software was developed in a partnership with [Ericsson Research](https://github.com/EricssonResearch)
 
