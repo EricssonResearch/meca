@@ -9,7 +9,9 @@ The image above illustrates how the MECA elements are connected and tied togethe
 &NewLine;
 
 For more information, refer to the original paper.
+
 &NewLine;
-&NewLine;
+
+
 This Software was developed in a partnership with [Ericsson Research](https://github.com/EricssonResearch)
 
