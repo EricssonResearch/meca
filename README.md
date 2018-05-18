@@ -4,7 +4,7 @@ This Repository contains the source-code of the [Multipurpose Enhanced Cognitive
 
 ![alt text](https://github.com/CST-Group/MECA/blob/master/imgs/MECA.png "Topology of the MECA architecture")
 
-The image above illustrates the how the MECA elements are connected and tied together.
+The image above illustrates how the MECA elements are connected and tied together.
 
 <br />
 For more information, refer to the original paper.
