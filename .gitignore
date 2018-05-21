@@ -1,0 +1,9 @@
+/dist/
+/build/
+/nbproject/private/
+/bin/
+/.project
+/.classpath
+/.idea/
+/out/
+/.DS_Store
