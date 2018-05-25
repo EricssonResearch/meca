@@ -88,11 +88,17 @@ public abstract class SoarCodelet extends br.unicamp.cst.bindings.soar.JSoarCode
     public void proc() {
 
         AbstractObject il = processWorkingMemoryInput();
+        if (il.getCompositeList().size() == 0) return;
+        
+        //System.out.println(il);
 
         setInputLinkAO(il);
+        
 
         if (getDebugState() == 0)
             getJsoar().step();
+        //getJsoar().printInputWMEs();
+        //getJsoar().printOutputWMEs();
 
         ArrayList<Object> commandList = getOutputInObject(getPathToCommands());
 
@@ -110,6 +116,9 @@ public abstract class SoarCodelet extends br.unicamp.cst.bindings.soar.JSoarCode
             //n sei se eh a melhor escolha
             fromPlanToAction();
         }
+        else {
+           System.out.println("Error in SoarCodelet proc() ... commandList is null ");
+        } 
 
     }
 
