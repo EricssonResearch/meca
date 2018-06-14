@@ -40,6 +40,8 @@ public abstract class SensoryCodelet extends Codelet {
 	 * Creates a MECA Sensory Codelet.
 	 * 
 	 * @param id
+	 *            the id of the Sensory Codelet. Must be unique per Sensory
+	 *            Codelet.
 	 */
 	public SensoryCodelet(String id) {
 		
@@ -49,6 +51,8 @@ public abstract class SensoryCodelet extends Codelet {
 	}
 
 	/**
+	 * Returns the id of this Sensory Codelet.
+	 * 
 	 * @return the id
 	 */
 	public String getId() {
@@ -56,7 +60,10 @@ public abstract class SensoryCodelet extends Codelet {
 	}
 
 	/**
-	 * @param id the id to set
+	 * Sets the id of this Sensory Codelet.
+	 * 
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
