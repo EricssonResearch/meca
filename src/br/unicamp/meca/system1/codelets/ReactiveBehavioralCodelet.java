@@ -18,10 +18,9 @@ import br.unicamp.cst.core.entities.Codelet;
 
 /**
  * This class represents the MECA Reactive Behavioral Codelet. This Behavioral
- * Codelet allows inputs from one of the SensoryCodelets or PerceptualCodelets.
- * It outputs necessarily to a MotorCodelet. As the name suggests, the idea
- * behind this behavioral codelet is to provide a reactive behavior generator in
- * System 1.
+ * Codelet allows inputs from one or more of the PerceptualCodelets. It outputs
+ * necessarily to a MotorCodelet. As the name suggests, the idea behind this
+ * behavioral codelet is to provide a reactive behavior generator in System 1.
  * <p>
  * Usually, Reactive Behavioral Codelets are application-specific, and the MECA
  * software implementation just provides basic template class, which is a
@@ -52,10 +51,10 @@ public abstract class ReactiveBehavioralCodelet extends Codelet {
 	 *            be read by this Reactive Behavioral Codelet.
 	 * @param motorCodeletId
 	 *            the id of the Motor Codelet which will read the outputs of
-	 *            this ReactiveBehavioralCodelet.
+	 *            this Reactive Behavioral Codelet.
 	 * @param soarCodeletId
 	 *            the id of the Soar Codelet whose outputs will be read by this
-	 *            ReactiveBehavioralCodelet.
+	 *            Reactive Behavioral Codelet.
 	 */
 	public ReactiveBehavioralCodelet(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId,
 			String soarCodeletId) {
@@ -130,7 +129,7 @@ public abstract class ReactiveBehavioralCodelet extends Codelet {
 
 	/**
 	 * Returns the id of the Motor Codelet which will read the outputs of this
-	 * ReactiveBehavioralCodelet.
+	 * Reactive Behavioral Codelet.
 	 * 
 	 * @return the motorCodeletId
 	 */
@@ -140,7 +139,7 @@ public abstract class ReactiveBehavioralCodelet extends Codelet {
 
 	/**
 	 * Sets the id of the Motor Codelet which will read the outputs of this
-	 * ReactiveBehavioralCodelet.
+	 * Reactive Behavioral Codelet.
 	 * 
 	 * @param motorCodeletId
 	 *            the motorCodeletId to set
