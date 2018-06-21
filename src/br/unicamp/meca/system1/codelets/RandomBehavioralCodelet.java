@@ -15,8 +15,7 @@ package br.unicamp.meca.system1.codelets;
 import br.unicamp.cst.core.entities.Codelet;
 
 /**
- * 
- * This class represents the Random Behavioral Codelets. In this specific
+ * This class represents the MECA Random Behavioral Codelets. In this specific
  * Behavioral Codelet, there is no input driving the behaviors, just outputs,
  * which as the name anticipates are randomly generated. The main idea behind
  * having such random behavior generator is to be able to scape local minimum.

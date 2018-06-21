@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import br.unicamp.cst.core.entities.Codelet;
 
 /**
- * 
  * This class represents the MECA Perceptual Codelets. The Perceptual Subsystem
  * is the subsystem responsible for abstracting the information coming from
  * Sensory Memory and building more sophisticated representations for what is
