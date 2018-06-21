@@ -44,7 +44,7 @@ public abstract class SensoryCodelet extends Codelet {
 	 *            Codelet.
 	 */
 	public SensoryCodelet(String id) {
-		
+
 		super();
 		this.id = id;
 		setName(id);
