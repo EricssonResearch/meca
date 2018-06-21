@@ -23,7 +23,7 @@ import br.unicamp.cst.core.entities.Codelet;
  * Sensory Memory and building more sophisticated representations for what is
  * going on at the environment. There might be increasing layers of abstraction
  * in this process, under which raw data measures are transformed in a higher
- * level understanding of the environment situation. *
+ * level understanding of the environment situation.
  * <p>
  * Usually, Perceptual Codelets are application-specific, and the MECA software
  * implementation just provides basic template class, which is a wrapper to
