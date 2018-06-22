@@ -14,11 +14,26 @@ package br.unicamp.meca.system1.codelets;
 
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 
+/**
+ * This class represents MECA Emotional Codelet. Emotional Codelets change the
+ * Drives intensity landscape, resulting in a change of priorities in order to
+ * better attend the critical situation.
+ * 
+ * @author A. L. O. Paraense
+ *
+ */
 public abstract class EmotionalCodelet extends br.unicamp.cst.motivational.EmotionalCodelet {
 
+	/**
+	 * Create a MECA Emotional Codelet.
+	 * 
+	 * @param id
+	 *            the id of the Emotional Codelet. Must be unique per Emotional
+	 *            Codelet.
+	 * @throws CodeletActivationBoundsException
+	 */
 	public EmotionalCodelet(String id) throws CodeletActivationBoundsException {
 		super(id);
 		setName(id);
 	}
 }
-
