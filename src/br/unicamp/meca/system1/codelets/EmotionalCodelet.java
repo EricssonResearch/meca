@@ -18,6 +18,11 @@ import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
  * This class represents MECA Emotional Codelet. Emotional Codelets change the
  * Drives intensity landscape, resulting in a change of priorities in order to
  * better attend the critical situation.
+ * <p>
+ * In MECA, we will be following Canamero's approach to emotions, together with
+ * Sun's proposal to a motivational system. Under this view, emotions work as
+ * temporary cognitive distortions on system drives, resulting in a change in
+ * priorities, due to the recognition of critical situations.
  * 
  * @author A. L. O. Paraense
  *
