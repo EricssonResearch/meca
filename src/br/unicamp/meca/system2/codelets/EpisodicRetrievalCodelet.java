@@ -23,10 +23,8 @@ import br.unicamp.cst.core.entities.Codelet;
  * Subystem), tries to recover pertinent episodes from the Episodic Memory and
  * brings these episodes to the Episodic Recall Memory within the Working
  * Memory, from where they become available for the Planning Subsystem.
- * 
- * *
  * <p>
- * Usually, Episodic Retrieval Codelet in System 2 are application-specific, and
+ * Usually, Episodic Retrieval Codelets in System 2 are application-specific, and
  * the MECA software implementation just provides basic template class, which is
  * a wrapper to CST's {@link Codelet}, to be reused while building an
  * application using MECA.
