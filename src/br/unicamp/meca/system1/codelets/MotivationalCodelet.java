@@ -54,7 +54,7 @@ public abstract class MotivationalCodelet extends br.unicamp.cst.motivational.Mo
 	 * @param motivationalCodeletsIds
 	 *            the motivational codelets Ids
 	 * @throws CodeletActivationBoundsException
-	 *             if activation set to less than zero or greater than 1.
+	 *             if activation set to less than 0 (zero)  or greater than 1 (one).
 	 */
 	public MotivationalCodelet(String id, double level, double priority, double urgencyThreshold,
 			ArrayList<String> sensoryCodeletsIds, HashMap<String, Double> motivationalCodeletsIds)

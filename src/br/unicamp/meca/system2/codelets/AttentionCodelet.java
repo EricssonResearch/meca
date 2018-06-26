@@ -21,7 +21,7 @@ import br.unicamp.cst.core.entities.Codelet;
  * responsible for higher-level perception with the tracking of time along
  * Perceptual Memory and with the aid of Attention Codelets discover and detect
  * the formation of episodes, and the storage and recovering of these episodes
- * in the Episodic Memory. *
+ * in the Episodic Memory.
  * <p>
  * Usually, Attention Codelet in System 2 are application-specific, and the MECA
  * software implementation just provides basic template class, which is a
