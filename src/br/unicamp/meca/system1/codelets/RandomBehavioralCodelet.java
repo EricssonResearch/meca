@@ -14,19 +14,41 @@ package br.unicamp.meca.system1.codelets;
 
 import br.unicamp.cst.core.entities.Codelet;
 
-
+/**
+ * This class represents the MECA Random Behavioral Codelets. In this specific
+ * Behavioral Codelet, there is no input driving the behaviors, just outputs,
+ * which as the name anticipates are randomly generated. The main idea behind
+ * having such random behavior generator is to be able to scape local minimum.
+ * <p>
+ * Usually, Random Behavioral Codelets are application-specific, and the MECA
+ * software implementation just provides basic template class, which is a
+ * wrapper to CST's {@link Codelet}, to be reused while building an application
+ * using MECA.
+ * 
+ * @author A. L. O. Paraense
+ *
+ */
 public abstract class RandomBehavioralCodelet extends Codelet {
 
 	protected String id;
 
 	protected String motorCodeletId;
 
-	/** We need a reference to the SoarCodelet whose outputs will be read by this RandomBehavioralCodelet*/
 	protected String soarCodeletId;
 
 	/**
+	 * Creates a MECA Random Behavioral Codelet.
+	 * 
 	 * @param id
+	 *            the id of the Random Behavioral Codelet. Must be unique per
+	 *            Random Behavioral Codelet.
 	 * @param motorCodeletId
+	 *            the id of the Motor Codelet which will be affected by the
+	 *            Memory Container which will receive this Random Behavioral
+	 *            Codelet's output
+	 * @param soarCodeletId
+	 *            the id of the Soar Codelet whose outputs will be read by this
+	 *            Random Behavioral Codelet
 	 */
 	public RandomBehavioralCodelet(String id, String motorCodeletId, String soarCodeletId) {
 		super();
@@ -37,6 +59,8 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	}
 
 	/**
+	 * Returns the id of the attached Soar Codelet.
+	 * 
 	 * @return the soarCodeletId
 	 */
 	public String getSoarCodeletId() {
@@ -44,13 +68,18 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	}
 
 	/**
-	 * @param soarCodeletId the soarCodeletId to set
+	 * Sets the id of the attached Soar Codelet
+	 * 
+	 * @param soarCodeletId
+	 *            the soarCodeletId to set
 	 */
 	public void setSoarCodeletId(String soarCodeletId) {
 		this.soarCodeletId = soarCodeletId;
 	}
 
 	/**
+	 * Returns the id of this Random Behavioral Codelet.
+	 * 
 	 * @return the id
 	 */
 	public String getId() {
@@ -58,13 +87,18 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	}
 
 	/**
-	 * @param id the id to set
+	 * Sets the id of this Random Behavioral Codelet.
+	 * 
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
+	 * Returns the id of the attached Motor Codelet.
+	 * 
 	 * @return the motorCodeletId
 	 */
 	public String getMotorCodeletId() {
@@ -72,10 +106,13 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	}
 
 	/**
-	 * @param motorCodeletId the motorCodeletId to set
+	 * Sets the id of the attached Motor Codelet.
+	 * 
+	 * @param motorCodeletId
+	 *            the motorCodeletId to set
 	 */
 	public void setMotorCodeletId(String motorCodeletId) {
 		this.motorCodeletId = motorCodeletId;
-	}	
+	}
 
 }

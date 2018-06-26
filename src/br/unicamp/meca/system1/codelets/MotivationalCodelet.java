@@ -19,61 +19,115 @@ import java.util.Map;
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 
-
+/**
+ * This class represents the MECA Motivational Codelet in System 1. The standard
+ * dataflow for the System 1 Motivational Subsystem starts from Sensory Memory
+ * Objects flowing through Motivational Codelets to generate Drives which are
+ * stored in the Perceptual Memory. These Drives are then used by Motivational
+ * Behavioral Codelets in order contribute with behaviors to be selected in the
+ * Dynamical Subsumption scheme.
+ * 
+ * @author E. Froes
+ * @author A. L. O. Paraense
+ * @see br.unicamp.cst.motivational.MotivationalCodelet
+ */
 public abstract class MotivationalCodelet extends br.unicamp.cst.motivational.MotivationalCodelet {
 
-    private ArrayList<String> sensoryCodeletsIds;
-    private HashMap<String, Double> motivationalCodeletsIds;
+	private ArrayList<String> sensoryCodeletsIds;
+	private HashMap<String, Double> motivationalCodeletsIds;
 
-    public MotivationalCodelet(String id, double level, double priority, double urgencyThreshold, ArrayList<String> sensoryCodeletsIds, HashMap<String, Double> motivationalCodeletsIds)
-            throws CodeletActivationBoundsException {
+	/**
+	 * Creates a MECA Motivational Codelet.
+	 * 
+	 * @param id
+	 *            the id of the Motivational Codelet. Must be unique per
+	 *            Motivational Codelet.
+	 * @param level
+	 *            the level of this Motivational Codelet.
+	 * @param priority
+	 *            the priority of this Motivational Codelet.
+	 * @param urgencyThreshold
+	 *            the urgency threshold of this Motivational Codelet.
+	 * @param sensoryCodeletsIds
+	 *            the sensory codelets ids whose outputs are read by this
+	 *            Motivational Codelet.
+	 * @param motivationalCodeletsIds
+	 *            the motivational codelets Ids
+	 * @throws CodeletActivationBoundsException
+	 *             if activation set to less than 0 (zero)  or greater than 1 (one).
+	 */
+	public MotivationalCodelet(String id, double level, double priority, double urgencyThreshold,
+			ArrayList<String> sensoryCodeletsIds, HashMap<String, Double> motivationalCodeletsIds)
+			throws CodeletActivationBoundsException {
 
-        super(id, level, priority, urgencyThreshold);
-        setName(id);
+		super(id, level, priority, urgencyThreshold);
+		setName(id);
 
-        setSensoryCodeletsIds(sensoryCodeletsIds);
-        setMotivationalCodeletsIds(motivationalCodeletsIds);
-    }
+		setSensoryCodeletsIds(sensoryCodeletsIds);
+		setMotivationalCodeletsIds(motivationalCodeletsIds);
+	}
 
+	@Override
+	public void accessMemoryObjects() {
 
-    @Override
-    public void accessMemoryObjects() {
+		if (getSensoryVariables().size() == 0) {
+			for (Memory sensoryMO : getInputs()) {
+				if (!sensoryMO.getName().contains("DRIVE"))
+					getSensoryVariables().add(sensoryMO);
+			}
+		}
 
-        if (getSensoryVariables().size() == 0) {
-            for (Memory sensoryMO : getInputs()) {
-                if (!sensoryMO.getName().contains("DRIVE"))
-                    getSensoryVariables().add(sensoryMO);
-            }
-        }
+		if (getDrivesRelevance().size() == 0) {
+			for (Memory driveMO : getInputs()) {
+				if (driveMO.getName().contains("DRIVE")) {
+					getDrivesRelevance().putAll((Map<? extends Memory, ? extends Double>) driveMO.getI());
+				}
+			}
+		}
 
-        if (getDrivesRelevance().size() == 0) {
-            for (Memory driveMO : getInputs()) {
-                if (driveMO.getName().contains("DRIVE")) {
-                    getDrivesRelevance().putAll((Map<? extends Memory, ? extends Double>) driveMO.getI());
-                }
-            }
-        }
+		if (getOutputDriveMO() == null) {
+			setOutputDriveMO(this.getOutputs().get(0));
+		}
 
-        if(getOutputDriveMO()==null)
-        {
-            setOutputDriveMO(this.getOutputs().get(0));
-        }
+	}
 
-    }
+	/**
+	 * Gets the Sensory Codelets Ids whose outputs are read by this Motivational
+	 * Codelet.
+	 * 
+	 * @return the sensoryCodeletsIds
+	 */
+	public ArrayList<String> getSensoryCodeletsIds() {
+		return sensoryCodeletsIds;
+	}
 
-    public ArrayList<String> getSensoryCodeletsIds() {
-        return sensoryCodeletsIds;
-    }
+	/**
+	 * Sets the Sensory Codelets Ids whose outputs are read by this Motivational
+	 * Codelet.
+	 * 
+	 * @param sensoryCodeletsIds
+	 *            the Sensory Codelets Ids to set
+	 */
+	public void setSensoryCodeletsIds(ArrayList<String> sensoryCodeletsIds) {
+		this.sensoryCodeletsIds = sensoryCodeletsIds;
+	}
 
-    public void setSensoryCodeletsIds(ArrayList<String> sensoryCodeletsIds) {
-        this.sensoryCodeletsIds = sensoryCodeletsIds;
-    }
+	/**
+	 * Gets the Motivational Codelets Ids.
+	 * 
+	 * @return motivationalCodeletsIds
+	 */
+	public HashMap<String, Double> getMotivationalCodeletsIds() {
+		return motivationalCodeletsIds;
+	}
 
-    public HashMap<String, Double> getMotivationalCodeletsIds() {
-        return motivationalCodeletsIds;
-    }
-
-    public void setMotivationalCodeletsIds(HashMap<String, Double> motivationalCodeletsIds) {
-        this.motivationalCodeletsIds = motivationalCodeletsIds;
-    }
+	/**
+	 * Sets the Motivational Codelets Ids.
+	 * 
+	 * @param motivationalCodeletsIds
+	 *            the Motivational Codelets Ids to set
+	 */
+	public void setMotivationalCodeletsIds(HashMap<String, Double> motivationalCodeletsIds) {
+		this.motivationalCodeletsIds = motivationalCodeletsIds;
+	}
 }
