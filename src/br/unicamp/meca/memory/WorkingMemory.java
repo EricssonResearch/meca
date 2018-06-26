@@ -16,9 +16,96 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 
-public class WorkingMemory  {
+/**
+ * This class represents the MECA's Working Memory.
+ * <p>
+ * According to theories from cognitive modeling, the Working Memory is a
+ * volatile kind of memory used during perception, reasoning, planning and other
+ * cognitive functions. In studies with human beings, its capacity in time and
+ * space is found to be very short, ranging from 4 to 9 items, and periods up to
+ * a few dozen seconds (Baddeley et al., 1975; Cowan, 2001; Miller, 1956).
+ * According to Baddeley, (1997, 2000), there are at least three subsystems
+ * involved in the implementation of a Working Memory, the Visuo-spatial
+ * Sketchpad, the Phonological Loop and the Episodic Buffer, coordinated by a
+ * Central Executive which intermediates between them. Regarding brain
+ * localization, the regions related to working memory processes are very
+ * overlapping, however recent researches point the pre-frontal cortex and basal
+ * ganglia as being crucial (Braver et al., 1997; M. J. Frank et al., 2001;
+ * McNab and Klingberg, 2008).
+ * <p>
+ * In the current MECA implementation, we are not relying in this structure. The
+ * Episodic Buffer is split from the Working Memory and we don’t have neither
+ * the Visuo-spatial Sketchpad neither the Phonologic Loop. In future
+ * implementations of MECA, this might change, though. In its current
+ * implementation, the Working Memory is a repository of Symbols, which are
+ * grounded on Percepts from the Perceptual Memory, and which are used to plan
+ * the future, through a process of Computational Imagination.
+ * <p>
+ * The Working Memory is internally split into many sub-memories:
+ * <p>
+ * - Current Perception Sub-memory;
+ * <p>
+ * - Cue Memory;
+ * <p>
+ * - Episodic Recall Memory;
+ * <p>
+ * - Imagination Sub-memory;
+ * <p>
+ * - Global Workspace;
+ * <p>
+ * - Predicted Situation Sub-memory;
+ * <p>
+ * - Goals Sub-memory;
+ * <p>
+ * - Plans Sub-memory;
+ * <p>
+ * - Executive Plan Sub-memory;
+ * <p>
+ * - Next Action Sub-memory.
+ * <p>
+ * References:
+ * <p>
+ * (Baddeley et al. 1975) Baddeley, A., Thomson, N., and Buchanan, M. Word
+ * length and the structure of short-term memory. In: Journal Of Verbal Learning
+ * And Verbal Behavior 14.6 (1975), pp. 575-589.
+ * <p>
+ * (Cowan 2001) Cowan, N. The magical number 4 in short-term memory: a
+ * reconsideration of mental storage capacity. In: Behavioral and Brain Sciences
+ * 24 (2001), pp. 87-114.
+ * <p>
+ * (Miller 1956) Miller, G. The Magical Number 7, Plus or Minus Two: Some Limits
+ * on Our Capacity for Processing Information. In: Psychological Review 63
+ * (1956)
+ * <p>
+ * (Baddeley 1997) Baddeley, A. Human Memory - Theory and Practice. Revised
+ * Edition. Psychology Press, Taylor and Francis Group, 1997.
+ * <p>
+ * (Baddeley 2000) Baddeley, A. The episodic buffer: a new component of working
+ * memory? In: Trends in Cognitive Sciences 4.11 (2000), pp. 417-423.
+ * <p>
+ * (Braver et al. 1997) Braver, T. S. et al. A parametric study of prefrontal
+ * cortex involvement in human working memory. In: NeuroImage 1 (1997), pp.
+ * 49-62.
+ * <p>
+ * (M. J. Frank et al. 2001) Frank, M. J., Loughry, B., and OReilly, R. C.
+ * Interactions between frontal cortex and basal ganglia in working memory: a
+ * computational model. In: Cognitive, Affective and Behavioral Neuroscience 1.2
+ * (2001), pp. 137-60.
+ * <p>
+ * (McNab et al. 2008) McNab, F. and Klingberg, T. Prefrontal cortex and basal
+ * ganglia control access to working memory. In: Nature Neuroscience 11.1
+ * (2008), pp. 103-107.
+ * 
+ * @author A. L. O. Paraense
+ * @author E. Froes
+ * @author W. Gibaut
+ */
+public class WorkingMemory {
 
-    public static final String WORKING_MEMORY_INPUT = "WORKING_MEMORY_INPUT";
+	/**
+	 * The Working Memory Input constant.
+	 */
+	public static final String WORKING_MEMORY_INPUT = "WORKING_MEMORY_INPUT";
 
 	private String id;
 	private Memory cueMemory;
@@ -34,14 +121,20 @@ public class WorkingMemory  {
 
 	private Memory nextActionMemory;
 
-	public WorkingMemory(String id){
+	/**
+	 * Creates the MECA's Working Memory.
+	 * 
+	 * @param id
+	 *            the Working Memory Id. Should be unique per Working Memory.
+	 */
+	public WorkingMemory(String id) {
 		setId(id);
 
 		setPlansMemory(new MemoryContainer());
-        setEpisodicRecallMemory(new MemoryContainer());
-        setGlobalWorkspaceMemory(new MemoryContainer());
-        setImaginationsMemory(new MemoryContainer());
-        setGoalsMemory(new MemoryContainer());
+		setEpisodicRecallMemory(new MemoryContainer());
+		setGlobalWorkspaceMemory(new MemoryContainer());
+		setImaginationsMemory(new MemoryContainer());
+		setGoalsMemory(new MemoryContainer());
 
 		setCueMemory(new MemoryObject());
 		setNextActionMemory(new MemoryObject());
@@ -50,94 +143,212 @@ public class WorkingMemory  {
 		setPredictedSituationMemory(new MemoryObject());
 	}
 
-
-
-
+	/**
+	 * Gets this Working Memory id.
+	 * 
+	 * @return the id
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Sets the working memory id.
+	 * 
+	 * @param id
+	 *            the id to set.
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
-    public Memory getCueMemory() {
-        return cueMemory;
-    }
+	/**
+	 * Gets the Cue Memory.
+	 * 
+	 * @return the Cue Memory.
+	 */
+	public Memory getCueMemory() {
+		return cueMemory;
+	}
 
-    public void setCueMemory(Memory cueMemory) {
-        this.cueMemory = cueMemory;
-    }
+	/**
+	 * Sets the Cue Memory.
+	 * 
+	 * @param cueMemory
+	 *            the Cue memory to set.
+	 */
+	public void setCueMemory(Memory cueMemory) {
+		this.cueMemory = cueMemory;
+	}
 
-    public Memory getPlansMemory() {
-        return plansMemory;
-    }
+	/**
+	 * Gets the Plans Memory.
+	 * 
+	 * @return the Plans Memory.
+	 */
+	public Memory getPlansMemory() {
+		return plansMemory;
+	}
 
-    public void setPlansMemory(Memory plansMemory) {
-        this.plansMemory = plansMemory;
-    }
+	/**
+	 * Sets the Plans Memory.
+	 * 
+	 * @param plansMemory
+	 *            the plans Memory to set.
+	 */
+	public void setPlansMemory(Memory plansMemory) {
+		this.plansMemory = plansMemory;
+	}
 
-    public Memory getEpisodicRecallMemory() {
-        return episodicRecallMemory;
-    }
+	/**
+	 * Gets the Episodic Recall Memory.
+	 * 
+	 * @return the Episodic Recall Memory.
+	 */
+	public Memory getEpisodicRecallMemory() {
+		return episodicRecallMemory;
+	}
 
-    public void setEpisodicRecallMemory(Memory episodicRecallMemory) {
-        this.episodicRecallMemory = episodicRecallMemory;
-    }
+	/**
+	 * Sets the Episodic Recall Memory
+	 * 
+	 * @param episodicRecallMemory
+	 *            the Episodic Recall Memory to set.
+	 */
+	public void setEpisodicRecallMemory(Memory episodicRecallMemory) {
+		this.episodicRecallMemory = episodicRecallMemory;
+	}
 
-    public Memory getGlobalWorkspaceMemory() {
-        return globalWorkspaceMemory;
-    }
+	/**
+	 * Gets the Global Workspace Memory
+	 * 
+	 * @return the Global Workspace Memory.
+	 */
+	public Memory getGlobalWorkspaceMemory() {
+		return globalWorkspaceMemory;
+	}
 
-    public void setGlobalWorkspaceMemory(Memory globalWorkspaceMemory) {
-        this.globalWorkspaceMemory = globalWorkspaceMemory;
-    }
+	/**
+	 * Sets the Global Workspace Memory
+	 * 
+	 * @param globalWorkspaceMemory
+	 *            the Global Workspace memory to set.
+	 */
+	public void setGlobalWorkspaceMemory(Memory globalWorkspaceMemory) {
+		this.globalWorkspaceMemory = globalWorkspaceMemory;
+	}
 
-    public Memory getExecutivePlanMemory() {
-        return executivePlanMemory;
-    }
+	/**
+	 * Gets the Executive Plan Memory.
+	 * 
+	 * @return the Executive Plan Memory.
+	 */
+	public Memory getExecutivePlanMemory() {
+		return executivePlanMemory;
+	}
 
-    public void setExecutivePlanMemory(Memory executivePlanMemory) {
-        this.executivePlanMemory = executivePlanMemory;
-    }
+	/**
+	 * Sets the Executive Plan memory.
+	 * 
+	 * @param executivePlanMemory
+	 *            the Executive Plan Memory to set.
+	 */
+	public void setExecutivePlanMemory(Memory executivePlanMemory) {
+		this.executivePlanMemory = executivePlanMemory;
+	}
 
-    public Memory getImaginationsMemory() {
-        return imaginationsMemory;
-    }
+	/**
+	 * Gets the Imaginations Memory.
+	 * 
+	 * @return the Imaginations Memory.
+	 */
+	public Memory getImaginationsMemory() {
+		return imaginationsMemory;
+	}
 
-    public void setImaginationsMemory(Memory imaginationsMemory) {
-        this.imaginationsMemory = imaginationsMemory;
-    }
+	/**
+	 * Sets the Imaginations memory.
+	 * 
+	 * @param imaginationsMemory
+	 *            the imaginations memory to set.
+	 */
+	public void setImaginationsMemory(Memory imaginationsMemory) {
+		this.imaginationsMemory = imaginationsMemory;
+	}
 
-    public Memory getGoalsMemory() {
-        return goalsMemory;
-    }
+	/**
+	 * Gets the Goals Memory.
+	 * 
+	 * @return the Goals Memory.
+	 */
+	public Memory getGoalsMemory() {
+		return goalsMemory;
+	}
 
-    public void setGoalsMemory(Memory goalsMemory) {
-        this.goalsMemory = goalsMemory;
-    }
+	/**
+	 * Sets the Goals Memory.
+	 * 
+	 * @param goalsMemory
+	 *            the Goals Memory to set.
+	 */
+	public void setGoalsMemory(Memory goalsMemory) {
+		this.goalsMemory = goalsMemory;
+	}
 
-    public Memory getCurrentPerceptionMemory() {
-        return currentPerceptionMemory;
-    }
+	/**
+	 * Gets the Current Perception Memory.
+	 * 
+	 * @return the current perception memory.
+	 */
+	public Memory getCurrentPerceptionMemory() {
+		return currentPerceptionMemory;
+	}
 
-    public void setCurrentPerceptionMemory(Memory currentPerceptionMemory) {
-        this.currentPerceptionMemory = currentPerceptionMemory;
-    }
+	/**
+	 * Sets the current perception memory.
+	 * 
+	 * @param currentPerceptionMemory
+	 *            the current perception memory to set.
+	 */
+	public void setCurrentPerceptionMemory(Memory currentPerceptionMemory) {
+		this.currentPerceptionMemory = currentPerceptionMemory;
+	}
 
-    public Memory getPredictedSituationMemory() {
-        return predictedSituationMemory;
-    }
+	/**
+	 * Gets the predicted situation memory.
+	 * 
+	 * @return the predicte situation memory.
+	 */
+	public Memory getPredictedSituationMemory() {
+		return predictedSituationMemory;
+	}
 
-    public void setPredictedSituationMemory(Memory predictedSituationMemory) {
-        this.predictedSituationMemory = predictedSituationMemory;
-    }
+	/**
+	 * Sets the predicted situation memory.
+	 * 
+	 * @param predictedSituationMemory
+	 *            the predicted situation memory to set.
+	 */
+	public void setPredictedSituationMemory(Memory predictedSituationMemory) {
+		this.predictedSituationMemory = predictedSituationMemory;
+	}
 
-    public Memory getNextActionMemory() {
-        return nextActionMemory;
-    }
+	/**
+	 * Gets the next action memory.
+	 * 
+	 * @return the next action memory.
+	 */
+	public Memory getNextActionMemory() {
+		return nextActionMemory;
+	}
 
-    public void setNextActionMemory(Memory nextActionMemory) {
-        this.nextActionMemory = nextActionMemory;
-    }
+	/**
+	 * Sets the next action memory.
+	 * 
+	 * @param nextActionMemory
+	 *            the next action memory to set.
+	 */
+	public void setNextActionMemory(Memory nextActionMemory) {
+		this.nextActionMemory = nextActionMemory;
+	}
 }
