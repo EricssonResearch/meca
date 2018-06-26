@@ -54,6 +54,7 @@ public abstract class MotivationalCodelet extends br.unicamp.cst.motivational.Mo
 	 * @param motivationalCodeletsIds
 	 *            the motivational codelets Ids
 	 * @throws CodeletActivationBoundsException
+	 *             if activation set to less than zero or greater than 1.
 	 */
 	public MotivationalCodelet(String id, double level, double priority, double urgencyThreshold,
 			ArrayList<String> sensoryCodeletsIds, HashMap<String, Double> motivationalCodeletsIds)
@@ -105,6 +106,7 @@ public abstract class MotivationalCodelet extends br.unicamp.cst.motivational.Mo
 	 * Codelet.
 	 * 
 	 * @param sensoryCodeletsIds
+	 *            the Sensory Codelets Ids to set
 	 */
 	public void setSensoryCodeletsIds(ArrayList<String> sensoryCodeletsIds) {
 		this.sensoryCodeletsIds = sensoryCodeletsIds;
@@ -123,6 +125,7 @@ public abstract class MotivationalCodelet extends br.unicamp.cst.motivational.Mo
 	 * Sets the Motivational Codelets Ids.
 	 * 
 	 * @param motivationalCodeletsIds
+	 *            the Motivational Codelets Ids to set
 	 */
 	public void setMotivationalCodeletsIds(HashMap<String, Double> motivationalCodeletsIds) {
 		this.motivationalCodeletsIds = motivationalCodeletsIds;

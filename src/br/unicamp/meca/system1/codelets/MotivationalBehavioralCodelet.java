@@ -143,6 +143,7 @@ public abstract class MotivationalBehavioralCodelet extends Codelet {
 	 * read by this Motivational Behavioral Codelet.
 	 * 
 	 * @param motivationalCodeletsIds
+	 *            the Motivational Codelets Ids to set
 	 */
 	public void setMotivationalCodeletsIds(ArrayList<String> motivationalCodeletsIds) {
 		this.motivationalCodeletsIds = motivationalCodeletsIds;

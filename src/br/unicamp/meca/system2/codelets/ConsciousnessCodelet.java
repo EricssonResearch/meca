@@ -65,7 +65,6 @@ import br.unicamp.cst.core.entities.CodeRack;
  * information in the Global Workspace can then be used in the Planning
  * Subsystem.
  * <p>
- * <p>
  * References:
  * <p>
  * (Feinberg et al. 2013) Feinberg, T. E. and Mallatt, J. The Evolutionary and

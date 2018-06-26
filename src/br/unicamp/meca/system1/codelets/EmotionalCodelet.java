@@ -36,6 +36,7 @@ public abstract class EmotionalCodelet extends br.unicamp.cst.motivational.Emoti
 	 *            the id of the Emotional Codelet. Must be unique per Emotional
 	 *            Codelet.
 	 * @throws CodeletActivationBoundsException
+	 *             if activation set to less than zero or greater than 1.
 	 */
 	public EmotionalCodelet(String id) throws CodeletActivationBoundsException {
 		super(id);
