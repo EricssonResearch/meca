@@ -282,8 +282,7 @@ public class MecaMind extends Mind {
 			for (MotivationalBehavioralCodelet motivationalBehavioralCodelet : getMotivationalBehavioralCodelets()) {
 				if (motivationalBehavioralCodelet != null && motivationalBehavioralCodelet.getId() != null
 						&& motivationalBehavioralCodelet.getMotivationalCodeletsIds() != null
-						&& motivationalBehavioralCodelet.getMotorCodeletId() != null
-						&& motivationalBehavioralCodelet.getSoarCodeletId() != null) {
+						&& motivationalBehavioralCodelet.getMotorCodeletId() != null) {
 
 					/*
 					 * Outputs
@@ -318,7 +317,7 @@ public class MecaMind extends Mind {
 						}
 					}
 
-					if (soarCodelet != null && soarCodelet.getId() != null) {
+					if (soarCodelet != null && soarCodelet.getId() != null && motivationalBehavioralCodelet.getSoarCodeletId() != null) {
 						if (soarCodelet.getId().equalsIgnoreCase(motivationalBehavioralCodelet.getSoarCodeletId())) {
 							motivationalBehavioralCodelet.addBroadcasts(soarCodelet.getOutputs());
 						}
@@ -337,8 +336,7 @@ public class MecaMind extends Mind {
 			for (ReactiveBehavioralCodelet reactiveBehavioralCodelet : getReactiveBehavioralCodelets()) {
 				if (reactiveBehavioralCodelet != null && reactiveBehavioralCodelet.getId() != null
 						&& reactiveBehavioralCodelet.getPerceptualCodeletsIds() != null
-						&& reactiveBehavioralCodelet.getMotorCodeletId() != null
-						&& reactiveBehavioralCodelet.getSoarCodeletId() != null) {
+						&& reactiveBehavioralCodelet.getMotorCodeletId() != null) {
 
 					insertCodelet(reactiveBehavioralCodelet);
 					/*
@@ -374,7 +372,7 @@ public class MecaMind extends Mind {
 						}
 					}
 
-					if (soarCodelet != null && soarCodelet.getId() != null) {
+					if (soarCodelet != null && soarCodelet.getId() != null && reactiveBehavioralCodelet.getSoarCodeletId() != null) {
 						if (soarCodelet.getId().equalsIgnoreCase(reactiveBehavioralCodelet.getSoarCodeletId())) {
 							reactiveBehavioralCodelet.addBroadcasts(soarCodelet.getOutputs());
 						}
@@ -389,9 +387,7 @@ public class MecaMind extends Mind {
 	private void mountRandomBehavioralCodelets() {
 		if (getRandomBehavioralCodelets() != null) {
 			for (RandomBehavioralCodelet randomBehavioralCodelet : getRandomBehavioralCodelets()) {
-				if (randomBehavioralCodelet != null && randomBehavioralCodelet.getId() != null
-						&& randomBehavioralCodelet.getMotorCodeletId() != null
-						&& randomBehavioralCodelet.getSoarCodeletId() != null) {
+				if (randomBehavioralCodelet != null && randomBehavioralCodelet.getId() != null && randomBehavioralCodelet.getMotorCodeletId() != null) {
 					insertCodelet(randomBehavioralCodelet);
 					/*
 					 * Outputs
@@ -409,7 +405,7 @@ public class MecaMind extends Mind {
 					/*
 					 * Inputs
 					 */
-					if (soarCodelet != null && soarCodelet.getId() != null) {
+					if (soarCodelet != null && soarCodelet.getId() != null && randomBehavioralCodelet.getSoarCodeletId() != null) {
 						if (soarCodelet.getId().equalsIgnoreCase(randomBehavioralCodelet.getSoarCodeletId())) {
 							randomBehavioralCodelet.addBroadcasts(soarCodelet.getOutputs());
 						}
