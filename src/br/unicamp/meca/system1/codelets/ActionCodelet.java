@@ -12,15 +12,17 @@
  ******************************************************************************/
 package br.unicamp.meca.system1.codelets;
 
+import java.util.ArrayList;
+
 import br.unicamp.cst.core.entities.Codelet;
 
 /**
- * This class represents the MECA Random Behavioral Codelets. In this specific
- * Behavioral Codelet, there is no input driving the behaviors, just outputs,
- * which as the name anticipates are randomly generated. The main idea behind
- * having such random behavior generator is to be able to scape local minimum.
+ * This class represents the MECA Action Codelet. This Behavioral
+ * Codelet allows inputs from one or more of the PerceptualCodelets. It outputs
+ * necessarily to a MotorCodelet. As the name suggests, the idea behind this
+ * behavioral codelet is to provide a reactive behavior generator in System 1.
  * <p>
- * Usually, Random Behavioral Codelets are application-specific, and the MECA
+ * Usually, Reactive Behavioral Codelets are application-specific, and the MECA
  * software implementation just provides basic template class, which is a
  * wrapper to CST's {@link Codelet}, to be reused while building an application
  * using MECA.
@@ -28,38 +30,45 @@ import br.unicamp.cst.core.entities.Codelet;
  * @author A. L. O. Paraense
  *
  */
-public abstract class RandomBehavioralCodelet extends Codelet {
+public abstract class ActionCodelet extends Codelet {
 
 	protected String id;
+
+	protected ArrayList<String> perceptualCodeletsIds;
 
 	protected String motorCodeletId;
 
 	protected String soarCodeletId;
 
 	/**
-	 * Creates a MECA Random Behavioral Codelet.
+	 * Creates a MECA Reactive Behavioral Codelet.
 	 * 
 	 * @param id
-	 *            the id of the Random Behavioral Codelet. Must be unique per
-	 *            Random Behavioral Codelet.
+	 *            the id of the Reactive Behavioral Codelet. Must be unique per
+	 *            Reactive Behavioral Codelet.
+	 * @param perceptualCodeletsIds
+	 *            the list of ids of the Perceptual Codelets whose outputs will
+	 *            be read by this Reactive Behavioral Codelet.
 	 * @param motorCodeletId
-	 *            the id of the Motor Codelet which will be affected by the
-	 *            Memory Container which will receive this Random Behavioral
-	 *            Codelet's output
+	 *            the id of the Motor Codelet which will read the outputs of
+	 *            this Reactive Behavioral Codelet.
 	 * @param soarCodeletId
 	 *            the id of the Soar Codelet whose outputs will be read by this
-	 *            Random Behavioral Codelet
+	 *            Reactive Behavioral Codelet.
 	 */
-	public RandomBehavioralCodelet(String id, String motorCodeletId, String soarCodeletId) {
+	public ActionCodelet(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId,
+			String soarCodeletId) {
 		super();
 		setName(id);
 		this.id = id;
 		this.motorCodeletId = motorCodeletId;
+		this.perceptualCodeletsIds = perceptualCodeletsIds;
 		this.soarCodeletId = soarCodeletId;
 	}
 
 	/**
-	 * Returns the id of the attached Soar Codelet.
+	 * Returns the id of the Soar Codelet whose outputs will be read by this
+	 * Reactive Behavioral Codelet.
 	 * 
 	 * @return the soarCodeletId
 	 */
@@ -68,7 +77,8 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	}
 
 	/**
-	 * Sets the id of the attached Soar Codelet
+	 * Sets the id of the Soar Codelet whose outputs will be read by this
+	 * Reactive Behavioral Codelet.
 	 * 
 	 * @param soarCodeletId
 	 *            the soarCodeletId to set
@@ -78,7 +88,28 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	}
 
 	/**
-	 * Returns the id of this Random Behavioral Codelet.
+	 * Returns the list of the Perceptual Codelet's ids whose outputs will be
+	 * read by this Reactive Behavioral Codelet.
+	 * 
+	 * @return the perceptualCodeletsIds
+	 */
+	public ArrayList<String> getPerceptualCodeletsIds() {
+		return perceptualCodeletsIds;
+	}
+
+	/**
+	 * Sets the list of the Perceptual Codelet's ids whose outputs will be read
+	 * by this Reactive Behavioral Codelet.
+	 * 
+	 * @param perceptualCodeletsIds
+	 *            the perceptualCodeletsIds to set
+	 */
+	public void setPerceptualCodeletsIds(ArrayList<String> perceptualCodeletsIds) {
+		this.perceptualCodeletsIds = perceptualCodeletsIds;
+	}
+
+	/**
+	 * Returns the id of this Reactive Behavioral Codelet.
 	 * 
 	 * @return the id
 	 */
@@ -87,7 +118,7 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	}
 
 	/**
-	 * Sets the id of this Random Behavioral Codelet.
+	 * Sets the id of this Reactive Behavioral Codelet.
 	 * 
 	 * @param id
 	 *            the id to set
@@ -97,7 +128,8 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	}
 
 	/**
-	 * Returns the id of the attached Motor Codelet.
+	 * Returns the id of the Motor Codelet which will read the outputs of this
+	 * Reactive Behavioral Codelet.
 	 * 
 	 * @return the motorCodeletId
 	 */
@@ -106,7 +138,8 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	}
 
 	/**
-	 * Sets the id of the attached Motor Codelet.
+	 * Sets the id of the Motor Codelet which will read the outputs of this
+	 * Reactive Behavioral Codelet.
 	 * 
 	 * @param motorCodeletId
 	 *            the motorCodeletId to set
@@ -114,5 +147,4 @@ public abstract class RandomBehavioralCodelet extends Codelet {
 	public void setMotorCodeletId(String motorCodeletId) {
 		this.motorCodeletId = motorCodeletId;
 	}
-
 }

@@ -22,15 +22,14 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
 import br.unicamp.meca.memory.WorkingMemory;
+import br.unicamp.meca.system1.codelets.ActionCodelet;
 import br.unicamp.meca.system1.codelets.AttentionCodelet;
+import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 import br.unicamp.meca.system1.codelets.EmotionalCodelet;
 import br.unicamp.meca.system1.codelets.MoodCodelet;
-import br.unicamp.meca.system1.codelets.MotivationalBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
 import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
-import br.unicamp.meca.system1.codelets.RandomBehavioralCodelet;
-import br.unicamp.meca.system1.codelets.ReactiveBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import br.unicamp.meca.system2.codelets.AppraisalCodelet;
 import br.unicamp.meca.system2.codelets.ConsciousnessCodelet;
@@ -49,6 +48,10 @@ import br.unicamp.meca.system2.codelets.SoarCodelet;
  * @see Mind
  */
 public class MecaMind extends Mind {
+	
+	public static final String ACTION_SEQUENCE_PLAN_ID = "ACTION_SEQUENCE_PLAN_ID";
+
+	public static final String ACTION_SEQUENCE_PLAN_REQUEST_ID = "ACTION_SEQUENCE_PLAN_REQUEST_ID";
 
 	/*
 	 * System 1
@@ -66,11 +69,9 @@ public class MecaMind extends Mind {
 
 	private List<EmotionalCodelet> emotionalCodelets;
 
-	private List<RandomBehavioralCodelet> randomBehavioralCodelets;
+	private List<ActionCodelet> actionCodelets;
 
-	private List<ReactiveBehavioralCodelet> reactiveBehavioralCodelets;
-
-	private List<MotivationalBehavioralCodelet> motivationalBehavioralCodelets;
+	private List<BehaviorCodelet> behavioralCodelets;
 
 	private List<MotorCodelet> motorCodelets;
 
@@ -141,13 +142,11 @@ public class MecaMind extends Mind {
 
 		mountSoarCodelet();
 
-		mountRandomBehavioralCodelets();
-
-		mountReactiveBehavioralCodelets();
+		mountactionCodelets();
 
 		mountMotivationalCodelets();
 
-		mountMotivationalBehavioralCodelets();
+		mountBehavioralCodelets();
 
 		mountModules();
 
@@ -277,9 +276,9 @@ public class MecaMind extends Mind {
 		}
 	}
 
-	private void mountMotivationalBehavioralCodelets() {
+	private void mountBehavioralCodelets() {
 		if (getMotivationalBehavioralCodelets() != null) {
-			for (MotivationalBehavioralCodelet motivationalBehavioralCodelet : getMotivationalBehavioralCodelets()) {
+			for (BehaviorCodelet motivationalBehavioralCodelet : getMotivationalBehavioralCodelets()) {
 				if (motivationalBehavioralCodelet != null && motivationalBehavioralCodelet.getId() != null
 						&& motivationalBehavioralCodelet.getMotivationalCodeletsIds() != null
 						&& motivationalBehavioralCodelet.getMotorCodeletId() != null) {
@@ -331,9 +330,9 @@ public class MecaMind extends Mind {
 		}
 	}
 
-	private void mountReactiveBehavioralCodelets() {
+	private void mountactionCodelets() {
 		if (getReactiveBehavioralCodelets() != null) {
-			for (ReactiveBehavioralCodelet reactiveBehavioralCodelet : getReactiveBehavioralCodelets()) {
+			for (ActionCodelet reactiveBehavioralCodelet : getReactiveBehavioralCodelets()) {
 				if (reactiveBehavioralCodelet != null && reactiveBehavioralCodelet.getId() != null
 						&& reactiveBehavioralCodelet.getPerceptualCodeletsIds() != null
 						&& reactiveBehavioralCodelet.getMotorCodeletId() != null) {
@@ -379,38 +378,6 @@ public class MecaMind extends Mind {
 
 					}
 
-				}
-			}
-		}
-	}
-
-	private void mountRandomBehavioralCodelets() {
-		if (getRandomBehavioralCodelets() != null) {
-			for (RandomBehavioralCodelet randomBehavioralCodelet : getRandomBehavioralCodelets()) {
-				if (randomBehavioralCodelet != null && randomBehavioralCodelet.getId() != null && randomBehavioralCodelet.getMotorCodeletId() != null) {
-					insertCodelet(randomBehavioralCodelet);
-					/*
-					 * Outputs
-					 */
-					if (motorCodelets != null) {
-						for (MotorCodelet motorCodelet : motorCodelets) {
-							if (motorCodelet != null && motorCodelet.getId() != null) {
-								if ((motorCodelet.getId())
-										.equalsIgnoreCase(randomBehavioralCodelet.getMotorCodeletId())) {
-									randomBehavioralCodelet.addOutputs(motorCodelet.getInputs());
-								}
-							}
-						}
-					}
-					/*
-					 * Inputs
-					 */
-					if (soarCodelet != null && soarCodelet.getId() != null && randomBehavioralCodelet.getSoarCodeletId() != null) {
-						if (soarCodelet.getId().equalsIgnoreCase(randomBehavioralCodelet.getSoarCodeletId())) {
-							randomBehavioralCodelet.addBroadcasts(soarCodelet.getOutputs());
-						}
-
-					}
 				}
 			}
 		}
@@ -531,23 +498,13 @@ public class MecaMind extends Mind {
 	}
 
 	/**
-	 * Sets the Random Behavioral Codelets.
-	 * 
-	 * @param randomBehavioralCodelets
-	 *            the randomBehavioralCodelets to set
-	 */
-	public void setRandomBehavioralCodelets(List<RandomBehavioralCodelet> randomBehavioralCodelets) {
-		this.randomBehavioralCodelets = randomBehavioralCodelets;
-	}
-
-	/**
 	 * Sets the Reactive Behavioral Codelets.
 	 * 
 	 * @param reactiveBehavioralCodelets
 	 *            the reactiveBehavioralCodelets to set
 	 */
-	public void setReactiveBehavioralCodelets(List<ReactiveBehavioralCodelet> reactiveBehavioralCodelets) {
-		this.reactiveBehavioralCodelets = reactiveBehavioralCodelets;
+	public void setReactiveBehavioralCodelets(List<ActionCodelet> reactiveBehavioralCodelets) {
+		this.actionCodelets = reactiveBehavioralCodelets;
 	}
 
 	/**
@@ -556,8 +513,8 @@ public class MecaMind extends Mind {
 	 * @param motivationalBehavioralCodelets
 	 *            the motivationalBehavioralCodelets to set
 	 */
-	public void setMotivationalBehavioralCodelets(List<MotivationalBehavioralCodelet> motivationalBehavioralCodelets) {
-		this.motivationalBehavioralCodelets = motivationalBehavioralCodelets;
+	public void setMotivationalBehavioralCodelets(List<BehaviorCodelet> motivationalBehavioralCodelets) {
+		this.behavioralCodelets = motivationalBehavioralCodelets;
 	}
 
 	/**
@@ -762,21 +719,12 @@ public class MecaMind extends Mind {
 	}
 
 	/**
-	 * Gets the Random Behavioral Codelets.
-	 * 
-	 * @return the randomBehavioralCodelets.
-	 */
-	public List<RandomBehavioralCodelet> getRandomBehavioralCodelets() {
-		return randomBehavioralCodelets;
-	}
-
-	/**
 	 * Gets the Reactive Behavioral Codelets.
 	 * 
 	 * @return the reactiveBehavioralCodelets.
 	 */
-	public List<ReactiveBehavioralCodelet> getReactiveBehavioralCodelets() {
-		return reactiveBehavioralCodelets;
+	public List<ActionCodelet> getReactiveBehavioralCodelets() {
+		return actionCodelets;
 	}
 
 	/**
@@ -784,8 +732,8 @@ public class MecaMind extends Mind {
 	 * 
 	 * @return the motivationalBehavioralCodelets.
 	 */
-	public List<MotivationalBehavioralCodelet> getMotivationalBehavioralCodelets() {
-		return motivationalBehavioralCodelets;
+	public List<BehaviorCodelet> getMotivationalBehavioralCodelets() {
+		return behavioralCodelets;
 	}
 
 	/**
