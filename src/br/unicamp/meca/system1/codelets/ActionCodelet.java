@@ -15,6 +15,9 @@ package br.unicamp.meca.system1.codelets;
 import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Codelet;
+import br.unicamp.cst.core.entities.Memory;
+import br.unicamp.meca.mind.MecaMind;
+import br.unicamp.meca.models.ActionSequencePlan;
 
 /**
  * This class represents the MECA Action Codelet. This Behavioral
@@ -35,10 +38,15 @@ public abstract class ActionCodelet extends Codelet {
 	protected String id;
 
 	protected ArrayList<String> perceptualCodeletsIds;
-
-	protected String motorCodeletId;
+	protected ArrayList<Memory> perceptualMemories;
 
 	protected String soarCodeletId;
+	protected Memory broadcastMemory;
+	
+	protected Memory actionSequencePlanMemoryContainer;
+	
+	protected String motorCodeletId;
+	protected Memory motorMemory;
 
 	/**
 	 * Creates a MECA Reactive Behavioral Codelet.
@@ -65,7 +73,73 @@ public abstract class ActionCodelet extends Codelet {
 		this.perceptualCodeletsIds = perceptualCodeletsIds;
 		this.soarCodeletId = soarCodeletId;
 	}
+	
+	@Override
+	public void accessMemoryObjects() {
+		
+		int index=0;
+		
+		if(perceptualMemories == null || perceptualMemories.size() == 0) {
+			
+			perceptualMemories = new ArrayList<>();
+			
+			if(perceptualCodeletsIds != null) {
+				
+				for(String perceptualCodeletId : perceptualCodeletsIds) {
+					Memory perceptualMemory = this.getInput(perceptualCodeletId, index);
+					perceptualMemories.add(perceptualMemory);
+				}
+			}
+		}
+		
+		if(broadcastMemory == null) {
+			broadcastMemory = this.getBroadcast(soarCodeletId, index);
+		}
+		
+		if(actionSequencePlanMemoryContainer == null)
+			actionSequencePlanMemoryContainer = this.getInput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
 
+		if(motorMemory==null && motorCodeletId!=null)
+			motorMemory = this.getOutput(motorCodeletId, index);
+
+	}
+	
+	@Override
+	public void calculateActivation() {
+		calculateActivation(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer);	
+	}
+	
+	/**
+	 * 
+	 * @param perceptualMemories
+	 * @param broadcastMemory
+	 * @param actionSequencePlanMemoryContainer
+	 */
+	public abstract void calculateActivation(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer);
+
+	@Override
+	public void proc() {
+		
+		if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
+			
+			ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
+			String currentActionId = actionSequencePlan.getCurrentActionId();
+			
+			if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
+				proc(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer, motorMemory);
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param perceptualMemories
+	 * @param broadcastMemory
+	 * @param actionSequencePlanMemoryContainer
+	 * @param motorMemory
+	 */
+	public abstract void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer, Memory motorMemory);
+	
 	/**
 	 * Returns the id of the Soar Codelet whose outputs will be read by this
 	 * Reactive Behavioral Codelet.

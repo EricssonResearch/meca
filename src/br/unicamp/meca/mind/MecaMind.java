@@ -398,6 +398,8 @@ public class MecaMind extends Mind {
 						}
 
 					}
+					
+					actionCodelet.addInput(actionSequencePlanMemoryContainer);
 
 				}
 			}
