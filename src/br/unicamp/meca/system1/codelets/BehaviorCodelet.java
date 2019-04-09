@@ -41,20 +41,19 @@ public abstract class BehaviorCodelet extends Codelet {
 	protected String id;
 	
 	protected ArrayList<String> perceptualCodeletsIds;
+	protected ArrayList<Memory> perceptualMemories;
 
 	protected ArrayList<String> motivationalCodeletsIds;
+	protected ArrayList<Memory> driveMemories;
 
 	protected String soarCodeletId;
+	protected Memory broadcastMemory;
 	
 	protected ActionSequencePlan actionSequencePlan;
 	
-	private Memory worldSituation;
+	protected Memory actionSequencePlanMemoryContainer;
 	
-	private Memory actionSequencePlanMemoryContainer;
-	
-	private Memory actionSequencePlanRequestMemoryContainer;
-	
-	protected ArrayList<Memory> drivesMO;
+	protected Memory actionSequencePlanRequestMemoryContainer;
 
 	/**
 	 * Creates a MECA Motivational Behavioral Codelet.
@@ -87,37 +86,51 @@ public abstract class BehaviorCodelet extends Codelet {
 	 * Track and advance actions in the sequence plan. To be implemented in each object of this class,
 	 * according to its action sequence plan.
 	 * @param actionSequencePlan
-	 * @param worldSituation
+	 * @param perceptualMemories
 	 */
-	public abstract void trackActionSequencePlan(Memory worldSituation, ActionSequencePlan actionSequencePlan);
+	public abstract void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan);
 	
 	@Override
 	public void accessMemoryObjects() {
 		
 		int index=0;
 		
-		if(worldSituation==null && perceptualCodeletsIds!=null && perceptualCodeletsIds.size()>0 && perceptualCodeletsIds.get(0)!=null)
-			worldSituation = this.getInput(perceptualCodeletsIds.get(0), index); 
-		
-		if(actionSequencePlanMemoryContainer==null)
-			actionSequencePlanMemoryContainer = this.getOutput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
-		
-		if(actionSequencePlanRequestMemoryContainer==null)
-			actionSequencePlanRequestMemoryContainer = this.getOutput(MecaMind.ACTION_SEQUENCE_PLAN_REQUEST_ID, index);
-		
-		if(drivesMO==null||drivesMO.size()==0)
-		{
-			drivesMO = new ArrayList<>();
-
-			if(getMotivationalCodeletsIds()!=null){
-
-				for(String motivationalCodeletsId : getMotivationalCodeletsIds())
-				{
-					Memory inputDrive = this.getInput(motivationalCodeletsId + "_DRIVE_MO");
-					drivesMO.add(inputDrive);
+		if(perceptualMemories == null || perceptualMemories.size() == 0) {
+			
+			perceptualMemories = new ArrayList<>();
+			
+			if(perceptualCodeletsIds != null) {
+				
+				for(String perceptualCodeletId : perceptualCodeletsIds) {
+					Memory perceptualMemory = this.getInput(perceptualCodeletId, index);
+					perceptualMemories.add(perceptualMemory);
 				}
 			}
 		}
+		
+		if(driveMemories == null || driveMemories.size() == 0)
+		{
+			driveMemories = new ArrayList<>();
+
+			if(motivationalCodeletsIds!=null){
+
+				for(String motivationalCodeletsId : motivationalCodeletsIds)
+				{
+					Memory inputDrive = this.getInput(motivationalCodeletsId + "_DRIVE_MO");
+					driveMemories.add(inputDrive);
+				}
+			}
+		}
+		
+		if(broadcastMemory == null) {
+			broadcastMemory = this.getBroadcast(soarCodeletId, index);
+		}
+		
+		if(actionSequencePlanMemoryContainer == null)
+			actionSequencePlanMemoryContainer = this.getOutput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
+		
+		if(actionSequencePlanRequestMemoryContainer == null)
+			actionSequencePlanRequestMemoryContainer = this.getOutput(MecaMind.ACTION_SEQUENCE_PLAN_REQUEST_ID, index);
 
 	}
 	
@@ -126,13 +139,13 @@ public abstract class BehaviorCodelet extends Codelet {
 		
 		double activation = 0;
 		
-		if (drivesMO!=null && drivesMO.size() > 0){
+		if (driveMemories!=null && driveMemories.size() > 0){
 
-			for (Memory driveMO: drivesMO) {
+			for (Memory driveMO: driveMemories) {
 				activation += driveMO.getEvaluation();
 			}
 
-			activation /= drivesMO.size();
+			activation /= driveMemories.size();
 
 		}
 		
@@ -155,11 +168,13 @@ public abstract class BehaviorCodelet extends Codelet {
 	@Override
 	public void proc() {
 		
-		trackActionSequencePlan(worldSituation,actionSequencePlan);
+		trackActionSequencePlan(perceptualMemories,actionSequencePlan);
 		
 		if(actionSequencePlan != null) {
 			((MemoryContainer) actionSequencePlanMemoryContainer).setI(actionSequencePlan,getActivation(),id);
+			((MemoryContainer) actionSequencePlanRequestMemoryContainer).setI(null,0.0d,id);
 		}else {
+			((MemoryContainer) actionSequencePlanMemoryContainer).setI(null,0.0d,id);
 			((MemoryContainer) actionSequencePlanRequestMemoryContainer).setI(id,getActivation(),id);
 		}
 	}

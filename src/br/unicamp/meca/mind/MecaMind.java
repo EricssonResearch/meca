@@ -71,7 +71,7 @@ public class MecaMind extends Mind {
 
 	private List<ActionCodelet> actionCodelets;
 
-	private List<BehaviorCodelet> behavioralCodelets;
+	private List<BehaviorCodelet> behaviorCodelets;
 
 	private List<MotorCodelet> motorCodelets;
 
@@ -140,13 +140,13 @@ public class MecaMind extends Mind {
 
 		mountWorkingMemory();
 
-		mountSoarCodelet();
-
-		mountActionCodelets();
+		mountSoarCodelet();		
 
 		mountMotivationalCodelets();
 
-		mountBehavioralCodelets();
+		mountBehaviorCodelets();
+		
+		mountActionCodelets();
 
 		mountModules();
 
@@ -276,12 +276,12 @@ public class MecaMind extends Mind {
 		}
 	}
 
-	private void mountBehavioralCodelets() {
-		if (getMotivationalBehavioralCodelets() != null) {
-			for (BehaviorCodelet motivationalBehavioralCodelet : getMotivationalBehavioralCodelets()) {
-				if (motivationalBehavioralCodelet != null && motivationalBehavioralCodelet.getId() != null
-						&& motivationalBehavioralCodelet.getMotivationalCodeletsIds() != null
-						&& motivationalBehavioralCodelet.getMotorCodeletId() != null) {
+	private void mountBehaviorCodelets() {
+		if (behaviorCodelets != null) {
+			for (BehaviorCodelet behaviorCodelet : behaviorCodelets) {
+				if (behaviorCodelet != null && behaviorCodelet.getId() != null
+						&& behaviorCodelet.getMotivationalCodeletsIds() != null
+						&& behaviorCodelet.getMotorCodeletId() != null) {
 
 					/*
 					 * Outputs
@@ -290,8 +290,8 @@ public class MecaMind extends Mind {
 						for (MotorCodelet motorCodelet : motorCodelets) {
 							if (motorCodelet != null && motorCodelet.getId() != null) {
 								if (motorCodelet.getId()
-										.equalsIgnoreCase(motivationalBehavioralCodelet.getMotorCodeletId())) {
-									motivationalBehavioralCodelet.addOutputs(motorCodelet.getInputs());
+										.equalsIgnoreCase(behaviorCodelet.getMotorCodeletId())) {
+									behaviorCodelet.addOutputs(motorCodelet.getInputs());
 								}
 							}
 						}
@@ -302,13 +302,13 @@ public class MecaMind extends Mind {
 					if (getMotivationalCodelets() != null) {
 						for (MotivationalCodelet motivationalCodelet : getMotivationalCodelets()) {
 							if (motivationalCodelet != null && motivationalCodelet.getId() != null) {
-								ArrayList<String> motivationalCodeletsIds = motivationalBehavioralCodelet
+								ArrayList<String> motivationalCodeletsIds = behaviorCodelet
 										.getMotivationalCodeletsIds();
 								if (motivationalCodeletsIds != null) {
 									for (String motivationalCodeletId : motivationalCodeletsIds) {
 										if (motivationalCodeletId != null && motivationalCodelet.getId()
 												.equalsIgnoreCase(motivationalCodeletId)) {
-											motivationalBehavioralCodelet.addInputs(motivationalCodelet.getOutputs());
+											behaviorCodelet.addInputs(motivationalCodelet.getOutputs());
 										}
 									}
 								}
@@ -316,14 +316,14 @@ public class MecaMind extends Mind {
 						}
 					}
 
-					if (soarCodelet != null && soarCodelet.getId() != null && motivationalBehavioralCodelet.getSoarCodeletId() != null) {
-						if (soarCodelet.getId().equalsIgnoreCase(motivationalBehavioralCodelet.getSoarCodeletId())) {
-							motivationalBehavioralCodelet.addBroadcasts(soarCodelet.getOutputs());
+					if (soarCodelet != null && soarCodelet.getId() != null && behaviorCodelet.getSoarCodeletId() != null) {
+						if (soarCodelet.getId().equalsIgnoreCase(behaviorCodelet.getSoarCodeletId())) {
+							behaviorCodelet.addBroadcasts(soarCodelet.getOutputs());
 						}
 
 					}
 
-					insertCodelet(motivationalBehavioralCodelet);
+					insertCodelet(behaviorCodelet);
 
 				}
 			}
@@ -331,13 +331,13 @@ public class MecaMind extends Mind {
 	}
 
 	private void mountActionCodelets() {
-		if (getReactiveBehavioralCodelets() != null) {
-			for (ActionCodelet reactiveBehavioralCodelet : getReactiveBehavioralCodelets()) {
-				if (reactiveBehavioralCodelet != null && reactiveBehavioralCodelet.getId() != null
-						&& reactiveBehavioralCodelet.getPerceptualCodeletsIds() != null
-						&& reactiveBehavioralCodelet.getMotorCodeletId() != null) {
+		if (actionCodelets != null) {
+			for (ActionCodelet actionCodelet : actionCodelets) {
+				if (actionCodelet != null && actionCodelet.getId() != null
+						&& actionCodelet.getPerceptualCodeletsIds() != null
+						&& actionCodelet.getMotorCodeletId() != null) {
 
-					insertCodelet(reactiveBehavioralCodelet);
+					insertCodelet(actionCodelet);
 					/*
 					 * Outputs
 					 */
@@ -345,8 +345,8 @@ public class MecaMind extends Mind {
 						for (MotorCodelet motorCodelet : motorCodelets) {
 							if (motorCodelet != null && motorCodelet.getId() != null) {
 								if (motorCodelet.getId()
-										.equalsIgnoreCase(reactiveBehavioralCodelet.getMotorCodeletId())) {
-									reactiveBehavioralCodelet.addOutputs(motorCodelet.getInputs());
+										.equalsIgnoreCase(actionCodelet.getMotorCodeletId())) {
+									actionCodelet.addOutputs(motorCodelet.getInputs());
 								}
 							}
 						}
@@ -357,13 +357,13 @@ public class MecaMind extends Mind {
 					if (perceptualCodelets != null) {
 						for (PerceptualCodelet perceptualCodelet : perceptualCodelets) {
 							if (perceptualCodelet != null && perceptualCodelet.getId() != null) {
-								ArrayList<String> perceptualCodeletsIds = reactiveBehavioralCodelet
+								ArrayList<String> perceptualCodeletsIds = actionCodelet
 										.getPerceptualCodeletsIds();
 								if (perceptualCodeletsIds != null) {
 									for (String perceptualCodeletId : perceptualCodeletsIds) {
 										if (perceptualCodeletId != null
 												&& perceptualCodelet.getId().equalsIgnoreCase(perceptualCodeletId)) {
-											reactiveBehavioralCodelet.addInputs(perceptualCodelet.getOutputs());
+											actionCodelet.addInputs(perceptualCodelet.getOutputs());
 										}
 									}
 								}
@@ -371,9 +371,9 @@ public class MecaMind extends Mind {
 						}
 					}
 
-					if (soarCodelet != null && soarCodelet.getId() != null && reactiveBehavioralCodelet.getSoarCodeletId() != null) {
-						if (soarCodelet.getId().equalsIgnoreCase(reactiveBehavioralCodelet.getSoarCodeletId())) {
-							reactiveBehavioralCodelet.addBroadcasts(soarCodelet.getOutputs());
+					if (soarCodelet != null && soarCodelet.getId() != null && actionCodelet.getSoarCodeletId() != null) {
+						if (soarCodelet.getId().equalsIgnoreCase(actionCodelet.getSoarCodeletId())) {
+							actionCodelet.addBroadcasts(soarCodelet.getOutputs());
 						}
 
 					}
@@ -511,16 +511,6 @@ public class MecaMind extends Mind {
 	 */
 	public void setReactiveBehavioralCodelets(List<ActionCodelet> reactiveBehavioralCodelets) {
 		this.actionCodelets = reactiveBehavioralCodelets;
-	}
-
-	/**
-	 * Sets the Motovational Behavioral Codelets.
-	 * 
-	 * @param motivationalBehavioralCodelets
-	 *            the motivationalBehavioralCodelets to set
-	 */
-	public void setMotivationalBehavioralCodelets(List<BehaviorCodelet> motivationalBehavioralCodelets) {
-		this.behavioralCodelets = motivationalBehavioralCodelets;
 	}
 
 	/**
@@ -722,24 +712,6 @@ public class MecaMind extends Mind {
 	 */
 	public AttentionCodelet getAttentionCodeletSystem1() {
 		return attentionCodeletSystem1;
-	}
-
-	/**
-	 * Gets the Reactive Behavioral Codelets.
-	 * 
-	 * @return the reactiveBehavioralCodelets.
-	 */
-	public List<ActionCodelet> getReactiveBehavioralCodelets() {
-		return actionCodelets;
-	}
-
-	/**
-	 * Gets the Motivational Behavioral Codelets.
-	 * 
-	 * @return the motivationalBehavioralCodelets.
-	 */
-	public List<BehaviorCodelet> getMotivationalBehavioralCodelets() {
-		return behavioralCodelets;
 	}
 
 	/**
