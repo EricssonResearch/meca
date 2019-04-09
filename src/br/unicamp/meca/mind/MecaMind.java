@@ -142,7 +142,7 @@ public class MecaMind extends Mind {
 
 		mountSoarCodelet();
 
-		mountactionCodelets();
+		mountActionCodelets();
 
 		mountMotivationalCodelets();
 
@@ -330,7 +330,7 @@ public class MecaMind extends Mind {
 		}
 	}
 
-	private void mountactionCodelets() {
+	private void mountActionCodelets() {
 		if (getReactiveBehavioralCodelets() != null) {
 			for (ActionCodelet reactiveBehavioralCodelet : getReactiveBehavioralCodelets()) {
 				if (reactiveBehavioralCodelet != null && reactiveBehavioralCodelet.getId() != null
@@ -401,6 +401,9 @@ public class MecaMind extends Mind {
 	private void mountAttentionCodelets() {
 		if (attentionCodeletSystem1 != null) {
 
+			/*
+			 * Inputs
+			 */
 			if (perceptualCodelets != null) {
 				for (String inputPerceptualId : attentionCodeletSystem1.getPerceptualCodeletsIds()) {
 					for (PerceptualCodelet perceptualCodelet : perceptualCodelets) {
@@ -411,6 +414,9 @@ public class MecaMind extends Mind {
 					}
 				}
 			}
+			/*
+			 * Outputs
+			 */
 			Memory attentionMemoryOutput = createMemoryObject(attentionCodeletSystem1.getId());
 			attentionCodeletSystem1.addOutput(attentionMemoryOutput);
 			attentionCodeletSystem1.setOutputFilteredPerceptsMO(attentionMemoryOutput);

@@ -33,8 +33,9 @@ import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
  */
 public abstract class MotivationalCodelet extends br.unicamp.cst.motivational.MotivationalCodelet {
 
-	private ArrayList<String> sensoryCodeletsIds;
-	private HashMap<String, Double> motivationalCodeletsIds;
+	protected ArrayList<String> sensoryCodeletsIds;
+	
+	protected HashMap<String, Double> motivationalCodeletsIds;
 
 	/**
 	 * Creates a MECA Motivational Codelet.
