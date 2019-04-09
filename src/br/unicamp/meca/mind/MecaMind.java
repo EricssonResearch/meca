@@ -40,7 +40,7 @@ import br.unicamp.meca.system2.codelets.GoalCodelet;
 import br.unicamp.meca.system2.codelets.SoarCodelet;
 
 /**
- * This class represents th MECA's agent mind.This is the main class to be used
+ * This class represents the MECA's agent mind.This is the main class to be used
  * by any MECA user.
  * 
  * @author A. L. O. Paraense
@@ -212,7 +212,7 @@ public class MecaMind extends Mind {
 
 					insertCodelet(sensoryCodelet);
 					/*
-					 * Input
+					 * Output
 					 */
 					MemoryObject sensoryMemory = createMemoryObject(sensoryCodelet.getId());
 					sensoryCodelet.addOutput(sensoryMemory);

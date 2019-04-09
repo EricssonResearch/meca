@@ -15,6 +15,8 @@ package br.unicamp.meca.system1.codelets;
 import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Codelet;
+import br.unicamp.cst.core.entities.Memory;
+import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 
 /**
  * This class represents the MECA Perceptual Codelets. The Perceptual Subsystem
@@ -36,6 +38,10 @@ public abstract class PerceptualCodelet extends Codelet {
 	protected String id;
 
 	protected ArrayList<String> sensoryCodeletsIds;
+	
+    private ArrayList<Memory> sensoryMemories = new ArrayList<Memory>();
+
+    private Memory perceptualMemory;
 
 	/**
 	 * Creates a MECA Perceptual Codelet.
@@ -53,6 +59,52 @@ public abstract class PerceptualCodelet extends Codelet {
 		setName(id);
 		this.sensoryCodeletsIds = sensoryCodeletsIds;
 	}
+	
+	@Override
+	public void accessMemoryObjects() {
+		
+        int index = 0;
+
+        if (perceptualMemory == null)
+        	perceptualMemory = this.getOutput(id, index);
+
+        if (sensoryMemories == null || sensoryMemories.size() == 0) {
+            if (sensoryCodeletsIds != null) {
+
+                for (String sensoryCodeletsId : sensoryCodeletsIds) {
+                    sensoryMemories.add(this.getInput(sensoryCodeletsId, index));
+                }
+            }
+        }
+	}
+	
+	@Override
+	public void calculateActivation() {
+		try{
+
+			setActivation(0.0d);
+
+		} catch (CodeletActivationBoundsException e) {
+
+			e.printStackTrace();
+		}	
+	}
+	
+	@Override
+	public void proc() {
+		proc(sensoryMemories, perceptualMemory);
+	}
+	
+	/**
+	 * 
+	 * Main method of the perceptual Codelet, passing the input sensory memories
+	 * and the output perceptual memory
+	 * 
+	 * @param sensoryMemories the input sensory memories
+	 * @param perceptualMemory the output perceptual memory
+	 */
+	public abstract void proc(ArrayList<Memory> sensoryMemories, Memory perceptualMemory);
+
 
 	/**
 	 * Returns the id of this Perceptual Codelet.
