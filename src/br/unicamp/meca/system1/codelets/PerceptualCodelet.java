@@ -39,9 +39,9 @@ public abstract class PerceptualCodelet extends Codelet {
 
 	protected ArrayList<String> sensoryCodeletsIds;
 	
-    private ArrayList<Memory> sensoryMemories = new ArrayList<Memory>();
+	protected ArrayList<Memory> sensoryMemories = new ArrayList<Memory>();
 
-    private Memory perceptualMemory;
+	protected Memory perceptualMemory;
 
 	/**
 	 * Creates a MECA Perceptual Codelet.
