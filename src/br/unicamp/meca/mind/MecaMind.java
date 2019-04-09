@@ -504,16 +504,6 @@ public class MecaMind extends Mind {
 	}
 
 	/**
-	 * Sets the Reactive Behavioral Codelets.
-	 * 
-	 * @param reactiveBehavioralCodelets
-	 *            the reactiveBehavioralCodelets to set
-	 */
-	public void setReactiveBehavioralCodelets(List<ActionCodelet> reactiveBehavioralCodelets) {
-		this.actionCodelets = reactiveBehavioralCodelets;
-	}
-
-	/**
 	 * Sets the Motor Codelets.
 	 * 
 	 * @param motorCodelets
@@ -602,6 +592,20 @@ public class MecaMind extends Mind {
 	 */
 	public void setAppraisalCodelet(AppraisalCodelet appraisalCodelet) {
 		this.appraisalCodelet = appraisalCodelet;
+	}
+	
+	/**
+	 * @param actionCodelets the actionCodelets to set
+	 */
+	public void setActionCodelets(List<ActionCodelet> actionCodelets) {
+		this.actionCodelets = actionCodelets;
+	}
+
+	/**
+	 * @param behaviorCodelets the behaviorCodelets to set
+	 */
+	public void setBehaviorCodelets(List<BehaviorCodelet> behaviorCodelets) {
+		this.behaviorCodelets = behaviorCodelets;
 	}
 
 	/**
@@ -777,4 +781,17 @@ public class MecaMind extends Mind {
 		return soarCodelet;
 	}
 
+	/**
+	 * @return the actionCodelets
+	 */
+	public List<ActionCodelet> getActionCodelets() {
+		return actionCodelets;
+	}
+
+	/**
+	 * @return the behaviorCodelets
+	 */
+	public List<BehaviorCodelet> getBehaviorCodelets() {
+		return behaviorCodelets;
+	}
 }
