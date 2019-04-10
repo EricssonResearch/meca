@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.Memory;
+import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.mind.MecaMind;
 import br.unicamp.meca.models.ActionSequencePlan;
 
@@ -43,6 +44,7 @@ public abstract class ActionCodelet extends Codelet {
 	protected String soarCodeletId;
 	protected Memory broadcastMemory;
 	
+	protected boolean isPlanedAction = true;
 	protected Memory actionSequencePlanMemoryContainer;
 	
 	protected String motorCodeletId;
@@ -65,13 +67,14 @@ public abstract class ActionCodelet extends Codelet {
 	 *            Reactive Behavioral Codelet.
 	 */
 	public ActionCodelet(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId,
-			String soarCodeletId) {
+			String soarCodeletId, boolean isPlanedAction) {
 		super();
 		setName(id);
 		this.id = id;
 		this.motorCodeletId = motorCodeletId;
 		this.perceptualCodeletsIds = perceptualCodeletsIds;
 		this.soarCodeletId = soarCodeletId;
+		this.isPlanedAction = isPlanedAction;
 	}
 	
 	@Override
@@ -96,8 +99,10 @@ public abstract class ActionCodelet extends Codelet {
 			broadcastMemory = this.getBroadcast(soarCodeletId, index);
 		}
 		
-		if(actionSequencePlanMemoryContainer == null)
-			actionSequencePlanMemoryContainer = this.getInput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
+		if(isPlanedAction) {
+			if(actionSequencePlanMemoryContainer == null)
+				actionSequencePlanMemoryContainer = this.getInput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
+		}
 
 		if(motorMemory==null && motorCodeletId!=null)
 			motorMemory = this.getOutput(motorCodeletId, index);
@@ -106,7 +111,29 @@ public abstract class ActionCodelet extends Codelet {
 	
 	@Override
 	public void calculateActivation() {
-		calculateActivation(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer);	
+		
+		//TODO - need to be split in two different action codeles, planned and just action
+		
+		if(!isPlanedAction) {
+			calculateActivation(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer);
+		}else {
+			try {
+				if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
+					
+					ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
+					String currentActionId = actionSequencePlan.getCurrentActionId();
+					
+					if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
+						setActivation(1.0d);
+					}else {
+						setActivation(0.0d);
+					}
+				}
+
+			} catch (CodeletActivationBoundsException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -120,13 +147,19 @@ public abstract class ActionCodelet extends Codelet {
 	@Override
 	public void proc() {
 		
-		if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
-			
-			ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
-			String currentActionId = actionSequencePlan.getCurrentActionId();
-			
-			if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
-				proc(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer, motorMemory);
+		//TODO - need to be split in two different action codeles, planned and just action
+		
+		if(!isPlanedAction) {
+			proc(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer, motorMemory);
+		}else {
+			if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
+				
+				ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
+				String currentActionId = actionSequencePlan.getCurrentActionId();
+				
+				if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
+					proc(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer, motorMemory);
+				}
 			}
 		}
 	}
@@ -220,5 +253,12 @@ public abstract class ActionCodelet extends Codelet {
 	 */
 	public void setMotorCodeletId(String motorCodeletId) {
 		this.motorCodeletId = motorCodeletId;
+	}
+
+	/**
+	 * @return the isPlanedAction
+	 */
+	public boolean isPlanedAction() {
+		return isPlanedAction;
 	}
 }

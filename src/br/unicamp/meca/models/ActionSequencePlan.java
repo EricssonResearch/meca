@@ -12,13 +12,15 @@ public class ActionSequencePlan {
 	private String[] actionIdSequence;
 	
 	private int currentActionIdIndex = 0;
-	
-	public ActionSequencePlan() {}
 
 	public ActionSequencePlan(String[] actionIdSequence) {
 		this.actionIdSequence = actionIdSequence;
 	}
 	
+	/**
+	 * Returns the current action to be undertaken in the plan
+	 * @return
+	 */
 	public String getCurrentActionId() {
 		return actionIdSequence[currentActionIdIndex];
 	}
