@@ -112,7 +112,7 @@ public abstract class ActionCodelet extends Codelet {
 	@Override
 	public void calculateActivation() {
 		
-		//TODO - need to be split in two different action codeles, planned and just action
+		//TODO - need to be split in three different action codeles, planned and just action from perception, just action from drives
 		
 		if(!isPlanedAction) {
 			calculateActivation(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer);
@@ -124,7 +124,7 @@ public abstract class ActionCodelet extends Codelet {
 					String currentActionId = actionSequencePlan.getCurrentActionId();
 					
 					if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
-						setActivation(1.0d);
+						setActivation(actionSequencePlanMemoryContainer.getEvaluation());
 					}else {
 						setActivation(0.0d);
 					}
@@ -147,7 +147,7 @@ public abstract class ActionCodelet extends Codelet {
 	@Override
 	public void proc() {
 		
-		//TODO - need to be split in two different action codeles, planned and just action
+		//TODO - need to be split in three different action codeles, planned and just action from perception, just action from drives
 		
 		if(!isPlanedAction) {
 			proc(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer, motorMemory);
