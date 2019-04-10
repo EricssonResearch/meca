@@ -34,7 +34,7 @@ import br.unicamp.meca.models.ActionSequencePlan;
  * @author A. L. O. Paraense
  *
  */
-public abstract class ActionCodelet extends Codelet {
+public abstract class ActionFromPlanningCodelet extends Codelet {
 
 	protected String id;
 
@@ -44,7 +44,6 @@ public abstract class ActionCodelet extends Codelet {
 	protected String soarCodeletId;
 	protected Memory broadcastMemory;
 	
-	protected boolean isPlanedAction = true;
 	protected Memory actionSequencePlanMemoryContainer;
 	
 	protected String motorCodeletId;
@@ -66,15 +65,14 @@ public abstract class ActionCodelet extends Codelet {
 	 *            the id of the Soar Codelet whose outputs will be read by this
 	 *            Reactive Behavioral Codelet.
 	 */
-	public ActionCodelet(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId,
-			String soarCodeletId, boolean isPlanedAction) {
+	public ActionFromPlanningCodelet(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId,
+			String soarCodeletId) {
 		super();
 		setName(id);
 		this.id = id;
 		this.motorCodeletId = motorCodeletId;
 		this.perceptualCodeletsIds = perceptualCodeletsIds;
 		this.soarCodeletId = soarCodeletId;
-		this.isPlanedAction = isPlanedAction;
 	}
 	
 	@Override
@@ -99,10 +97,8 @@ public abstract class ActionCodelet extends Codelet {
 			broadcastMemory = this.getBroadcast(soarCodeletId, index);
 		}
 		
-		if(isPlanedAction) {
-			if(actionSequencePlanMemoryContainer == null)
-				actionSequencePlanMemoryContainer = this.getInput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
-		}
+		if(actionSequencePlanMemoryContainer == null)
+			actionSequencePlanMemoryContainer = this.getInput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
 
 		if(motorMemory==null && motorCodeletId!=null)
 			motorMemory = this.getOutput(motorCodeletId, index);
@@ -112,54 +108,34 @@ public abstract class ActionCodelet extends Codelet {
 	@Override
 	public void calculateActivation() {
 		
-		//TODO - need to be split in three different action codeles, planned and just action from perception, just action from drives
-		
-		if(!isPlanedAction) {
-			calculateActivation(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer);
-		}else {
-			try {
-				if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
-					
-					ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
-					String currentActionId = actionSequencePlan.getCurrentActionId();
-					
-					if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
-						setActivation(actionSequencePlanMemoryContainer.getEvaluation());
-					}else {
-						setActivation(0.0d);
-					}
-				}
+		try {
+			if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
 
-			} catch (CodeletActivationBoundsException e) {
-				e.printStackTrace();
+				ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
+				String currentActionId = actionSequencePlan.getCurrentActionId();
+
+				if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
+					setActivation(actionSequencePlanMemoryContainer.getEvaluation());
+				}else {
+					setActivation(0.0d);
+				}
 			}
+
+		} catch (CodeletActivationBoundsException e) {
+			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * 
-	 * @param perceptualMemories
-	 * @param broadcastMemory
-	 * @param actionSequencePlanMemoryContainer
-	 */
-	public abstract void calculateActivation(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer);
 
 	@Override
 	public void proc() {
-		
-		//TODO - need to be split in three different action codeles, planned and just action from perception, just action from drives
-		
-		if(!isPlanedAction) {
-			proc(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer, motorMemory);
-		}else {
-			if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
-				
-				ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
-				String currentActionId = actionSequencePlan.getCurrentActionId();
-				
-				if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
-					proc(perceptualMemories, broadcastMemory, actionSequencePlanMemoryContainer, motorMemory);
-				}
+
+		if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
+
+			ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
+			String currentActionId = actionSequencePlan.getCurrentActionId();
+
+			if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
+				proc(perceptualMemories, broadcastMemory, motorMemory);
 			}
 		}
 	}
@@ -168,10 +144,9 @@ public abstract class ActionCodelet extends Codelet {
 	 * 
 	 * @param perceptualMemories
 	 * @param broadcastMemory
-	 * @param actionSequencePlanMemoryContainer
 	 * @param motorMemory
 	 */
-	public abstract void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer, Memory motorMemory);
+	public abstract void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory);
 	
 	/**
 	 * Returns the id of the Soar Codelet whose outputs will be read by this
@@ -253,12 +228,5 @@ public abstract class ActionCodelet extends Codelet {
 	 */
 	public void setMotorCodeletId(String motorCodeletId) {
 		this.motorCodeletId = motorCodeletId;
-	}
-
-	/**
-	 * @return the isPlanedAction
-	 */
-	public boolean isPlanedAction() {
-		return isPlanedAction;
 	}
 }

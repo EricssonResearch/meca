@@ -22,7 +22,8 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
 import br.unicamp.meca.memory.WorkingMemory;
-import br.unicamp.meca.system1.codelets.ActionCodelet;
+import br.unicamp.meca.system1.codelets.ActionFromPerception;
+import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
 import br.unicamp.meca.system1.codelets.AttentionCodelet;
 import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 import br.unicamp.meca.system1.codelets.EmotionalCodelet;
@@ -69,7 +70,9 @@ public class MecaMind extends Mind {
 
 	private List<EmotionalCodelet> emotionalCodelets;
 
-	private List<ActionCodelet> actionCodelets;
+	private List<ActionFromPlanningCodelet> actionFromPlanningCodelets;
+	
+	private List<ActionFromPerception> actionFromPerceptionCodelets;
 
 	private List<BehaviorCodelet> behaviorCodelets;
 
@@ -151,7 +154,9 @@ public class MecaMind extends Mind {
 
 		mountBehaviorCodelets();
 		
-		mountActionCodelets();
+		mountActionFromPlanningCodelets();
+		
+		mountActionFromPerceptionCodelets();
 
 		mountModules();
 
@@ -350,10 +355,82 @@ public class MecaMind extends Mind {
 			}
 		}
 	}
+	
+	private void mountActionFromPerceptionCodelets() {
+		if (actionFromPerceptionCodelets != null) {
+			for (ActionFromPerception actionCodelet : actionFromPerceptionCodelets) {
+				if (actionCodelet != null && actionCodelet.getId() != null
+						&& actionCodelet.getPerceptualCodeletsIds() != null
+						&& actionCodelet.getMotivationalCodeletsIds() != null
+						&& actionCodelet.getMotorCodeletId() != null) {
 
-	private void mountActionCodelets() {
-		if (actionCodelets != null) {
-			for (ActionCodelet actionCodelet : actionCodelets) {
+					insertCodelet(actionCodelet);
+					/*
+					 * Outputs
+					 */
+					if (motorCodelets != null) {
+						for (MotorCodelet motorCodelet : motorCodelets) {
+							if (motorCodelet != null && motorCodelet.getId() != null) {
+								if (motorCodelet.getId()
+										.equalsIgnoreCase(actionCodelet.getMotorCodeletId())) {
+									actionCodelet.addOutputs(motorCodelet.getInputs());
+								}
+							}
+						}
+					}
+					/*
+					 * Inputs
+					 */
+					
+					if (motivationalCodelets != null) {
+						for (MotivationalCodelet motivationalCodelet : motivationalCodelets) {
+							if (motivationalCodelet != null && motivationalCodelet.getId() != null) {
+								ArrayList<String> motivationalCodeletsIds = actionCodelet
+										.getMotivationalCodeletsIds();
+								if (motivationalCodeletsIds != null) {
+									for (String motivationalCodeletId : motivationalCodeletsIds) {
+										if (motivationalCodeletId != null && motivationalCodelet.getId()
+												.equalsIgnoreCase(motivationalCodeletId)) {
+											actionCodelet.addInputs(motivationalCodelet.getOutputs());
+										}
+									}
+								}
+							}
+						}
+					}
+					
+					if (perceptualCodelets != null) {
+						for (PerceptualCodelet perceptualCodelet : perceptualCodelets) {
+							if (perceptualCodelet != null && perceptualCodelet.getId() != null) {
+								ArrayList<String> perceptualCodeletsIds = actionCodelet
+										.getPerceptualCodeletsIds();
+								if (perceptualCodeletsIds != null) {
+									for (String perceptualCodeletId : perceptualCodeletsIds) {
+										if (perceptualCodeletId != null
+												&& perceptualCodelet.getId().equalsIgnoreCase(perceptualCodeletId)) {
+											actionCodelet.addInputs(perceptualCodelet.getOutputs());
+										}
+									}
+								}
+							}
+						}
+					}
+
+					if (soarCodelet != null && soarCodelet.getId() != null && actionCodelet.getSoarCodeletId() != null) {
+						if (soarCodelet.getId().equalsIgnoreCase(actionCodelet.getSoarCodeletId())) {
+							actionCodelet.addBroadcasts(soarCodelet.getOutputs());
+						}
+
+					}				
+				}
+			}
+		}
+		
+	}
+
+	private void mountActionFromPlanningCodelets() {
+		if (actionFromPlanningCodelets != null) {
+			for (ActionFromPlanningCodelet actionCodelet : actionFromPlanningCodelets) {
 				if (actionCodelet != null && actionCodelet.getId() != null
 						&& actionCodelet.getPerceptualCodeletsIds() != null
 						&& actionCodelet.getMotorCodeletId() != null) {
@@ -399,9 +476,7 @@ public class MecaMind extends Mind {
 
 					}
 					
-					if(actionCodelet.isPlanedAction()) {
-						actionCodelet.addInput(actionSequencePlanMemoryContainer);
-					}
+					actionCodelet.addInput(actionSequencePlanMemoryContainer);					
 				}
 			}
 		}
@@ -617,12 +692,19 @@ public class MecaMind extends Mind {
 	public void setAppraisalCodelet(AppraisalCodelet appraisalCodelet) {
 		this.appraisalCodelet = appraisalCodelet;
 	}
-	
+
 	/**
-	 * @param actionCodelets the actionCodelets to set
+	 * @param actionFromPlanningCodelets the actionFromPlanningCodelets to set
 	 */
-	public void setActionCodelets(List<ActionCodelet> actionCodelets) {
-		this.actionCodelets = actionCodelets;
+	public void setActionFromPlanningCodelets(List<ActionFromPlanningCodelet> actionFromPlanningCodelets) {
+		this.actionFromPlanningCodelets = actionFromPlanningCodelets;
+	}
+
+	/**
+	 * @param actionFromPerceptionCodelets the actionFromPerceptionCodelets to set
+	 */
+	public void setActionFromPerceptionCodelets(List<ActionFromPerception> actionFromPerceptionCodelets) {
+		this.actionFromPerceptionCodelets = actionFromPerceptionCodelets;
 	}
 
 	/**
@@ -806,16 +888,23 @@ public class MecaMind extends Mind {
 	}
 
 	/**
-	 * @return the actionCodelets
-	 */
-	public List<ActionCodelet> getActionCodelets() {
-		return actionCodelets;
-	}
-
-	/**
 	 * @return the behaviorCodelets
 	 */
 	public List<BehaviorCodelet> getBehaviorCodelets() {
 		return behaviorCodelets;
+	}
+
+	/**
+	 * @return the actionFromPlanningCodelets
+	 */
+	public List<ActionFromPlanningCodelet> getActionFromPlanningCodelets() {
+		return actionFromPlanningCodelets;
+	}
+
+	/**
+	 * @return the actionFromPerceptionCodelets
+	 */
+	public List<ActionFromPerception> getActionFromPerceptionCodelets() {
+		return actionFromPerceptionCodelets;
 	}
 }
