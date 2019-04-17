@@ -85,7 +85,8 @@ public abstract class SensoryCodelet extends Codelet {
 	 * Calls the main method of this Sensory Codelet providing the memory with
 	 * the information coming from the sensors.
 	 * 
-	 * @param sensoryMemory the information coming from sensor outputed as memory
+	 * @param sensoryMemory 
+	 * 						the information coming from sensor represented as a memory
 	 */
 	public abstract void proc(Memory sensoryMemory);
 

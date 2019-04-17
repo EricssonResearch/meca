@@ -21,12 +21,13 @@ import br.unicamp.meca.mind.MecaMind;
 import br.unicamp.meca.models.ActionSequencePlan;
 
 /**
- * This class represents the MECA Action Codelet. This Behavioral
- * Codelet allows inputs from one or more of the PerceptualCodelets. It outputs
+ * This class represents the MECA Action From Planning Codelet. This Action From Planning
+ * Codelet allows inputs from one or more of the PerceptualCodelets and the ActionSequencePlan
+ * with greatest activation. It outputs
  * necessarily to a MotorCodelet. As the name suggests, the idea behind this
- * behavioral codelet is to provide a reactive behavior generator in System 1.
+ * action from planning codelet is to provide an action following a specific plan from the behavior generator in System 1.
  * <p>
- * Usually, Reactive Behavioral Codelets are application-specific, and the MECA
+ * Usually, Action From Planning Codelets are application-specific, and the MECA
  * software implementation just provides basic template class, which is a
  * wrapper to CST's {@link Codelet}, to be reused while building an application
  * using MECA.
@@ -50,20 +51,20 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 	protected Memory motorMemory;
 
 	/**
-	 * Creates a MECA Reactive Behavioral Codelet.
+	 * Creates a MECA Action From Planning Codelet.
 	 * 
 	 * @param id
-	 *            the id of the Reactive Behavioral Codelet. Must be unique per
+	 *            the id of the Action From Planning Codelet. Must be unique per
 	 *            Reactive Behavioral Codelet.
 	 * @param perceptualCodeletsIds
 	 *            the list of ids of the Perceptual Codelets whose outputs will
-	 *            be read by this Reactive Behavioral Codelet.
+	 *            be read by this Action From Planning Codelet.
 	 * @param motorCodeletId
 	 *            the id of the Motor Codelet which will read the outputs of
-	 *            this Reactive Behavioral Codelet.
+	 *            this Action From Planning Codelet.
 	 * @param soarCodeletId
 	 *            the id of the Soar Codelet whose outputs will be read by this
-	 *            Reactive Behavioral Codelet.
+	 *            Action From Planning Codelet.
 	 */
 	public ActionFromPlanningCodelet(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId,
 			String soarCodeletId) {
@@ -141,16 +142,20 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 	}
 	
 	/**
+	 * Main method of this Action From Planning Codelet called passing all the input and output memories necessary.
 	 * 
 	 * @param perceptualMemories
+	 * 			the input memories coming from perception.
 	 * @param broadcastMemory
+	 * 			the input memories coming from the conscious broadcast of the planner.
 	 * @param motorMemory
+	 * 			the output motor memory to be dispatched to the actuators.
 	 */
 	public abstract void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory);
 	
 	/**
 	 * Returns the id of the Soar Codelet whose outputs will be read by this
-	 * Reactive Behavioral Codelet.
+	 * Action From Planning Codelet.
 	 * 
 	 * @return the soarCodeletId
 	 */
@@ -160,7 +165,7 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 
 	/**
 	 * Sets the id of the Soar Codelet whose outputs will be read by this
-	 * Reactive Behavioral Codelet.
+	 * Action From Planning Codelet.
 	 * 
 	 * @param soarCodeletId
 	 *            the soarCodeletId to set
@@ -171,7 +176,7 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 
 	/**
 	 * Returns the list of the Perceptual Codelet's ids whose outputs will be
-	 * read by this Reactive Behavioral Codelet.
+	 * read by this Action From Planning Codelet.
 	 * 
 	 * @return the perceptualCodeletsIds
 	 */
@@ -181,7 +186,7 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 
 	/**
 	 * Sets the list of the Perceptual Codelet's ids whose outputs will be read
-	 * by this Reactive Behavioral Codelet.
+	 * by this Action From Planning Codelet.
 	 * 
 	 * @param perceptualCodeletsIds
 	 *            the perceptualCodeletsIds to set
@@ -191,7 +196,7 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 	}
 
 	/**
-	 * Returns the id of this Reactive Behavioral Codelet.
+	 * Returns the id of this Action From Planning Codelet.
 	 * 
 	 * @return the id
 	 */
@@ -200,7 +205,7 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 	}
 
 	/**
-	 * Sets the id of this Reactive Behavioral Codelet.
+	 * Sets the id of this Action From Planning Codelet.
 	 * 
 	 * @param id
 	 *            the id to set
@@ -211,7 +216,7 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 
 	/**
 	 * Returns the id of the Motor Codelet which will read the outputs of this
-	 * Reactive Behavioral Codelet.
+	 * Action From Planning Codelet.
 	 * 
 	 * @return the motorCodeletId
 	 */
@@ -221,7 +226,7 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 
 	/**
 	 * Sets the id of the Motor Codelet which will read the outputs of this
-	 * Reactive Behavioral Codelet.
+	 * Action From Planning Codelet.
 	 * 
 	 * @param motorCodeletId
 	 *            the motorCodeletId to set

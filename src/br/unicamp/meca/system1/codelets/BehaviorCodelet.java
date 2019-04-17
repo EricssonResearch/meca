@@ -22,13 +22,13 @@ import br.unicamp.meca.mind.MecaMind;
 import br.unicamp.meca.models.ActionSequencePlan;
 
 /**
- * This class represents the MECA Motivational Behavioral Codelet. This
- * Behavioral Codelet allows inputs from one of the Motivational Codelets. It
- * outputs necessarily to a MotorCodelet. As the name suggests, the idea behind
- * this behavioral codelet is to provide a behavior generator driven from the
- * motivational system in System 1.
+ * This class represents the MECA Behavior Codelets. This
+ * Behavior Codelet allows inputs from one or more of the Motivational Codelets and Perceptual Codelets. It
+ * outputs necessarily an ActionSequencePlan. As the name suggests, the idea behind
+ * this behavior codelet is to provide a behavior generator driven from the
+ * motivational system and the perceptual system in System 1.
  * <p>
- * Usually, Motivational Behavioral Codelets are application-specific, and the
+ * Usually, Behavior Codelets are application-specific, and the
  * MECA software implementation just provides basic template class, which is a
  * wrapper to CST's {@link Codelet}, to be reused while building an application
  * using MECA.
@@ -54,22 +54,26 @@ public abstract class BehaviorCodelet extends Codelet {
 	protected Memory actionSequencePlanMemoryContainer;
 	
 	protected Memory actionSequencePlanRequestMemoryContainer;
-
+	
 	/**
 	 * Creates a MECA Motivational Behavioral Codelet.
 	 * 
 	 * @param id
-	 *            the id of the Motivational Behavioral Codelet. Must be unique
-	 *            per Motivational Behavioral Codelet.
-	 * @param motorCodeletId
-	 *            the id of the Motor Codelet which will read the outputs of
-	 *            this Motivational Behavioral Codelet.
+	 *            the id of the Behavior Codelet. Must be unique
+	 *            per Behavior Codelet.
+	 * @param perceptualCodeletsIds
+	 *            the list of ids of the Perceptual Codelets whose outputs
+	 *            will be read by this Behavior Codelet.
 	 * @param motivationalCodeletsIds
 	 *            the list of ids of the Motivational Codelets whose outputs
-	 *            will be read by this Motivational Behavioral Codelet.
+	 *            will be read by this Behavior Codelet.
 	 * @param soarCodeletId
 	 *            the id of the Soar Codelet whose outputs will be read by this
-	 *            Motivational Behavioral Codelet.
+	 *            Behavior Codelet.
+	 * @param actionSequencePlan
+	 * 				the ActionSequencePlan that this Behavior Codelet will provide
+	 * @see Codelet
+	 * @see ActionSequencePlan
 	 */
 	public BehaviorCodelet(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds,
 			String soarCodeletId, ActionSequencePlan actionSequencePlan) {
@@ -85,8 +89,11 @@ public abstract class BehaviorCodelet extends Codelet {
 	/**
 	 * Track and advance actions in the sequence plan. To be implemented in each object of this class,
 	 * according to its action sequence plan.
+	 * 
 	 * @param actionSequencePlan
+	 * 				the ActionSequencePlan that this Behavior Codelet provides.
 	 * @param perceptualMemories
+	 *            the list Perceptual Memories coming from Perceptual Codelets.
 	 */
 	public abstract void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan);
 	
@@ -181,7 +188,7 @@ public abstract class BehaviorCodelet extends Codelet {
 
 	/**
 	 * Returns the id of the Soar Codelet whose outputs will be read by this
-	 * Motivational Behavioral Codelet.
+	 * Behavior Codelet.
 	 * 
 	 * @return the soarCodeletId
 	 */
@@ -191,7 +198,7 @@ public abstract class BehaviorCodelet extends Codelet {
 
 	/**
 	 * Sets the id of the Soar Codelet whose outputs will be read by this
-	 * Motivational Behavioral Codelet.
+	 * Behavior Codelet.
 	 * 
 	 * @param soarCodeletId
 	 *            the soarCodeletId to set
@@ -201,7 +208,7 @@ public abstract class BehaviorCodelet extends Codelet {
 	}
 
 	/**
-	 * Returns the id of this Motivational Behavioral Codelet.
+	 * Returns the id of this Behavior Codelet.
 	 * 
 	 * @return the id
 	 */
@@ -210,7 +217,7 @@ public abstract class BehaviorCodelet extends Codelet {
 	}
 
 	/**
-	 * Sets the id of this Motivational Behavioral Codelet.
+	 * Sets the id of this Behavior Codelet.
 	 * 
 	 * @param id
 	 *            the id to set
@@ -221,7 +228,7 @@ public abstract class BehaviorCodelet extends Codelet {
 
 	/**
 	 * Returns the list of ids of the Motivational Codelets whose outputs will
-	 * be read by this Motivational Behavioral Codelet.
+	 * be read by this Behavior Codelet.
 	 * 
 	 * @return the motivationalCodeletsIds
 	 */
@@ -231,7 +238,7 @@ public abstract class BehaviorCodelet extends Codelet {
 
 	/**
 	 * Sets the list of ids of the Motivational Codelets whose outputs will be
-	 * read by this Motivational Behavioral Codelet.
+	 * read by this Behavior Codelet.
 	 * 
 	 * @param motivationalCodeletsIds
 	 *            the Motivational Codelets Ids to set

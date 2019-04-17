@@ -22,9 +22,9 @@ import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 /**
  * This class represents the MECA Motivational Codelet in System 1. The standard
  * dataflow for the System 1 Motivational Subsystem starts from Sensory Memory
- * Objects flowing through Motivational Codelets to generate Drives which are
- * stored in the Perceptual Memory. These Drives are then used by Motivational
- * Behavioral Codelets in order contribute with behaviors to be selected in the
+ * Objects flowing through Motivational Codelets to generate Drives.
+ * These Drives are then used by Motivational
+ * Behavior Codelets in order contribute with behaviors to be selected in the
  * Dynamical Subsumption scheme.
  * 
  * @author E. Froes

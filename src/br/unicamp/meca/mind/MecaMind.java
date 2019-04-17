@@ -129,8 +129,7 @@ public class MecaMind extends Mind {
 	 * all the codelets inside it, this method is responsible for binding
 	 * together all codelets inside the mind, creating memories (objects and
 	 * containers) and setting them either as inputs or outputs of each codelet,
-	 * according to MECA's reference architecture, as shown in the picture in
-	 * https://github.com/CST-Group/meca/blob/master/README.md.
+	 * according to MECA's reference architecture.
 	 * <p>
 	 * This method must be called before running the MECA Agent.
 	 */

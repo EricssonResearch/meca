@@ -1,6 +1,15 @@
-/**
- * 
- */
+/*******************************************************************************
+ * Copyright (c) 2019  DCA-FEEC-UNICAMP and Ericsson Research                  *
+ * All rights reserved. This program and the accompanying materials            *
+ * are made available under the terms of the GNU Lesser Public License v3      *
+ * which accompanies this distribution, and is available at                    *
+ * http://www.gnu.org/licenses/lgpl.html                                       *
+ *                                                                             *
+ * Contributors:                                                               *
+ *     R. R. Gudwin, A. L. O. Paraense, E. Froes, W. Gibaut,				   * 
+ *     and K. Raizer.	                            						   *
+ *                                                                             *
+ ******************************************************************************/
 package br.unicamp.meca.system1.codelets;
 
 import java.util.ArrayList;
@@ -10,7 +19,18 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 
 /**
- * @author andre
+ * This class represents the MECA Action From Perception Codelet. This Action From Perception
+ * Codelet allows inputs from one or more of the PerceptualCodelets and 
+ * inputs from one or more of the MotivationalCodelets. It outputs
+ * necessarily to a MotorCodelet. As the name suggests, the idea behind this
+ * action from perception codelet is to provide an action as a purely reaction to the environment in System 1.
+ * <p>
+ * Usually, Action From Perception Codelets are application-specific, and the MECA
+ * software implementation just provides basic template class, which is a
+ * wrapper to CST's {@link Codelet}, to be reused while building an application
+ * using MECA.
+ * 
+ * @author A. L. O. Paraense
  *
  */
 public abstract class ActionFromPerception extends Codelet {
@@ -28,22 +48,26 @@ public abstract class ActionFromPerception extends Codelet {
 	
 	protected String motorCodeletId;
 	protected Memory motorMemory;
-
+	
 	/**
-	 * Creates a MECA Reactive Behavioral Codelet.
+	 * 
+	 * Creates a MECA Action From Perception Codelet.
 	 * 
 	 * @param id
-	 *            the id of the Reactive Behavioral Codelet. Must be unique per
-	 *            Reactive Behavioral Codelet.
+	 *            the id of the Action From Perception Codelet. Must be unique per
+	 *            Action From Perception Codelet.
 	 * @param perceptualCodeletsIds
 	 *            the list of ids of the Perceptual Codelets whose outputs will
-	 *            be read by this Reactive Behavioral Codelet.
+	 *            be read by this Action From Perception Codelet.
+	 * @param motivationalCodeletsIds
+	 *            the list of ids of the Motivational Codelets whose outputs will
+	 *            be read by this Action From Perception Codelet.
 	 * @param motorCodeletId
 	 *            the id of the Motor Codelet which will read the outputs of
-	 *            this Reactive Behavioral Codelet.
+	 *            this Action From Perception Codelet.
 	 * @param soarCodeletId
 	 *            the id of the Soar Codelet whose outputs will be read by this
-	 *            Reactive Behavioral Codelet.
+	 *            Action From Perception Codelet.
 	 */
 	public ActionFromPerception(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds, String motorCodeletId,
 			String soarCodeletId) {
@@ -135,16 +159,20 @@ public abstract class ActionFromPerception extends Codelet {
 	}
 	
 	/**
+	 * Main method of the Action From Perception Codelet called passing all input and output necessary memories.
 	 * 
 	 * @param perceptualMemories
+	 * 			the input memories coming from perception.
 	 * @param broadcastMemory
+	 * 			the input memory coming from the conscious planner broadcast.
 	 * @param motorMemory
+	 * 			the output motor memory.
 	 */
 	public abstract void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory);
 	
 	/**
 	 * Returns the id of the Soar Codelet whose outputs will be read by this
-	 * Reactive Behavioral Codelet.
+	 * Action From Perception Codelet.
 	 * 
 	 * @return the soarCodeletId
 	 */
@@ -154,7 +182,7 @@ public abstract class ActionFromPerception extends Codelet {
 
 	/**
 	 * Sets the id of the Soar Codelet whose outputs will be read by this
-	 * Reactive Behavioral Codelet.
+	 * Action From Perception Codelet.
 	 * 
 	 * @param soarCodeletId
 	 *            the soarCodeletId to set
@@ -165,7 +193,7 @@ public abstract class ActionFromPerception extends Codelet {
 
 	/**
 	 * Returns the list of the Perceptual Codelet's ids whose outputs will be
-	 * read by this Reactive Behavioral Codelet.
+	 * read by this Action From Perception Codelet.
 	 * 
 	 * @return the perceptualCodeletsIds
 	 */
@@ -175,7 +203,7 @@ public abstract class ActionFromPerception extends Codelet {
 
 	/**
 	 * Sets the list of the Perceptual Codelet's ids whose outputs will be read
-	 * by this Reactive Behavioral Codelet.
+	 * by this Action From Perception Codelet.
 	 * 
 	 * @param perceptualCodeletsIds
 	 *            the perceptualCodeletsIds to set
@@ -185,7 +213,7 @@ public abstract class ActionFromPerception extends Codelet {
 	}
 
 	/**
-	 * Returns the id of this Reactive Behavioral Codelet.
+	 * Returns the id of this Action From Perception Codelet.
 	 * 
 	 * @return the id
 	 */
@@ -194,7 +222,7 @@ public abstract class ActionFromPerception extends Codelet {
 	}
 
 	/**
-	 * Sets the id of this Reactive Behavioral Codelet.
+	 * Sets the id of this Action From Perception Codelet.
 	 * 
 	 * @param id
 	 *            the id to set
@@ -205,7 +233,7 @@ public abstract class ActionFromPerception extends Codelet {
 
 	/**
 	 * Returns the id of the Motor Codelet which will read the outputs of this
-	 * Reactive Behavioral Codelet.
+	 * Action From Perception Codelet.
 	 * 
 	 * @return the motorCodeletId
 	 */
@@ -215,7 +243,7 @@ public abstract class ActionFromPerception extends Codelet {
 
 	/**
 	 * Sets the id of the Motor Codelet which will read the outputs of this
-	 * Reactive Behavioral Codelet.
+	 * Action From Perception Codelet.
 	 * 
 	 * @param motorCodeletId
 	 *            the motorCodeletId to set

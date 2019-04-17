@@ -51,7 +51,7 @@ public abstract class PerceptualCodelet extends Codelet {
 	 *            Perceptual Codelet.
 	 * @param sensoryCodeletsIds
 	 *            the list of Sensory Codelets whose outputs will be read by
-	 *            this Perceptual Codelet
+	 *            this Perceptual Codelet.
 	 */
 	public PerceptualCodelet(String id, ArrayList<String> sensoryCodeletsIds) {
 		super();
@@ -98,10 +98,12 @@ public abstract class PerceptualCodelet extends Codelet {
 	/**
 	 * 
 	 * Main method of the perceptual Codelet, passing the input sensory memories
-	 * and the output perceptual memory
+	 * and the output perceptual memory.
 	 * 
-	 * @param sensoryMemories the input sensory memories
-	 * @param perceptualMemory the output perceptual memory
+	 * @param sensoryMemories 
+	 * 							the input sensory memories.
+	 * @param perceptualMemory 
+	 * 							the output perceptual memory.
 	 */
 	public abstract void proc(ArrayList<Memory> sensoryMemories, Memory perceptualMemory);
 

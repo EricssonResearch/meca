@@ -79,9 +79,10 @@ public abstract class MotorCodelet extends Codelet {
 	
 	/**
 	 * Main method of the motor codelet called providing
-	 * the motor memory
+	 * the motor memory.
 	 * 
-	 * @param motorMemory the input motor memory
+	 * @param motorMemory 
+	 * 						the input motor memory.
 	 */
 	public abstract void proc(Memory motorMemory);
 
