@@ -1,5 +1,5 @@
 # MECA
-This Repository contains the source-code of the **Multipurpose Enhanced Cognitive Architecture (MECA)**.
+This Repository contains the source code of the **Multipurpose Enhanced Cognitive Architecture (MECA)**.
 
 MECA is a Java library to build cognitive architectures / artificial minds for robots and software agents. MECA provides a framework with different capabilities out of the box for artificial minds to be built upon.
 
