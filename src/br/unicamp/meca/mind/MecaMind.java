@@ -49,7 +49,7 @@ import br.unicamp.meca.system2.codelets.SoarCodelet;
  * @see Mind
  */
 public class MecaMind extends Mind {
-	
+
 	public static final String ACTION_SEQUENCE_PLAN_ID = "ACTION_SEQUENCE_PLAN_ID";
 
 	public static final String ACTION_SEQUENCE_PLAN_REQUEST_ID = "ACTION_SEQUENCE_PLAN_REQUEST_ID";
@@ -71,15 +71,15 @@ public class MecaMind extends Mind {
 	private List<EmotionalCodelet> emotionalCodelets;
 
 	private List<ActionFromPlanningCodelet> actionFromPlanningCodelets;
-	
+
 	private List<ActionFromPerception> actionFromPerceptionCodelets;
 
 	private List<BehaviorCodelet> behaviorCodelets;
 
 	private List<MotorCodelet> motorCodelets;
-	
+
 	private Memory actionSequencePlanMemoryContainer;
-	
+
 	private Memory actionSequencePlanRequestMemoryContainer;
 	/*
 	 * System 2
@@ -148,13 +148,13 @@ public class MecaMind extends Mind {
 		mountSoarCodelet();		
 
 		mountMotivationalCodelets();
-		
+
 		mountActionSequencePlanMemory();
 
 		mountBehaviorCodelets();
-		
+
 		mountActionFromPlanningCodelets();
-		
+
 		mountActionFromPerceptionCodelets();
 
 		mountModules();
@@ -162,11 +162,11 @@ public class MecaMind extends Mind {
 	}
 
 	private void mountActionSequencePlanMemory() {
-		
+
 		actionSequencePlanMemoryContainer = createMemoryContainer(ACTION_SEQUENCE_PLAN_ID);
-		
+
 		actionSequencePlanRequestMemoryContainer = createMemoryContainer(ACTION_SEQUENCE_PLAN_REQUEST_ID);
-		
+
 	}
 
 	private void mountModules() {
@@ -175,7 +175,7 @@ public class MecaMind extends Mind {
 			if (getMotivationalCodelets().size() > 0) {
 				List<? extends br.unicamp.cst.motivational.MotivationalCodelet> mtcodelets = getMotivationalCodelets();
 				getMotivationalSubsystemModule()
-						.setMotivationalCodelets((List<br.unicamp.cst.motivational.MotivationalCodelet>) mtcodelets);
+				.setMotivationalCodelets((List<br.unicamp.cst.motivational.MotivationalCodelet>) mtcodelets);
 			}
 
 		}
@@ -305,7 +305,7 @@ public class MecaMind extends Mind {
 					 */										
 					behaviorCodelet.addOutput(actionSequencePlanMemoryContainer);
 					behaviorCodelet.addOutput(actionSequencePlanRequestMemoryContainer);
-					
+
 					/*
 					 * Inputs
 					 */
@@ -325,7 +325,7 @@ public class MecaMind extends Mind {
 							}
 						}
 					}
-					
+
 					if(perceptualCodelets != null) {
 						for(PerceptualCodelet perceptualCodelet : perceptualCodelets) {
 							if(perceptualCodelet != null && perceptualCodelet.getId() != null) {
@@ -354,7 +354,7 @@ public class MecaMind extends Mind {
 			}
 		}
 	}
-	
+
 	private void mountActionFromPerceptionCodelets() {
 		if (actionFromPerceptionCodelets != null) {
 			for (ActionFromPerception actionCodelet : actionFromPerceptionCodelets) {
@@ -380,7 +380,7 @@ public class MecaMind extends Mind {
 					/*
 					 * Inputs
 					 */
-					
+
 					if (motivationalCodelets != null) {
 						for (MotivationalCodelet motivationalCodelet : motivationalCodelets) {
 							if (motivationalCodelet != null && motivationalCodelet.getId() != null) {
@@ -397,7 +397,7 @@ public class MecaMind extends Mind {
 							}
 						}
 					}
-					
+
 					if (perceptualCodelets != null) {
 						for (PerceptualCodelet perceptualCodelet : perceptualCodelets) {
 							if (perceptualCodelet != null && perceptualCodelet.getId() != null) {
@@ -424,7 +424,7 @@ public class MecaMind extends Mind {
 				}
 			}
 		}
-		
+
 	}
 
 	private void mountActionFromPlanningCodelets() {
@@ -474,7 +474,7 @@ public class MecaMind extends Mind {
 						}
 
 					}
-					
+
 					actionCodelet.addInput(actionSequencePlanMemoryContainer);					
 				}
 			}
