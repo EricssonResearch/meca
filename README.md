@@ -3,6 +3,8 @@ This Repository contains the source code of the **Multipurpose Enhanced Cognitiv
 
 MECA is a Java library to build cognitive architectures / artificial minds for robots and software agents. MECA provides a framework with different capabilities out of the box for artificial minds to be built upon.
 
+MECA has been built on top of the [Cognitive Systems Toolkit (CST)](https://github.com/CST-Group/cst). It is therefore important to know CST's concepts and how to implement cognitive architectures using CST in order to make a better use of MECA.
+
 Note: This library is still under development, and some concepts or features might not be available yet. [Feedback/bug report](https://github.com/CST-Group/meca/issues) and [Pull Requests](https://github.com/CST-Group/meca/pulls) are most welcome!
 
 ## Installation
@@ -12,6 +14,10 @@ Download the latest [release](https://github.com/CST-Group/meca/releases) and se
 ## Changelog / Migrations
 
 Follow the [release](https://github.com/CST-Group/meca/releases) page to better understand the breaking changes of new versions.
+
+## Requirements
+
+MECA requires at minimum Java 8.
 
 ## Example
 
