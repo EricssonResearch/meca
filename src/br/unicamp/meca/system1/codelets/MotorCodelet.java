@@ -13,6 +13,8 @@
 package br.unicamp.meca.system1.codelets;
 
 import br.unicamp.cst.core.entities.Codelet;
+import br.unicamp.cst.core.entities.Memory;
+import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 
 /**
  * This class represents the MECA Motor Codelets. Motor codelets simply pick up
@@ -31,6 +33,8 @@ import br.unicamp.cst.core.entities.Codelet;
 public abstract class MotorCodelet extends Codelet {
 
 	protected String id;
+	
+	protected Memory motorMemory;
 
 	/**
 	 * Creates a MECA Motor Codelet.
@@ -43,6 +47,44 @@ public abstract class MotorCodelet extends Codelet {
 		this.id = id;
 		setName(id);
 	}
+	
+	@Override
+	public void accessMemoryObjects() {
+		
+		int index=0;
+
+		if(motorMemory==null)
+			motorMemory = this.getInput(id, index);
+
+	}
+
+	@Override
+	public void calculateActivation() {
+		
+		try {
+
+			setActivation(0.0d);
+
+		} catch (CodeletActivationBoundsException e){		
+
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Override
+	public void proc() {
+		proc(motorMemory);
+	}
+	
+	/**
+	 * Main method of the motor codelet called providing
+	 * the motor memory.
+	 * 
+	 * @param motorMemory 
+	 * 						the input motor memory.
+	 */
+	public abstract void proc(Memory motorMemory);
 
 	/**
 	 * Returns the id of this Motor Codelet.

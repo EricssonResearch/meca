@@ -13,6 +13,8 @@
 package br.unicamp.meca.system1.codelets;
 
 import br.unicamp.cst.core.entities.Codelet;
+import br.unicamp.cst.core.entities.Memory;
+import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 
 /**
  * This class represents the MECA Sensory Codelets, which are responsible for
@@ -35,6 +37,8 @@ import br.unicamp.cst.core.entities.Codelet;
 public abstract class SensoryCodelet extends Codelet {
 
 	protected String id;
+	
+	protected Memory sensoryMemory;
 
 	/**
 	 * Creates a MECA Sensory Codelet.
@@ -49,6 +53,42 @@ public abstract class SensoryCodelet extends Codelet {
 		this.id = id;
 		setName(id);
 	}
+	
+
+	@Override
+	public void accessMemoryObjects() {
+		int index = 0;
+
+		if(sensoryMemory == null)
+			sensoryMemory = this.getOutput(id, index);	
+
+	}
+
+	@Override
+	public void calculateActivation() {
+		try{
+
+			setActivation(0.0d);
+
+		} catch (CodeletActivationBoundsException e) {
+
+			e.printStackTrace();
+		}	
+	}
+	
+	@Override
+	public void proc() {
+		proc(sensoryMemory);
+	}
+	
+	/**
+	 * Calls the main method of this Sensory Codelet providing the memory with
+	 * the information coming from the sensors.
+	 * 
+	 * @param sensoryMemory 
+	 * 						the information coming from sensor represented as a memory
+	 */
+	public abstract void proc(Memory sensoryMemory);
 
 	/**
 	 * Returns the id of this Sensory Codelet.
