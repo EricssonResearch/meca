@@ -1,0 +1,27 @@
+apply plugin: 'java-library'
+
+sourceSets {
+   main {
+      java {
+         srcDir 'src'
+      }
+   }
+	
+   test {
+      java {
+         srcDir 'test'
+      }
+   }
+}
+
+sourceCompatibility = 1.11
+targetCompatibility = 1.8
+version = '0.0.3'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+   implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
