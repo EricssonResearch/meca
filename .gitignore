@@ -34,9 +34,6 @@ hs_err_pid*
 /paramCache/
 .gradle/
 .settings/
-gradlew
-gradlew.bat
-**/gradle-wrapper.jar
 
 # Miscellaneous
 *.lock
@@ -60,3 +57,4 @@ gradlew.bat
 
 #Exception
 !/libs/*.jar
+!/gradle/wrapper/*.jar
