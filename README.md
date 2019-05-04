@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/CST-Group/meca.svg?branch=master)](https://travis-ci.org/CST-Group/meca) [![Maintainability](https://api.codeclimate.com/v1/badges/c24e46ebcdc9aa6a035e/maintainability)](https://codeclimate.com/github/CST-Group/meca/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/c24e46ebcdc9aa6a035e/test_coverage)](https://codeclimate.com/github/CST-Group/meca/test_coverage)
+
 # MECA
 This Repository contains the source code of the **Multipurpose Enhanced Cognitive Architecture (MECA)**.
 
