@@ -1,4 +1,7 @@
-apply plugin: 'java-library-distribution'
+plugins {
+	id 'java-library-distribution'
+  	id 'jacoco'
+}
 
 sourceSets {
    main {
@@ -16,7 +19,7 @@ sourceSets {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version = '0.0.3'
+version = '0.0.4'
 
 repositories {
     mavenCentral()
@@ -24,6 +27,8 @@ repositories {
 
 dependencies {
    implementation fileTree(dir: 'libs', include: ['*.jar'])
+   
+   implementation group: 'junit', name: 'junit', version: '4.9'
 
    runtimeOnly group: 'aopalliance', name: 'aopalliance', version: '1.0'
    runtimeOnly group: 'asm', name: 'asm', version: '3.1'
@@ -37,7 +42,6 @@ dependencies {
    runtimeOnly group: 'net.sf.jung', name: 'jung-api', version: '2.0.1'
    runtimeOnly group: 'net.sf.jung', name: 'jung-graph-impl', version: '2.0.1'
    runtimeOnly group: 'net.sf.jung', name: 'jung-visualization', version: '2.0.1'
-   runtimeOnly group: 'junit', name: 'junit', version: '4.9'
    runtimeOnly group: 'org.opt4j', name: 'opt4j-benchmarks', version: '3.1'
    runtimeOnly group: 'org.opt4j', name: 'opt4j-core', version: '3.1'
    runtimeOnly group: 'org.opt4j', name: 'opt4j-operators', version: '3.1'
@@ -54,4 +58,10 @@ dependencies {
    runtimeOnly 'ch.qos.logback:logback-classic:1.0.11'
    runtimeOnly 'commons-beanutils:commons-beanutils-core:1.8.0'
    runtimeOnly 'org.apache.commons:commons-math3:3.0'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
 }
