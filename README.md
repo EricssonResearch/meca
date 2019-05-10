@@ -11,7 +11,52 @@ Note: This library is still under development, and some concepts or features mig
 
 ## Installation
 
-Download the latest [release](https://github.com/CST-Group/meca/releases) and set it as a dependency in your project. (soon to be available in a repository such as MavenCentral).
+### Gradle
+
+- Step 1. Add the JitPack repository to your build file. Add it in your root build.gradle at the end of repositories:
+
+```
+	repositories {
+			...
+			maven { url 'https://jitpack.io' }
+	}
+```
+
+- Step 2. Add the dependency
+
+```
+	dependencies {
+            ...
+            implementation 'com.github.CST-Group:meca:0.1.0'
+	}
+```
+
+### Maven
+
+- Step 1. Add the JitPack repository to your build file.
+
+```
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+```
+
+- Step 2. Add the dependency
+
+```
+	<dependency>
+	    <groupId>com.github.CST-Group</groupId>
+	    <artifactId>meca</artifactId>
+	    <version>0.1.0</version>
+	</dependency>
+```
+
+### Manual
+
+Download the latest [release](https://github.com/CST-Group/meca/releases) and set it as a dependency in your project.
 
 ## Building the source code
 
