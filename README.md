@@ -28,7 +28,7 @@ Note: This library is still under development, and some concepts or features mig
 ```
 	dependencies {
             ...
-            implementation 'com.github.CST-Group:meca:0.1.0'
+            implementation 'com.github.CST-Group:meca:0.1.1'
 	}
 ```
 
@@ -51,7 +51,7 @@ Note: This library is still under development, and some concepts or features mig
 	<dependency>
 	    <groupId>com.github.CST-Group</groupId>
 	    <artifactId>meca</artifactId>
-	    <version>0.1.0</version>
+	    <version>0.1.1</version>
 	</dependency>
 ```
 
