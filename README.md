@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/CST-Group/meca.svg?branch=master)](https://travis-ci.org/CST-Group/meca) [![Maintainability](https://api.codeclimate.com/v1/badges/c24e46ebcdc9aa6a035e/maintainability)](https://codeclimate.com/github/CST-Group/meca/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/c24e46ebcdc9aa6a035e/test_coverage)](https://codeclimate.com/github/CST-Group/meca/test_coverage)
+[![](https://jitpack.io/v/CST-Group/meca.svg?label=Release)](https://jitpack.io/#CST-Group/meca)
 
 # MECA
 This Repository contains the source code of the **Multipurpose Enhanced Cognitive Architecture (MECA)**.
@@ -27,7 +28,7 @@ Note: This library is still under development, and some concepts or features mig
 ```
 	dependencies {
             ...
-            implementation 'com.github.CST-Group:meca:0.1.0'
+            implementation 'com.github.CST-Group:meca:0.1.1'
 	}
 ```
 
@@ -50,7 +51,7 @@ Note: This library is still under development, and some concepts or features mig
 	<dependency>
 	    <groupId>com.github.CST-Group</groupId>
 	    <artifactId>meca</artifactId>
-	    <version>0.1.0</version>
+	    <version>0.1.1</version>
 	</dependency>
 ```
 
