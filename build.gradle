@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-   api 'com.github.CST-Group:cst:d07d9b6709c94f66aa98e6a75b5ed882aa4b3e80'
+   api 'com.github.CST-Group:cst:4f7e7bb14e6f01d70b97d058a1496987128febae'
    testImplementation group: 'junit', name: 'junit', version: '4.9'
 }
 
