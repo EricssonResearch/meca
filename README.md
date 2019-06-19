@@ -28,9 +28,11 @@ Note: This library is still under development, and some concepts or features mig
 ```
 	dependencies {
             ...
-            implementation 'com.github.CST-Group:meca:0.1.1'
+            implementation 'com.github.CST-Group:meca:0.1.2'
 	}
 ```
+
+Sometimes, the version number (tag) in this README gets out of date, as maintainers might forget to change it when releasing. Always check the release badge [![](https://jitpack.io/v/CST-Group/meca.svg?label=Release)](https://jitpack.io/#CST-Group/meca) to see the actual current version number that should be provided in the dependencies in Step 2 above.
 
 ### Maven
 
@@ -51,9 +53,11 @@ Note: This library is still under development, and some concepts or features mig
 	<dependency>
 	    <groupId>com.github.CST-Group</groupId>
 	    <artifactId>meca</artifactId>
-	    <version>0.1.1</version>
+	    <version>0.1.2</version>
 	</dependency>
 ```
+
+Sometimes, the version number (tag) in this README gets out of date, as maintainers might forget to change it when releasing. Always check the release badge [![](https://jitpack.io/v/CST-Group/meca.svg?label=Release)](https://jitpack.io/#CST-Group/meca) to see the actual current version number that should be provided in the dependencies in Step 2 above.
 
 ### Manual
 
