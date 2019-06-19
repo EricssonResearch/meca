@@ -32,6 +32,8 @@ Note: This library is still under development, and some concepts or features mig
 	}
 ```
 
+Sometimes, the version number (tag) in this README gets out of date, as maintainers might forget to change it when releasing. Always check the release badge [![](https://jitpack.io/v/CST-Group/meca.svg?label=Release)](https://jitpack.io/#CST-Group/meca) to see the actual current version number that should be provided in the dependencies in Step 2 above.
+
 ### Maven
 
 - Step 1. Add the JitPack repository to your build file.
@@ -54,6 +56,8 @@ Note: This library is still under development, and some concepts or features mig
 	    <version>0.1.2</version>
 	</dependency>
 ```
+
+Sometimes, the version number (tag) in this README gets out of date, as maintainers might forget to change it when releasing. Always check the release badge [![](https://jitpack.io/v/CST-Group/meca.svg?label=Release)](https://jitpack.io/#CST-Group/meca) to see the actual current version number that should be provided in the dependencies in Step 2 above.
 
 ### Manual
 
