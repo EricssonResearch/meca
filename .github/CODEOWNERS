@@ -1,11 +1,11 @@
 * @rgudwin
 
-/src/br/unicamp/meca/memory/ @eduardofroes
+/src/main/java/br/unicamp/meca/memory/ @eduardofroes
 
-/src/br/unicamp/meca/mind/ @andre-paraense
+/src/main/java/br/unicamp/meca/mind/ @andre-paraense
 
-/src/br/unicamp/meca/models/ @andre-paraense
+/src/main/java/br/unicamp/meca/models/ @andre-paraense
 
-/src/br/unicamp/meca/system1/codelets/ @andre-paraense @eduardofroes
+/src/main/java/br/unicamp/meca/system1/codelets/ @andre-paraense @eduardofroes
 
-/src/br/unicamp/meca/system2/codelets/ @andre-paraense @eduardofroes
+/src/main/java/br/unicamp/meca/system2/codelets/ @andre-paraense @eduardofroes
