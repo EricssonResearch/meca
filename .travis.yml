@@ -1,0 +1,22 @@
+env:
+  global:
+  - CC_TEST_REPORTER_ID=cd9dce60ab1686b279c6b871d4f5171e3dc3d17426617eb12db6cfee74da898c
+language: java
+dist: xenial
+jdk:
+- openjdk8
+- openjdk9
+before_script:
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- ./cc-test-reporter before-build
+script:
+- ./gradlew clean build jacocoTestReport
+after_script:
+- JACOCO_SOURCE_PATH=src ./cc-test-reporter format-coverage ./build/reports/jacoco/test/jacocoTestReport.xml
+  --input-type jacoco
+- ./cc-test-reporter upload-coverage -r $CC_TEST_REPORTER_ID
+notifications:
+  slack:
+    secure: jSd9irNrMQ8TtXW9H7yl3qGlQXA5Zp6mzGtM5OONofL3x3DOdvIkBb75+S7zZiQJn7QdVzNrGnb6pVm/r6wGUupyRr2HvHlS3s19qwrCDwl6+vW46AGS6ZgdiqhGSdV5yQkhRRoxRlLpHOq+9KnZ4Sycr74VV6Kk9EzBFmdfCPOVi7+iQWKJHYm/AUNIKfFk8OR4vpitwAqEgYguMHKyhh7Edv4pNHzExRlL8p6jdkGL7Ul5UF1q44AQdVsSGY0ByudJJNiU1AxjfLYaCWiBpvlYMJz/rY8Q023dw/EdEfAcg5evzZnljcLiBmRc4Y3lVyQvzffGoHwsXPWiKac7ZhtJ+tD1Hl+UG/IQtkEp814Iule1e/cUqgZ3jlNZI++lfKLUdadXHeDP5bdIOj1XGLf3T68Z3lmLJkFaVsPElxGmMM+3Pi1R2gTufH8FFW+njZR1FpEqZHtHpTt0QYEP+jL1hFH5Xo4jRPoexfEOe1oe3n61QR1c0YjPtdkpHif1oRMpruD7evq8KhAFJNqMe/K3KRTK8hoKT8arl/lqU0NRonCR1gaNHPjyvyPZfnya+PtijpL1zFJcRtEV6rDlmnQ9xxHcT8yCBHgIB2N2oU0qZlz/oy2Lx53chzeH55o+ypQ9Fcx4ra2riGlOkTGRX2WrcOBi2CmA/DEiWPpF8RM=
