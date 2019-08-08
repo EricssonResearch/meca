@@ -31,6 +31,9 @@ import br.unicamp.meca.system1.codelets.MoodCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
 import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
+import br.unicamp.meca.system1.codelets.RosServiceClientMotorCodelet;
+import br.unicamp.meca.system1.codelets.RosTopicPublisherMotorCodelet;
+import br.unicamp.meca.system1.codelets.RosTopicSubscriberSensoryCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import br.unicamp.meca.system2.codelets.AppraisalCodelet;
 import br.unicamp.meca.system2.codelets.ConsciousnessCodelet;
@@ -59,10 +62,16 @@ public class MecaMind extends Mind {
 	 */
 
 	private List<SensoryCodelet> sensoryCodelets;
+	
+	private List<RosTopicSubscriberSensoryCodelet> rosTopicSubscriberSensoryCodelets;
 
 	private List<PerceptualCodelet> perceptualCodelets;
 
 	private List<MoodCodelet> moodCodelets;
+	
+	private List<RosTopicPublisherMotorCodelet> rosTopicPublisherMotorCodelets;
+	
+	private List<RosServiceClientMotorCodelet> rosServiceClientMotorCodelets;
 
 	private List<MotivationalCodelet> motivationalCodelets;
 
@@ -136,10 +145,16 @@ public class MecaMind extends Mind {
 	public void mountMecaMind() {
 
 		mountSensoryCodelets();
+		
+		mountRosTopicSubscriberSensoryCodelets();
 
 		mountPerceptualCodelets();
 
 		mountMotorCodelets();
+		
+		mountRosTopicPublisherMotorCodelets();
+		
+		mountRosServiceClientMotorCodelets();
 
 		mountAttentionCodelets();
 
@@ -233,6 +248,24 @@ public class MecaMind extends Mind {
 					 */
 					MemoryObject sensoryMemory = createMemoryObject(sensoryCodelet.getId());
 					sensoryCodelet.addOutput(sensoryMemory);
+
+				}
+			}
+		}
+	}
+	
+	private void mountRosTopicSubscriberSensoryCodelets() {
+		if (rosTopicSubscriberSensoryCodelets != null) {
+
+			for (RosTopicSubscriberSensoryCodelet rosTopicSubscriberSensoryCodelet : rosTopicSubscriberSensoryCodelets) {
+				if (rosTopicSubscriberSensoryCodelet != null && rosTopicSubscriberSensoryCodelet.getId() != null) {
+
+					insertCodelet(rosTopicSubscriberSensoryCodelet);
+					/*
+					 * Output
+					 */
+					MemoryObject sensoryMemory = createMemoryObject(rosTopicSubscriberSensoryCodelet.getId());
+					rosTopicSubscriberSensoryCodelet.addOutput(sensoryMemory);
 
 				}
 			}
@@ -495,6 +528,36 @@ public class MecaMind extends Mind {
 			}
 		}
 	}
+	
+	private void mountRosTopicPublisherMotorCodelets() {
+		if (rosTopicPublisherMotorCodelets != null) {
+			for (RosTopicPublisherMotorCodelet rosTopicPublisherMotorCodelet : rosTopicPublisherMotorCodelets) {
+				if (rosTopicPublisherMotorCodelet != null && rosTopicPublisherMotorCodelet.getId() != null) {
+					insertCodelet(rosTopicPublisherMotorCodelet);
+					/*
+					 * Input
+					 */
+					Memory motorMemoryContainer = createMemoryContainer(rosTopicPublisherMotorCodelet.getId());
+					rosTopicPublisherMotorCodelet.addInput(motorMemoryContainer);
+				}
+			}
+		}
+	}
+	
+	private void mountRosServiceClientMotorCodelets() {
+		if (rosServiceClientMotorCodelets != null) {
+			for (RosServiceClientMotorCodelet rosServiceClientMotorCodelet : rosServiceClientMotorCodelets) {
+				if (rosServiceClientMotorCodelet != null && rosServiceClientMotorCodelet.getId() != null) {
+					insertCodelet(rosServiceClientMotorCodelet);
+					/*
+					 * Input
+					 */
+					Memory motorMemoryContainer = createMemoryContainer(rosServiceClientMotorCodelet.getId());
+					rosServiceClientMotorCodelet.addInput(motorMemoryContainer);
+				}
+			}
+		}
+	}
 
 	private void mountAttentionCodelets() {
 		if (attentionCodeletSystem1 != null) {
@@ -714,6 +777,30 @@ public class MecaMind extends Mind {
 	}
 
 	/**
+	 * @param rosTopicSubscriberSensoryCodelets the rosTopicSubscriberSensoryCodelets to set
+	 */
+	public void setRosTopicSubscriberSensoryCodelets(
+			List<RosTopicSubscriberSensoryCodelet> rosTopicSubscriberSensoryCodelets) {
+		this.rosTopicSubscriberSensoryCodelets = rosTopicSubscriberSensoryCodelets;
+	}
+	
+	
+
+	/**
+	 * @param rosTopicPublisherMotorCodelets the rosTopicPublisherMotorCodelets to set
+	 */
+	public void setRosTopicPublisherMotorCodelets(List<RosTopicPublisherMotorCodelet> rosTopicPublisherMotorCodelets) {
+		this.rosTopicPublisherMotorCodelets = rosTopicPublisherMotorCodelets;
+	}
+
+	/**
+	 * @param rosServiceClientMotorCodelets the rosServiceClientMotorCodelets to set
+	 */
+	public void setRosServiceClientMotorCodelets(List<RosServiceClientMotorCodelet> rosServiceClientMotorCodelets) {
+		this.rosServiceClientMotorCodelets = rosServiceClientMotorCodelets;
+	}
+
+	/**
 	 * Gets the MECA Mind id
 	 * 
 	 * @return the id
@@ -905,5 +992,26 @@ public class MecaMind extends Mind {
 	 */
 	public List<ActionFromPerception> getActionFromPerceptionCodelets() {
 		return actionFromPerceptionCodelets;
+	}
+
+	/**
+	 * @return the rosTopicSubscriberSensoryCodelets
+	 */
+	public List<RosTopicSubscriberSensoryCodelet> getRosTopicSubscriberSensoryCodelets() {
+		return rosTopicSubscriberSensoryCodelets;
+	}
+
+	/**
+	 * @return the rosTopicPublisherMotorCodelets
+	 */
+	public List<RosTopicPublisherMotorCodelet> getRosTopicPublisherMotorCodelets() {
+		return rosTopicPublisherMotorCodelets;
+	}
+
+	/**
+	 * @return the rosServiceClientMotorCodelets
+	 */
+	public List<RosServiceClientMotorCodelet> getRosServiceClientMotorCodelets() {
+		return rosServiceClientMotorCodelets;
 	}
 }
