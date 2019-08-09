@@ -32,7 +32,9 @@ import br.unicamp.meca.system1.codelets.IMotorCodelet;
 import br.unicamp.meca.system1.codelets.ISensoryCodelet;
 import br.unicamp.meca.system1.codelets.MoodCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
+import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
+import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import br.unicamp.meca.system2.codelets.AppraisalCodelet;
 import br.unicamp.meca.system2.codelets.ConsciousnessCodelet;
 import br.unicamp.meca.system2.codelets.EpisodicLearningCodelet;
@@ -545,11 +547,15 @@ public class MecaMind extends Mind {
 	/**
 	 * Sets the Sensory Codelets.
 	 * 
+	 * @Deprecated instead, add Sensory Codelets using the interface ISensoryCodelet
+	 * 
 	 * @param sensoryCodelets
 	 *            the sensoryCodelets to set
 	 */
-	public void setSensoryCodelets(List<ISensoryCodelet> sensoryCodelets) {
-		this.sensoryCodelets = sensoryCodelets;
+	@Deprecated
+	public void setSensoryCodelets(List<SensoryCodelet> sensoryCodelets) {
+		this.sensoryCodelets = new ArrayList<ISensoryCodelet>();
+		this.sensoryCodelets.addAll(sensoryCodelets);
 	}
 
 	/**
@@ -605,11 +611,14 @@ public class MecaMind extends Mind {
 	/**
 	 * Sets the Motor Codelets.
 	 * 
+	 * @Deprecated instead, add Motor Codelets using the interface IMotorCodelet
 	 * @param motorCodelets
 	 *            the motorCodelets to set
 	 */
-	public void setMotorCodelets(List<IMotorCodelet> motorCodelets) {
-		this.motorCodelets = motorCodelets;
+	@Deprecated
+	public void setMotorCodelets(List<MotorCodelet> motorCodelets) {
+		this.motorCodelets = new ArrayList<IMotorCodelet>();
+		this.motorCodelets.addAll(motorCodelets);
 	}
 
 	/**
@@ -712,6 +721,20 @@ public class MecaMind extends Mind {
 	 */
 	public void setBehaviorCodelets(List<BehaviorCodelet> behaviorCodelets) {
 		this.behaviorCodelets = behaviorCodelets;
+	}
+	
+	/**
+	 * @param sensoryCodelets the sensoryCodelets to set
+	 */
+	public void setISensoryCodelets(List<ISensoryCodelet> sensoryCodelets) {
+		this.sensoryCodelets = sensoryCodelets;
+	}
+
+	/**
+	 * @param motorCodelets the motorCodelets to set
+	 */
+	public void setIMotorCodelets(List<IMotorCodelet> motorCodelets) {
+		this.motorCodelets = motorCodelets;
 	}
 
 	/**
