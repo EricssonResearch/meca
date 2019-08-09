@@ -6,7 +6,6 @@ package br.unicamp.meca.system1.codelets;
 import java.util.List;
 
 import br.unicamp.cst.core.entities.Memory;
-import br.unicamp.cst.core.entities.MemoryObject;
 
 /**
  * @author andre
@@ -34,6 +33,6 @@ public interface ISensoryCodelet {
 	 * @param sensoryMemory
 	 *            one output to set.
 	 */
-	void addOutput(MemoryObject sensoryMemory);
+	void addOutput(Memory sensoryMemory);
 
 }
