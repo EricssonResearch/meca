@@ -30,7 +30,7 @@ import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
  * @author A. L. O. Paraense
  * @see Codelet
  */
-public abstract class MotorCodelet extends Codelet {
+public abstract class MotorCodelet extends Codelet implements IMotorCodelet{
 
 	protected String id;
 	

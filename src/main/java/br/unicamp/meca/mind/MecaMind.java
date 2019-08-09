@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
@@ -27,14 +28,11 @@ import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
 import br.unicamp.meca.system1.codelets.AttentionCodelet;
 import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 import br.unicamp.meca.system1.codelets.EmotionalCodelet;
+import br.unicamp.meca.system1.codelets.IMotorCodelet;
+import br.unicamp.meca.system1.codelets.ISensoryCodelet;
 import br.unicamp.meca.system1.codelets.MoodCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
-import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
-import br.unicamp.meca.system1.codelets.RosServiceClientMotorCodelet;
-import br.unicamp.meca.system1.codelets.RosTopicPublisherMotorCodelet;
-import br.unicamp.meca.system1.codelets.RosTopicSubscriberSensoryCodelet;
-import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import br.unicamp.meca.system2.codelets.AppraisalCodelet;
 import br.unicamp.meca.system2.codelets.ConsciousnessCodelet;
 import br.unicamp.meca.system2.codelets.EpisodicLearningCodelet;
@@ -61,17 +59,11 @@ public class MecaMind extends Mind {
 	 * System 1
 	 */
 
-	private List<SensoryCodelet> sensoryCodelets;
-	
-	private List<RosTopicSubscriberSensoryCodelet> rosTopicSubscriberSensoryCodelets;
+	private List<ISensoryCodelet> sensoryCodelets;
 
 	private List<PerceptualCodelet> perceptualCodelets;
 
 	private List<MoodCodelet> moodCodelets;
-	
-	private List<RosTopicPublisherMotorCodelet> rosTopicPublisherMotorCodelets;
-	
-	private List<RosServiceClientMotorCodelet> rosServiceClientMotorCodelets;
 
 	private List<MotivationalCodelet> motivationalCodelets;
 
@@ -85,7 +77,7 @@ public class MecaMind extends Mind {
 
 	private List<BehaviorCodelet> behaviorCodelets;
 
-	private List<MotorCodelet> motorCodelets;
+	private List<IMotorCodelet> motorCodelets;
 
 	private Memory actionSequencePlanMemoryContainer;
 
@@ -145,16 +137,10 @@ public class MecaMind extends Mind {
 	public void mountMecaMind() {
 
 		mountSensoryCodelets();
-		
-		mountRosTopicSubscriberSensoryCodelets();
 
 		mountPerceptualCodelets();
 
 		mountMotorCodelets();
-		
-		mountRosTopicPublisherMotorCodelets();
-		
-		mountRosServiceClientMotorCodelets();
 
 		mountAttentionCodelets();
 
@@ -211,7 +197,7 @@ public class MecaMind extends Mind {
 					 * Inputs
 					 */
 					if (sensoryCodelets != null) {
-						for (SensoryCodelet sensoryCodelet : sensoryCodelets) {
+						for (ISensoryCodelet sensoryCodelet : sensoryCodelets) {
 							if (sensoryCodelet != null && sensoryCodelet.getId() != null) {
 								ArrayList<String> sensoryCodeletsIds = perceptualCodelet.getSensoryCodeletsIds();
 								if (sensoryCodeletsIds != null) {
@@ -239,33 +225,15 @@ public class MecaMind extends Mind {
 	private void mountSensoryCodelets() {
 		if (sensoryCodelets != null) {
 
-			for (SensoryCodelet sensoryCodelet : sensoryCodelets) {
+			for (ISensoryCodelet sensoryCodelet : sensoryCodelets) {
 				if (sensoryCodelet != null && sensoryCodelet.getId() != null) {
 
-					insertCodelet(sensoryCodelet);
+					insertCodelet((Codelet) sensoryCodelet);
 					/*
 					 * Output
 					 */
 					MemoryObject sensoryMemory = createMemoryObject(sensoryCodelet.getId());
 					sensoryCodelet.addOutput(sensoryMemory);
-
-				}
-			}
-		}
-	}
-	
-	private void mountRosTopicSubscriberSensoryCodelets() {
-		if (rosTopicSubscriberSensoryCodelets != null) {
-
-			for (RosTopicSubscriberSensoryCodelet rosTopicSubscriberSensoryCodelet : rosTopicSubscriberSensoryCodelets) {
-				if (rosTopicSubscriberSensoryCodelet != null && rosTopicSubscriberSensoryCodelet.getId() != null) {
-
-					insertCodelet(rosTopicSubscriberSensoryCodelet);
-					/*
-					 * Output
-					 */
-					MemoryObject sensoryMemory = createMemoryObject(rosTopicSubscriberSensoryCodelet.getId());
-					rosTopicSubscriberSensoryCodelet.addOutput(sensoryMemory);
 
 				}
 			}
@@ -283,7 +251,7 @@ public class MecaMind extends Mind {
 					List<String> sensoryIds = motivationalCodelet.getSensoryCodeletsIds();
 					for (String sensoryId : sensoryIds) {
 						if (sensoryCodelets != null) {
-							for (SensoryCodelet sensoryCodelet : sensoryCodelets) {
+							for (ISensoryCodelet sensoryCodelet : sensoryCodelets) {
 								if (sensoryCodelet.getId().equals(sensoryId)) {
 									motivationalCodelet.addInputs(sensoryCodelet.getOutputs());
 
@@ -401,7 +369,7 @@ public class MecaMind extends Mind {
 					 * Outputs
 					 */
 					if (motorCodelets != null) {
-						for (MotorCodelet motorCodelet : motorCodelets) {
+						for (IMotorCodelet motorCodelet : motorCodelets) {
 							if (motorCodelet != null && motorCodelet.getId() != null) {
 								if (motorCodelet.getId()
 										.equalsIgnoreCase(actionCodelet.getMotorCodeletId())) {
@@ -472,7 +440,7 @@ public class MecaMind extends Mind {
 					 * Outputs
 					 */
 					if (motorCodelets != null) {
-						for (MotorCodelet motorCodelet : motorCodelets) {
+						for (IMotorCodelet motorCodelet : motorCodelets) {
 							if (motorCodelet != null && motorCodelet.getId() != null) {
 								if (motorCodelet.getId()
 										.equalsIgnoreCase(actionCodelet.getMotorCodeletId())) {
@@ -516,44 +484,14 @@ public class MecaMind extends Mind {
 
 	private void mountMotorCodelets() {
 		if (motorCodelets != null) {
-			for (MotorCodelet motorCodelet : motorCodelets) {
+			for (IMotorCodelet motorCodelet : motorCodelets) {
 				if (motorCodelet != null && motorCodelet.getId() != null) {
-					insertCodelet(motorCodelet);
+					insertCodelet((Codelet) motorCodelet);
 					/*
 					 * Input
 					 */
 					Memory motorMemoryContainer = createMemoryContainer(motorCodelet.getId());
 					motorCodelet.addInput(motorMemoryContainer);
-				}
-			}
-		}
-	}
-	
-	private void mountRosTopicPublisherMotorCodelets() {
-		if (rosTopicPublisherMotorCodelets != null) {
-			for (RosTopicPublisherMotorCodelet rosTopicPublisherMotorCodelet : rosTopicPublisherMotorCodelets) {
-				if (rosTopicPublisherMotorCodelet != null && rosTopicPublisherMotorCodelet.getId() != null) {
-					insertCodelet(rosTopicPublisherMotorCodelet);
-					/*
-					 * Input
-					 */
-					Memory motorMemoryContainer = createMemoryContainer(rosTopicPublisherMotorCodelet.getId());
-					rosTopicPublisherMotorCodelet.addInput(motorMemoryContainer);
-				}
-			}
-		}
-	}
-	
-	private void mountRosServiceClientMotorCodelets() {
-		if (rosServiceClientMotorCodelets != null) {
-			for (RosServiceClientMotorCodelet rosServiceClientMotorCodelet : rosServiceClientMotorCodelets) {
-				if (rosServiceClientMotorCodelet != null && rosServiceClientMotorCodelet.getId() != null) {
-					insertCodelet(rosServiceClientMotorCodelet);
-					/*
-					 * Input
-					 */
-					Memory motorMemoryContainer = createMemoryContainer(rosServiceClientMotorCodelet.getId());
-					rosServiceClientMotorCodelet.addInput(motorMemoryContainer);
 				}
 			}
 		}
@@ -610,7 +548,7 @@ public class MecaMind extends Mind {
 	 * @param sensoryCodelets
 	 *            the sensoryCodelets to set
 	 */
-	public void setSensoryCodelets(List<SensoryCodelet> sensoryCodelets) {
+	public void setSensoryCodelets(List<ISensoryCodelet> sensoryCodelets) {
 		this.sensoryCodelets = sensoryCodelets;
 	}
 
@@ -670,7 +608,7 @@ public class MecaMind extends Mind {
 	 * @param motorCodelets
 	 *            the motorCodelets to set
 	 */
-	public void setMotorCodelets(List<MotorCodelet> motorCodelets) {
+	public void setMotorCodelets(List<IMotorCodelet> motorCodelets) {
 		this.motorCodelets = motorCodelets;
 	}
 
@@ -777,30 +715,6 @@ public class MecaMind extends Mind {
 	}
 
 	/**
-	 * @param rosTopicSubscriberSensoryCodelets the rosTopicSubscriberSensoryCodelets to set
-	 */
-	public void setRosTopicSubscriberSensoryCodelets(
-			List<RosTopicSubscriberSensoryCodelet> rosTopicSubscriberSensoryCodelets) {
-		this.rosTopicSubscriberSensoryCodelets = rosTopicSubscriberSensoryCodelets;
-	}
-	
-	
-
-	/**
-	 * @param rosTopicPublisherMotorCodelets the rosTopicPublisherMotorCodelets to set
-	 */
-	public void setRosTopicPublisherMotorCodelets(List<RosTopicPublisherMotorCodelet> rosTopicPublisherMotorCodelets) {
-		this.rosTopicPublisherMotorCodelets = rosTopicPublisherMotorCodelets;
-	}
-
-	/**
-	 * @param rosServiceClientMotorCodelets the rosServiceClientMotorCodelets to set
-	 */
-	public void setRosServiceClientMotorCodelets(List<RosServiceClientMotorCodelet> rosServiceClientMotorCodelets) {
-		this.rosServiceClientMotorCodelets = rosServiceClientMotorCodelets;
-	}
-
-	/**
 	 * Gets the MECA Mind id
 	 * 
 	 * @return the id
@@ -888,7 +802,7 @@ public class MecaMind extends Mind {
 	 * 
 	 * @return the sensoryCodelets.
 	 */
-	public List<SensoryCodelet> getSensoryCodelets() {
+	public List<ISensoryCodelet> getSensoryCodelets() {
 		return sensoryCodelets;
 	}
 
@@ -915,7 +829,7 @@ public class MecaMind extends Mind {
 	 * 
 	 * @return the motorCodelets.
 	 */
-	public List<MotorCodelet> getMotorCodelets() {
+	public List<IMotorCodelet> getMotorCodelets() {
 		return motorCodelets;
 	}
 
@@ -992,26 +906,5 @@ public class MecaMind extends Mind {
 	 */
 	public List<ActionFromPerception> getActionFromPerceptionCodelets() {
 		return actionFromPerceptionCodelets;
-	}
-
-	/**
-	 * @return the rosTopicSubscriberSensoryCodelets
-	 */
-	public List<RosTopicSubscriberSensoryCodelet> getRosTopicSubscriberSensoryCodelets() {
-		return rosTopicSubscriberSensoryCodelets;
-	}
-
-	/**
-	 * @return the rosTopicPublisherMotorCodelets
-	 */
-	public List<RosTopicPublisherMotorCodelet> getRosTopicPublisherMotorCodelets() {
-		return rosTopicPublisherMotorCodelets;
-	}
-
-	/**
-	 * @return the rosServiceClientMotorCodelets
-	 */
-	public List<RosServiceClientMotorCodelet> getRosServiceClientMotorCodelets() {
-		return rosServiceClientMotorCodelets;
 	}
 }

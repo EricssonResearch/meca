@@ -34,7 +34,7 @@ import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
  * @see Codelet
  *
  */
-public abstract class SensoryCodelet extends Codelet {
+public abstract class SensoryCodelet extends Codelet implements ISensoryCodelet{
 
 	protected String id;
 	
