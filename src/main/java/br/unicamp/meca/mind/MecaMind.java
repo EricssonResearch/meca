@@ -547,7 +547,7 @@ public class MecaMind extends Mind {
 	/**
 	 * Sets the Sensory Codelets.
 	 * 
-	 * @Deprecated instead, add Sensory Codelets using the interface ISensoryCodelet
+	 * @deprecated instead, add Sensory Codelets using the interface ISensoryCodelet
 	 * 
 	 * @param sensoryCodelets
 	 *            the sensoryCodelets to set
@@ -611,7 +611,7 @@ public class MecaMind extends Mind {
 	/**
 	 * Sets the Motor Codelets.
 	 * 
-	 * @Deprecated instead, add Motor Codelets using the interface IMotorCodelet
+	 * @deprecated instead, add Motor Codelets using the interface IMotorCodelet
 	 * @param motorCodelets
 	 *            the motorCodelets to set
 	 */

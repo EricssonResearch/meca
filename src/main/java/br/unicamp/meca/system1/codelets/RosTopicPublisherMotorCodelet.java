@@ -8,7 +8,7 @@ import java.net.URI;
 import br.unicamp.cst.bindings.rosjava.RosTopicPublisherCodelet;
 
 /**
- * A Wrapper of the CST's RosTopicPublisherCodelet<T> implementing the IMotorCodelet interface, 
+ * A Wrapper of the CST's RosTopicPublisherCodelet implementing the IMotorCodelet interface, 
  * in order to be able to be mounted on the MecaMind.
  * 
  * @author andre

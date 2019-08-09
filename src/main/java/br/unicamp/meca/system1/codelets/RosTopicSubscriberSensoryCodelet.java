@@ -8,7 +8,7 @@ import java.net.URI;
 import br.unicamp.cst.bindings.rosjava.RosTopicSubscriberCodelet;
 
 /**
- * A Wrapper of the CST's RosTopicSubscriberCodelet<T> implementing the ISensoryCodelet interface, 
+ * A Wrapper of the CST's RosTopicSubscriberCodelet implementing the ISensoryCodelet interface, 
  * in order to be able to be mounted on the MecaMind.
  * 
  * @author andre
