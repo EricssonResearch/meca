@@ -15,11 +15,22 @@ version = '0.2.0'
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
+    maven { 
+    	url "https://github.com/rosjava/rosjava_mvn_repo/raw/master"
+    }
+    maven {
+      url "http://repository.springsource.com/maven/bundles/release"
+    }
+    maven {
+      url "http://repository.springsource.com/maven/bundles/external"
+    }
 }
 
 dependencies {
    api 'com.github.CST-Group:cst:73b89a54ce7d842b46686c7725e3182658a57758'
    testImplementation group: 'junit', name: 'junit', version: '4.12'
+   testImplementation 'org.ros.rosjava_messages:std_msgs:0.5.11'
+   testImplementation 'org.ros.rosjava_messages:rosjava_test_msgs:0.3.0'
 }
 
 task javadocJar(type: Jar) {
