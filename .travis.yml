@@ -3,6 +3,8 @@ env:
     - CC_TEST_REPORTER_ID=cd9dce60ab1686b279c6b871d4f5171e3dc3d17426617eb12db6cfee74da898c
 language: java
 dist: xenial
+services:
+  - xvfb
 jdk:
 - openjdk8
 - openjdk9
