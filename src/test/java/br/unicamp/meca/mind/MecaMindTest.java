@@ -35,7 +35,7 @@ public class MecaMindTest {
     }
     
     @Test
-    public void testMecaMind() throws InterruptedException {
+    public void testMecaMindMount() throws InterruptedException {
     	
     	MecaMind mecaMind = new MecaMind("MecaMind");
     	
