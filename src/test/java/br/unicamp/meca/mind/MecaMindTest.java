@@ -3,6 +3,8 @@
  */
 package br.unicamp.meca.mind;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.unicamp.cst.core.entities.Codelet;
+import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.cst.util.MindViewer;
 import br.unicamp.meca.models.ActionSequencePlan;
@@ -165,7 +168,7 @@ public class MecaMindTest {
 		MindViewer mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
 		mv.setVisible(true);
 		
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		
 		//do something
 		
@@ -173,11 +176,19 @@ public class MecaMindTest {
 		
 		testSensoryCodelet.setSensoryContents(contentInTheEnvironment);
 		
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		
 		//test something
 		
-//		assertEquals(messageExpected, messageActual);
+		String messageExpected = "Test1ActionFromPerception - A black dog";
+		
+		Memory motorMemory = testMotorCodelet.getInput("TestMotorCodelet");
+		
+		String messageActual = (String) motorMemory.getI();
+		
+		System.out.println(messageActual);
+		
+		assertEquals(messageExpected, messageActual);
 		
 		mv.setVisible(false);
 		mecaMind.shutDown();

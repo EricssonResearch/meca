@@ -21,7 +21,19 @@ public class Test2ActionFromPlanningCodelets extends ActionFromPlanningCodelet {
 
 	@Override
 	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory) {
-		// TODO Auto-generated method stub
+		if(perceptualMemories == null || perceptualMemories.size() == 0) {
+			return;
+		}
+		
+		motorMemory.setI(null);
+		
+		for(Memory memory: perceptualMemories) {			
+			if(memory.getI()!=null && memory.getI() instanceof String) {
+				String perceptualContent = (String) memory.getI();
+				
+				motorMemory.setI("Test2ActionFromPlanning - "+perceptualContent);
+			}
+		}
 
 	}
 

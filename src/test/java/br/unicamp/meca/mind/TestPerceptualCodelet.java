@@ -20,7 +20,26 @@ public class TestPerceptualCodelet extends PerceptualCodelet {
 
 	@Override
 	public void proc(ArrayList<Memory> sensoryMemories, Memory perceptualMemory) {
-		// TODO Auto-generated method stub
+		
+		if(perceptualMemory == null) {
+			return;
+		}
+		
+		if(sensoryMemories == null || sensoryMemories.size() == 0) {
+			return;
+		}
+		
+		perceptualMemory.setI(null);
+		
+		for(Memory memory : sensoryMemories) {
+			if(memory.getI() != null) {
+				Object rawSensoring = memory.getI();
+				
+				//Let's fake we found a dog in the rawSensoring
+				
+				perceptualMemory.setI("A black dog");
+			}
+		}
 
 	}
 

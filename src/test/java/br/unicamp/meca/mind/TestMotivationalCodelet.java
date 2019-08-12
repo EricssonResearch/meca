@@ -25,14 +25,33 @@ public class TestMotivationalCodelet extends MotivationalCodelet {
 	}
 
 	@Override
-	public double calculateSimpleActivation(List<Memory> sensors) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double calculateSimpleActivation(List<Memory> sensoryMemories) {
+		
+		double activation = 0.1d;
+		
+		if (sensoryMemories != null && sensoryMemories.size() > 0) {
+			
+			for(Memory memory : sensoryMemories) {
+				if(memory.getI() != null) {
+					
+					//if there is something, we want to interact with it
+					activation = 0.99d;						
+				}
+			}
+		}
+		
+		if(activation<0.1d)
+			activation=0.1d;
+
+		if(activation>1.0d)
+			activation=1.0d;
+
+		
+		return activation;
 	}
 
 	@Override
 	public double calculateSecundaryDriveActivation(List<Memory> sensors, List<Drive> listOfDrives) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
