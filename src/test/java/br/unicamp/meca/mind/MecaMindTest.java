@@ -88,14 +88,14 @@ public class MecaMindTest {
 		 */
 		List<MotivationalCodelet> motivationalCodelets = new ArrayList<>();
 		
-		ArrayList<String> testMotivationalCodeletIds = new ArrayList<>();
+		ArrayList<String> testMotivationalFromPerceptionCodeletIds = new ArrayList<>();
 		
-		TestMotivationalCodelet testMotivationalCodelet;
+		TestMotivationalFromPerceptionCodelet testMotivationalFromPerceptionCodelet;
 		
     	try {
-    		testMotivationalCodelet = new TestMotivationalCodelet("TestMotivationalCodelet", 0, 0.5, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
-    		testMotivationalCodeletIds.add(testMotivationalCodelet.getId());
-			motivationalCodelets.add(testMotivationalCodelet);
+    		testMotivationalFromPerceptionCodelet = new TestMotivationalFromPerceptionCodelet("TestMotivationalCodelet", 0, 0.5, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
+    		testMotivationalFromPerceptionCodeletIds.add(testMotivationalFromPerceptionCodelet.getId());
+			motivationalCodelets.add(testMotivationalFromPerceptionCodelet);
     	
     	} catch (CodeletActivationBoundsException e) {
 			e.printStackTrace();
@@ -110,7 +110,7 @@ public class MecaMindTest {
     	
     	List<ActionFromPerceptionCodelet> actionFromPerceptionCodelets = new ArrayList<>();
     	
-    	Test1ActionFromPerceptionCodelet test1ActionFromPerceptionCodelet = new Test1ActionFromPerceptionCodelet("Test1ActionFromPerceptionCodelet", perceptualCodeletsIds, testMotivationalCodeletIds, testMotorCodelet.getId(), null);
+    	Test1ActionFromPerceptionCodelet test1ActionFromPerceptionCodelet = new Test1ActionFromPerceptionCodelet("Test1ActionFromPerceptionCodelet", perceptualCodeletsIds, testMotivationalFromPerceptionCodeletIds, testMotorCodelet.getId(), null);
     	actionFromPerceptionCodelets.add(test1ActionFromPerceptionCodelet);
     	
     	List<ActionFromPlanningCodelet> actionFromPlanningCodelets = new ArrayList<>();
@@ -125,7 +125,7 @@ public class MecaMindTest {
     	
     	ActionSequencePlan test1Test2ActionSequence = new ActionSequencePlan(new String[] {"Test1","Test2"});
     	
-    	Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualCodeletsIds, testMotivationalCodeletIds, null, test1Test2ActionSequence);
+    	Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualCodeletsIds, testMotivationalFromPerceptionCodeletIds, null, test1Test2ActionSequence);
     	behaviorCodelets.add(test1AndTest2BehaviorCodelet);
     	
     	/*

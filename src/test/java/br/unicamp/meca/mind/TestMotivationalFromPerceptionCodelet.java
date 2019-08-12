@@ -16,9 +16,9 @@ import br.unicamp.meca.system1.codelets.MotivationalCodelet;
  * @author andre
  *
  */
-public class TestMotivationalCodelet extends MotivationalCodelet {
+public class TestMotivationalFromPerceptionCodelet extends MotivationalCodelet {
 
-	public TestMotivationalCodelet(String id, double level, double priority, double urgencyThreshold,
+	public TestMotivationalFromPerceptionCodelet(String id, double level, double priority, double urgencyThreshold,
 			ArrayList<String> sensoryCodeletsIds, HashMap<String, Double> motivationalCodeletsIds)
 			throws CodeletActivationBoundsException {
 		super(id, level, priority, urgencyThreshold, sensoryCodeletsIds, motivationalCodeletsIds);
