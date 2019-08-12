@@ -23,7 +23,7 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
 import br.unicamp.meca.memory.WorkingMemory;
-import br.unicamp.meca.system1.codelets.ActionFromPerception;
+import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
 import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
 import br.unicamp.meca.system1.codelets.AttentionCodelet;
 import br.unicamp.meca.system1.codelets.BehaviorCodelet;
@@ -75,7 +75,7 @@ public class MecaMind extends Mind {
 
 	private List<ActionFromPlanningCodelet> actionFromPlanningCodelets;
 
-	private List<ActionFromPerception> actionFromPerceptionCodelets;
+	private List<ActionFromPerceptionCodelet> actionFromPerceptionCodelets;
 
 	private List<BehaviorCodelet> behaviorCodelets;
 
@@ -360,7 +360,7 @@ public class MecaMind extends Mind {
 
 	private void mountActionFromPerceptionCodelets() {
 		if (actionFromPerceptionCodelets != null) {
-			for (ActionFromPerception actionCodelet : actionFromPerceptionCodelets) {
+			for (ActionFromPerceptionCodelet actionCodelet : actionFromPerceptionCodelets) {
 				if (actionCodelet != null && actionCodelet.getId() != null
 						&& actionCodelet.getPerceptualCodeletsIds() != null
 						&& actionCodelet.getMotivationalCodeletsIds() != null
@@ -712,7 +712,7 @@ public class MecaMind extends Mind {
 	/**
 	 * @param actionFromPerceptionCodelets the actionFromPerceptionCodelets to set
 	 */
-	public void setActionFromPerceptionCodelets(List<ActionFromPerception> actionFromPerceptionCodelets) {
+	public void setActionFromPerceptionCodelets(List<ActionFromPerceptionCodelet> actionFromPerceptionCodelets) {
 		this.actionFromPerceptionCodelets = actionFromPerceptionCodelets;
 	}
 
@@ -927,7 +927,7 @@ public class MecaMind extends Mind {
 	/**
 	 * @return the actionFromPerceptionCodelets
 	 */
-	public List<ActionFromPerception> getActionFromPerceptionCodelets() {
+	public List<ActionFromPerceptionCodelet> getActionFromPerceptionCodelets() {
 		return actionFromPerceptionCodelets;
 	}
 }

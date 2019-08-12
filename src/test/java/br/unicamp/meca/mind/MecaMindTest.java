@@ -14,7 +14,10 @@ import org.junit.Test;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.cst.util.MindViewer;
-import br.unicamp.meca.system1.codelets.ActionFromPerception;
+import br.unicamp.meca.models.ActionSequencePlan;
+import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
+import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
+import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 import br.unicamp.meca.system1.codelets.IMotorCodelet;
 import br.unicamp.meca.system1.codelets.ISensoryCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
@@ -92,7 +95,6 @@ public class MecaMindTest {
 			motivationalCodelets.add(testMotivationalCodelet);
     	
     	} catch (CodeletActivationBoundsException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
@@ -103,11 +105,25 @@ public class MecaMindTest {
 		 * to the reference architecture.		
 		 */
     	
-    	List<ActionFromPerception> actionFromPerceptionCodelets = new ArrayList<>();
+    	List<ActionFromPerceptionCodelet> actionFromPerceptionCodelets = new ArrayList<>();
     	
-    	TestActionFromPerception testActionFromPerception = new TestActionFromPerception("TestActionFromPerception", perceptualCodeletsIds, testMotivationalCodeletIds, testMotorCodelet.getId(), null);
-    	actionFromPerceptionCodelets.add(testActionFromPerception);
+    	Test1ActionFromPerceptionCodelet test1ActionFromPerceptionCodelet = new Test1ActionFromPerceptionCodelet("Test1ActionFromPerceptionCodelet", perceptualCodeletsIds, testMotivationalCodeletIds, testMotorCodelet.getId(), null);
+    	actionFromPerceptionCodelets.add(test1ActionFromPerceptionCodelet);
     	
+    	List<ActionFromPlanningCodelet> actionFromPlanningCodelets = new ArrayList<>();
+    	
+    	Test1ActionFromPlanningCodelet test1ActionFromPlanningCodelet = new Test1ActionFromPlanningCodelet("Test1ActionFromPlanningCodelet", perceptualCodeletsIds, testMotorCodelet.getId(), null);
+    	actionFromPlanningCodelets.add(test1ActionFromPlanningCodelet);
+    	
+    	Test2ActionFromPlanningCodelets test2ActionFromPlanningCodelets = new Test2ActionFromPlanningCodelets("Test2ActionFromPlanningCodelets", perceptualCodeletsIds, testMotorCodelet.getId(), null);
+    	actionFromPlanningCodelets.add(test2ActionFromPlanningCodelets);
+    	
+    	List<BehaviorCodelet> behaviorCodelets = new ArrayList<>();
+    	
+    	ActionSequencePlan test1Test2ActionSequence = new ActionSequencePlan(new String[] {"Test1","Test2"});
+    	
+    	Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualCodeletsIds, testMotivationalCodeletIds, null, test1Test2ActionSequence);
+    	behaviorCodelets.add(test1AndTest2BehaviorCodelet);
     	
     	/*
 		 * Inserting the System 1 codelets inside MECA mind
@@ -117,8 +133,8 @@ public class MecaMindTest {
 		mecaMind.setPerceptualCodelets(perceptualCodelets);
 		mecaMind.setMotivationalCodelets(motivationalCodelets);
 		mecaMind.setActionFromPerceptionCodelets(actionFromPerceptionCodelets);
-//		mecaMind.setActionFromPlanningCodelets(actionFromPlanningCodelets);
-//		mecaMind.setBehaviorCodelets(behaviorCodelets);
+		mecaMind.setActionFromPlanningCodelets(actionFromPlanningCodelets);
+		mecaMind.setBehaviorCodelets(behaviorCodelets);
 	    
 		/*
 		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
@@ -143,8 +159,8 @@ public class MecaMindTest {
 		 */
 		List<Codelet> listOfCodelets = new ArrayList<>();
 		listOfCodelets.addAll(mecaMind.getActionFromPerceptionCodelets());
-//		listOfCodelets.addAll(mecaMind.getActionFromPlanningCodelets());
-//		listOfCodelets.addAll(mecaMind.getBehaviorCodelets());
+		listOfCodelets.addAll(mecaMind.getActionFromPlanningCodelets());
+		listOfCodelets.addAll(mecaMind.getBehaviorCodelets());
 
 		MindViewer mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
 		mv.setVisible(true);

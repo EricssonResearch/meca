@@ -6,15 +6,15 @@ package br.unicamp.meca.mind;
 import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Memory;
-import br.unicamp.meca.system1.codelets.ActionFromPerception;
+import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
 
 /**
  * @author andre
  *
  */
-public class TestActionFromPerception extends ActionFromPerception {
+public class Test1ActionFromPerceptionCodelet extends ActionFromPerceptionCodelet {
 
-	public TestActionFromPerception(String id, ArrayList<String> perceptualCodeletsIds,
+	public Test1ActionFromPerceptionCodelet(String id, ArrayList<String> perceptualCodeletsIds,
 			ArrayList<String> motivationalCodeletsIds, String motorCodeletId, String soarCodeletId) {
 		super(id, perceptualCodeletsIds, motivationalCodeletsIds, motorCodeletId, soarCodeletId);
 	}
