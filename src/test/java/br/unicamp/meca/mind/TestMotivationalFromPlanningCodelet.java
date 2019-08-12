@@ -31,7 +31,7 @@ public class TestMotivationalFromPlanningCodelet extends MotivationalCodelet {
 		if (sensoryMemories != null && sensoryMemories.size() > 0) {
 			
 			for(Memory memory : sensoryMemories) {
-				if(memory.getI() != null) {
+				if(memory.getI() != null  && memory.getName().equals("TestPlanningSensoryCodelet")) {
 					
 					//if there is something, we want to interact with it
 					activation = 0.99d;						

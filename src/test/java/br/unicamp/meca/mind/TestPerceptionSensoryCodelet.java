@@ -10,11 +10,11 @@ import br.unicamp.meca.system1.codelets.SensoryCodelet;
  * @author andre
  *
  */
-public class TestSensoryCodelet extends SensoryCodelet {
+public class TestPerceptionSensoryCodelet extends SensoryCodelet {
 	
 	private String sensoryContents;
 
-	public TestSensoryCodelet(String id) {
+	public TestPerceptionSensoryCodelet(String id) {
 		super(id);
 	}
 

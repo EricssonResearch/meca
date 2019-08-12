@@ -6,6 +6,7 @@ package br.unicamp.meca.mind;
 import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Memory;
+import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
 
 /**
@@ -32,7 +33,7 @@ public class Test1ActionFromPerceptionCodelet extends ActionFromPerceptionCodele
 			if(memory.getI()!=null && memory.getI() instanceof String) {
 				String perceptualContent = (String) memory.getI();
 				
-				motorMemory.setI("Test1ActionFromPerception - "+perceptualContent);
+				((MemoryContainer) motorMemory).setI("Test1ActionFromPerception - "+perceptualContent,getActivation(),id);
 			}
 		}
 	}

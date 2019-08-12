@@ -6,6 +6,7 @@ package br.unicamp.meca.mind;
 import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Memory;
+import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
 
 /**
@@ -31,7 +32,7 @@ public class Test2ActionFromPlanningCodelets extends ActionFromPlanningCodelet {
 			if(memory.getI()!=null && memory.getI() instanceof String) {
 				String perceptualContent = (String) memory.getI();
 				
-				motorMemory.setI("Test2ActionFromPlanning - "+perceptualContent);
+				((MemoryContainer) motorMemory).setI("Test2ActionFromPlanning - "+perceptualContent,getActivation(),id);
 			}
 		}
 
