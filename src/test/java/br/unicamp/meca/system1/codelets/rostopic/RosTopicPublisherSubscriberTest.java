@@ -26,7 +26,7 @@ import br.unicamp.meca.system1.codelets.ISensoryCodelet;
  */
 public class RosTopicPublisherSubscriberTest {
 	
-private static RosCore rosCore;
+	private static RosCore rosCore;
 	
 	@BeforeClass
     public static void beforeAllTestMethods() {

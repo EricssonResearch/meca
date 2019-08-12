@@ -1,27 +1,28 @@
 /**
  * 
  */
-package br.unicamp.meca.mind;
+package br.unicamp.meca.mind.action;
 
 import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
-import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
+import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
 
 /**
  * @author andre
  *
  */
-public class Test1ActionFromPlanningCodelet extends ActionFromPlanningCodelet {
+public class Test1ActionFromPerceptionCodelet extends ActionFromPerceptionCodelet {
 
-	public Test1ActionFromPlanningCodelet(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId,
-			String soarCodeletId) {
-		super(id, perceptualCodeletsIds, motorCodeletId, soarCodeletId);
+	public Test1ActionFromPerceptionCodelet(String id, ArrayList<String> perceptualCodeletsIds,
+			ArrayList<String> motivationalCodeletsIds, String motorCodeletId, String soarCodeletId) {
+		super(id, perceptualCodeletsIds, motivationalCodeletsIds, motorCodeletId, soarCodeletId);
 	}
 
 	@Override
 	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory) {
+		
 		if(perceptualMemories == null || perceptualMemories.size() == 0) {
 			return;
 		}
@@ -32,8 +33,9 @@ public class Test1ActionFromPlanningCodelet extends ActionFromPlanningCodelet {
 			if(memory.getI()!=null && memory.getI() instanceof String) {
 				String perceptualContent = (String) memory.getI();
 				
-				((MemoryContainer) motorMemory).setI("Test1ActionFromPlanning - "+perceptualContent,getActivation(),id);
+				((MemoryContainer) motorMemory).setI("Test1ActionFromPerception - "+perceptualContent,getActivation(),id);
 			}
 		}
 	}
+
 }

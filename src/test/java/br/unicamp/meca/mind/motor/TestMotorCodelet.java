@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.unicamp.meca.mind;
+package br.unicamp.meca.mind.motor;
 
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.meca.system1.codelets.MotorCodelet;

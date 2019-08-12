@@ -28,7 +28,7 @@ import br.unicamp.meca.system1.codelets.IMotorCodelet;
  */
 public class RosServiceClientTest {
 
-private static RosCore rosCore;
+	private static RosCore rosCore;
 	
 	@BeforeClass
     public static void beforeAllTestMethods() {

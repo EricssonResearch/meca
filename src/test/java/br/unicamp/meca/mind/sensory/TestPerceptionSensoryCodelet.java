@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.unicamp.meca.mind;
+package br.unicamp.meca.mind.sensory;
 
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
@@ -10,11 +10,11 @@ import br.unicamp.meca.system1.codelets.SensoryCodelet;
  * @author andre
  *
  */
-public class TestPlanningSensoryCodelet extends SensoryCodelet {
+public class TestPerceptionSensoryCodelet extends SensoryCodelet {
 	
 	private String sensoryContents;
 
-	public TestPlanningSensoryCodelet(String id) {
+	public TestPerceptionSensoryCodelet(String id) {
 		super(id);
 	}
 

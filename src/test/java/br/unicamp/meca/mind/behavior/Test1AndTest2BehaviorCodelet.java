@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.unicamp.meca.mind;
+package br.unicamp.meca.mind.behavior;
 
 import java.util.ArrayList;
 

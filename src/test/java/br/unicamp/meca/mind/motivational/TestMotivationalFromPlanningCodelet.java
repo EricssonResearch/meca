@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.unicamp.meca.mind;
+package br.unicamp.meca.mind.motivational;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,9 +16,9 @@ import br.unicamp.meca.system1.codelets.MotivationalCodelet;
  * @author andre
  *
  */
-public class TestMotivationalFromPerceptionCodelet extends MotivationalCodelet {
+public class TestMotivationalFromPlanningCodelet extends MotivationalCodelet {
 
-	public TestMotivationalFromPerceptionCodelet(String id, double level, double priority, double urgencyThreshold,
+	public TestMotivationalFromPlanningCodelet(String id, double level, double priority, double urgencyThreshold,
 			ArrayList<String> sensoryCodeletsIds, HashMap<String, Double> motivationalCodeletsIds)
 			throws CodeletActivationBoundsException {
 		super(id, level, priority, urgencyThreshold, sensoryCodeletsIds, motivationalCodeletsIds);
@@ -26,16 +26,15 @@ public class TestMotivationalFromPerceptionCodelet extends MotivationalCodelet {
 
 	@Override
 	public double calculateSimpleActivation(List<Memory> sensoryMemories) {
-		
 		double activation = 0.1d;
 		
 		if (sensoryMemories != null && sensoryMemories.size() > 0) {
 			
 			for(Memory memory : sensoryMemories) {
-				if(memory.getI() != null && memory.getName().equals("TestPerceptionSensoryCodelet")) {
+				if(memory.getI() != null  && memory.getName().equals("TestPlanningSensoryCodelet")) {
 					
 					//if there is something, we want to interact with it
-					activation = 0.95d;						
+					activation = 0.99d;						
 				}
 			}
 		}
