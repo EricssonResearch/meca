@@ -11,6 +11,8 @@ import br.unicamp.meca.system1.codelets.SensoryCodelet;
  *
  */
 public class TestSensoryCodelet extends SensoryCodelet {
+	
+	private String sensoryContents;
 
 	public TestSensoryCodelet(String id) {
 		super(id);
@@ -18,6 +20,19 @@ public class TestSensoryCodelet extends SensoryCodelet {
 
 	@Override
 	public void proc(Memory sensoryMemory) {
-		// TODO Auto-generated method stub
+		
+		if(sensoryMemory == null) {
+			return;
+		}
+		
+		if(sensoryContents == null) {
+			return;
+		}
+		
+		sensoryMemory.setI(sensoryContents);
+	}
+
+	public void setSensoryContents(String sensoryContents) {
+		this.sensoryContents = sensoryContents;
 	}
 }

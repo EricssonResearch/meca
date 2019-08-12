@@ -169,12 +169,17 @@ public class MecaMindTest {
 		
 		//do something
 		
+		String contentInTheEnvironment = "Something";
+		
+		testSensoryCodelet.setSensoryContents(contentInTheEnvironment);
+		
 		Thread.sleep(1000);
 		
 		//test something
 		
 //		assertEquals(messageExpected, messageActual);
 		
+		mv.setVisible(false);
 		mecaMind.shutDown();
     	
     }
