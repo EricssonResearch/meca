@@ -22,8 +22,14 @@ public class Test1AndTest2BehaviorCodelet extends BehaviorCodelet {
 
 	@Override
 	public void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan) {
-		// TODO Auto-generated method stub
-
+		
+		if(actionSequencePlan == null || actionSequencePlan.getActionIdSequence() == null) {
+			return;
+		}
+					
+		actionSequencePlan.setCurrentActionIdIndex(0);
+		
+		//In this test, will never go on to the second action. We could have limit on perceptual memory to move on, though.
 	}
 
 }

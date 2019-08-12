@@ -101,6 +101,19 @@ public class MecaMindTest {
 			e.printStackTrace();
 		}
     	
+    	ArrayList<String> testMotivationalFromPlanningCodeletIds = new ArrayList<>();
+    	
+    	TestMotivationalFromPlanningCodelet testMotivationalFromPlanningCodelet;
+    	
+    	try {
+    		
+    		testMotivationalFromPlanningCodelet = new TestMotivationalFromPlanningCodelet("TestMotivationalFromPlanningCodelet",  0, 0.45, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
+    		testMotivationalFromPlanningCodeletIds.add(testMotivationalFromPlanningCodelet.getId());
+    		motivationalCodelets.add(testMotivationalFromPlanningCodelet);    		
+    	} catch (CodeletActivationBoundsException e) {
+			e.printStackTrace();
+		}
+    	
     	/*
 		 * Last step is to create the behavioral codelets,
 		 * They receive the ids of the perceptual codelets and
@@ -123,9 +136,9 @@ public class MecaMindTest {
     	
     	List<BehaviorCodelet> behaviorCodelets = new ArrayList<>();
     	
-    	ActionSequencePlan test1Test2ActionSequence = new ActionSequencePlan(new String[] {"Test1","Test2"});
+    	ActionSequencePlan test1Test2ActionSequence = new ActionSequencePlan(new String[] {"Test1ActionFromPlanningCodelet","Test2ActionFromPlanningCodelets"});
     	
-    	Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualCodeletsIds, testMotivationalFromPerceptionCodeletIds, null, test1Test2ActionSequence);
+    	Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualCodeletsIds, testMotivationalFromPlanningCodeletIds, null, test1Test2ActionSequence);
     	behaviorCodelets.add(test1AndTest2BehaviorCodelet);
     	
     	/*
@@ -168,7 +181,7 @@ public class MecaMindTest {
 		MindViewer mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
 		mv.setVisible(true);
 		
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 		
 		//do something
 		
@@ -176,7 +189,7 @@ public class MecaMindTest {
 		
 		testSensoryCodelet.setSensoryContents(contentInTheEnvironment);
 		
-		Thread.sleep(2000);
+		Thread.sleep(15000);
 		
 		//test something
 		
