@@ -33,7 +33,7 @@ import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
  * @author A. L. O. Paraense
  *
  */
-public abstract class ActionFromPerception extends Codelet {
+public abstract class ActionFromPerceptionCodelet extends Codelet {
 
 	protected String id;
 
@@ -69,7 +69,7 @@ public abstract class ActionFromPerception extends Codelet {
 	 *            the id of the Soar Codelet whose outputs will be read by this
 	 *            Action From Perception Codelet.
 	 */
-	public ActionFromPerception(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds, String motorCodeletId,
+	public ActionFromPerceptionCodelet(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds, String motorCodeletId,
 			String soarCodeletId) {
 		super();
 		setName(id);
