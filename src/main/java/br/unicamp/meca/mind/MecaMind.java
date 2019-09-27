@@ -162,6 +162,8 @@ public class MecaMind extends Mind {
 
 		mountModules();
 
+		mountConsciousnessCodelet();
+
 	}
 
 	private void mountActionSequencePlanMemory() {
@@ -541,6 +543,12 @@ public class MecaMind extends Mind {
 				getWorkingMemory().setCurrentPerceptionMemory(attentionCodeletSystem1.getOutputFilteredPerceptsMO());
 			}
 
+		}
+	}
+
+	private void mountConsciousnessCodelet(){
+		if(consciousnessCodelet != null){
+			insertCodelet(consciousnessCodelet);
 		}
 	}
 
