@@ -18,15 +18,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
 import br.unicamp.meca.memory.WorkingMemory;
-import br.unicamp.meca.system1.codelets.ActionFromPerception;
+import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
 import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
 import br.unicamp.meca.system1.codelets.AttentionCodelet;
 import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 import br.unicamp.meca.system1.codelets.EmotionalCodelet;
+import br.unicamp.meca.system1.codelets.IMotorCodelet;
+import br.unicamp.meca.system1.codelets.ISensoryCodelet;
 import br.unicamp.meca.system1.codelets.MoodCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
 import br.unicamp.meca.system1.codelets.MotorCodelet;
@@ -58,7 +61,7 @@ public class MecaMind extends Mind {
 	 * System 1
 	 */
 
-	private List<SensoryCodelet> sensoryCodelets;
+	private List<ISensoryCodelet> sensoryCodelets;
 
 	private List<PerceptualCodelet> perceptualCodelets;
 
@@ -72,11 +75,11 @@ public class MecaMind extends Mind {
 
 	private List<ActionFromPlanningCodelet> actionFromPlanningCodelets;
 
-	private List<ActionFromPerception> actionFromPerceptionCodelets;
+	private List<ActionFromPerceptionCodelet> actionFromPerceptionCodelets;
 
 	private List<BehaviorCodelet> behaviorCodelets;
 
-	private List<MotorCodelet> motorCodelets;
+	private List<IMotorCodelet> motorCodelets;
 
 	private Memory actionSequencePlanMemoryContainer;
 
@@ -196,7 +199,7 @@ public class MecaMind extends Mind {
 					 * Inputs
 					 */
 					if (sensoryCodelets != null) {
-						for (SensoryCodelet sensoryCodelet : sensoryCodelets) {
+						for (ISensoryCodelet sensoryCodelet : sensoryCodelets) {
 							if (sensoryCodelet != null && sensoryCodelet.getId() != null) {
 								ArrayList<String> sensoryCodeletsIds = perceptualCodelet.getSensoryCodeletsIds();
 								if (sensoryCodeletsIds != null) {
@@ -224,10 +227,10 @@ public class MecaMind extends Mind {
 	private void mountSensoryCodelets() {
 		if (sensoryCodelets != null) {
 
-			for (SensoryCodelet sensoryCodelet : sensoryCodelets) {
+			for (ISensoryCodelet sensoryCodelet : sensoryCodelets) {
 				if (sensoryCodelet != null && sensoryCodelet.getId() != null) {
 
-					insertCodelet(sensoryCodelet);
+					insertCodelet((Codelet) sensoryCodelet);
 					/*
 					 * Output
 					 */
@@ -250,7 +253,7 @@ public class MecaMind extends Mind {
 					List<String> sensoryIds = motivationalCodelet.getSensoryCodeletsIds();
 					for (String sensoryId : sensoryIds) {
 						if (sensoryCodelets != null) {
-							for (SensoryCodelet sensoryCodelet : sensoryCodelets) {
+							for (ISensoryCodelet sensoryCodelet : sensoryCodelets) {
 								if (sensoryCodelet.getId().equals(sensoryId)) {
 									motivationalCodelet.addInputs(sensoryCodelet.getOutputs());
 
@@ -357,7 +360,7 @@ public class MecaMind extends Mind {
 
 	private void mountActionFromPerceptionCodelets() {
 		if (actionFromPerceptionCodelets != null) {
-			for (ActionFromPerception actionCodelet : actionFromPerceptionCodelets) {
+			for (ActionFromPerceptionCodelet actionCodelet : actionFromPerceptionCodelets) {
 				if (actionCodelet != null && actionCodelet.getId() != null
 						&& actionCodelet.getPerceptualCodeletsIds() != null
 						&& actionCodelet.getMotivationalCodeletsIds() != null
@@ -368,7 +371,7 @@ public class MecaMind extends Mind {
 					 * Outputs
 					 */
 					if (motorCodelets != null) {
-						for (MotorCodelet motorCodelet : motorCodelets) {
+						for (IMotorCodelet motorCodelet : motorCodelets) {
 							if (motorCodelet != null && motorCodelet.getId() != null) {
 								if (motorCodelet.getId()
 										.equalsIgnoreCase(actionCodelet.getMotorCodeletId())) {
@@ -439,7 +442,7 @@ public class MecaMind extends Mind {
 					 * Outputs
 					 */
 					if (motorCodelets != null) {
-						for (MotorCodelet motorCodelet : motorCodelets) {
+						for (IMotorCodelet motorCodelet : motorCodelets) {
 							if (motorCodelet != null && motorCodelet.getId() != null) {
 								if (motorCodelet.getId()
 										.equalsIgnoreCase(actionCodelet.getMotorCodeletId())) {
@@ -483,9 +486,9 @@ public class MecaMind extends Mind {
 
 	private void mountMotorCodelets() {
 		if (motorCodelets != null) {
-			for (MotorCodelet motorCodelet : motorCodelets) {
+			for (IMotorCodelet motorCodelet : motorCodelets) {
 				if (motorCodelet != null && motorCodelet.getId() != null) {
-					insertCodelet(motorCodelet);
+					insertCodelet((Codelet) motorCodelet);
 					/*
 					 * Input
 					 */
@@ -544,11 +547,15 @@ public class MecaMind extends Mind {
 	/**
 	 * Sets the Sensory Codelets.
 	 * 
+	 * @deprecated instead, add Sensory Codelets using the interface ISensoryCodelet
+	 * 
 	 * @param sensoryCodelets
 	 *            the sensoryCodelets to set
 	 */
+	@Deprecated
 	public void setSensoryCodelets(List<SensoryCodelet> sensoryCodelets) {
-		this.sensoryCodelets = sensoryCodelets;
+		this.sensoryCodelets = new ArrayList<ISensoryCodelet>();
+		this.sensoryCodelets.addAll(sensoryCodelets);
 	}
 
 	/**
@@ -604,11 +611,14 @@ public class MecaMind extends Mind {
 	/**
 	 * Sets the Motor Codelets.
 	 * 
+	 * @deprecated instead, add Motor Codelets using the interface IMotorCodelet
 	 * @param motorCodelets
 	 *            the motorCodelets to set
 	 */
+	@Deprecated
 	public void setMotorCodelets(List<MotorCodelet> motorCodelets) {
-		this.motorCodelets = motorCodelets;
+		this.motorCodelets = new ArrayList<IMotorCodelet>();
+		this.motorCodelets.addAll(motorCodelets);
 	}
 
 	/**
@@ -702,7 +712,7 @@ public class MecaMind extends Mind {
 	/**
 	 * @param actionFromPerceptionCodelets the actionFromPerceptionCodelets to set
 	 */
-	public void setActionFromPerceptionCodelets(List<ActionFromPerception> actionFromPerceptionCodelets) {
+	public void setActionFromPerceptionCodelets(List<ActionFromPerceptionCodelet> actionFromPerceptionCodelets) {
 		this.actionFromPerceptionCodelets = actionFromPerceptionCodelets;
 	}
 
@@ -711,6 +721,20 @@ public class MecaMind extends Mind {
 	 */
 	public void setBehaviorCodelets(List<BehaviorCodelet> behaviorCodelets) {
 		this.behaviorCodelets = behaviorCodelets;
+	}
+	
+	/**
+	 * @param sensoryCodelets the sensoryCodelets to set
+	 */
+	public void setISensoryCodelets(List<ISensoryCodelet> sensoryCodelets) {
+		this.sensoryCodelets = sensoryCodelets;
+	}
+
+	/**
+	 * @param motorCodelets the motorCodelets to set
+	 */
+	public void setIMotorCodelets(List<IMotorCodelet> motorCodelets) {
+		this.motorCodelets = motorCodelets;
 	}
 
 	/**
@@ -801,7 +825,7 @@ public class MecaMind extends Mind {
 	 * 
 	 * @return the sensoryCodelets.
 	 */
-	public List<SensoryCodelet> getSensoryCodelets() {
+	public List<ISensoryCodelet> getSensoryCodelets() {
 		return sensoryCodelets;
 	}
 
@@ -828,7 +852,7 @@ public class MecaMind extends Mind {
 	 * 
 	 * @return the motorCodelets.
 	 */
-	public List<MotorCodelet> getMotorCodelets() {
+	public List<IMotorCodelet> getMotorCodelets() {
 		return motorCodelets;
 	}
 
@@ -903,7 +927,7 @@ public class MecaMind extends Mind {
 	/**
 	 * @return the actionFromPerceptionCodelets
 	 */
-	public List<ActionFromPerception> getActionFromPerceptionCodelets() {
+	public List<ActionFromPerceptionCodelet> getActionFromPerceptionCodelets() {
 		return actionFromPerceptionCodelets;
 	}
 }
