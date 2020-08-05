@@ -46,7 +46,7 @@ public class ActionSequencePlan {
 	/**
 	 * Returns the id of the current ActionFromPlanningCodelet to be undertaken in the plan.
 	 * 
-	 * @return
+	 * @return currentActionId
 	 */
 	public String getCurrentActionId() {
 		return actionIdSequence[currentActionIdIndex];
