@@ -53,8 +53,7 @@ public abstract class BehaviorCodelet extends Codelet {
 	
 	protected Memory actionSequencePlanMemoryContainer;
 	
-	//TODO - Review this request action sequence plan strategy
-//	protected Memory actionSequencePlanRequestMemoryContainer;
+	protected Memory actionSequencePlanRequestMemoryContainer;
 	
 	/**
 	 * Creates a MECA Motivational Behavioral Codelet.
@@ -137,9 +136,8 @@ public abstract class BehaviorCodelet extends Codelet {
 		if(actionSequencePlanMemoryContainer == null)
 			actionSequencePlanMemoryContainer = this.getOutput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
 		
-		//TODO - Review this request action sequence plan strategy
-//		if(actionSequencePlanRequestMemoryContainer == null)
-//			actionSequencePlanRequestMemoryContainer = this.getOutput(MecaMind.ACTION_SEQUENCE_PLAN_REQUEST_ID, index);
+		if(actionSequencePlanRequestMemoryContainer == null)
+			actionSequencePlanRequestMemoryContainer = this.getOutput(MecaMind.ACTION_SEQUENCE_PLAN_REQUEST_ID, index);
 
 	}
 	
@@ -181,12 +179,10 @@ public abstract class BehaviorCodelet extends Codelet {
 		
 		if(actionSequencePlan != null) {
 			((MemoryContainer) actionSequencePlanMemoryContainer).setI(actionSequencePlan,getActivation(),id);
-			//TODO - Review this request action sequence plan strategy
-//			((MemoryContainer) actionSequencePlanRequestMemoryContainer).setI(null,0.0d,id);
+			((MemoryContainer) actionSequencePlanRequestMemoryContainer).setI(null,0.0d,id);
 		}else {
 			((MemoryContainer) actionSequencePlanMemoryContainer).setI(null,0.0d,id);
-			//TODO - Review this request action sequence plan strategy
-//			((MemoryContainer) actionSequencePlanRequestMemoryContainer).setI(id,getActivation(),id);
+			((MemoryContainer) actionSequencePlanRequestMemoryContainer).setI(id,getActivation(),id);
 		}
 	}
 
