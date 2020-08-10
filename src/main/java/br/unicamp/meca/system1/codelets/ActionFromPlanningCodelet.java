@@ -19,6 +19,7 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.mind.MecaMind;
 import br.unicamp.meca.models.ActionSequencePlan;
+import br.unicamp.meca.models.ActionStep;
 
 /**
  * This class represents the MECA Action From Planning Codelet. This Action From Planning
@@ -113,9 +114,9 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 			if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
 
 				ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
-				String currentActionId = actionSequencePlan.getCurrentActionId();
+				ActionStep currentActionId = actionSequencePlan.getCurrentActionStep();
 
-				if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
+				if(currentActionId != null && currentActionId.getActionId().equalsIgnoreCase(id)) {
 					setActivation(actionSequencePlanMemoryContainer.getEvaluation());
 				}else {
 					setActivation(0.0d);
@@ -133,7 +134,7 @@ public abstract class ActionFromPlanningCodelet extends Codelet {
 		if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
 
 			ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
-			String currentActionId = actionSequencePlan.getCurrentActionId();
+			String currentActionId = actionSequencePlan.getCurrentActionStep().getActionId();
 
 			if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
 				proc(perceptualMemories, broadcastMemory, motorMemory);

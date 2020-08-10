@@ -23,7 +23,7 @@ public class Test1AndTest2BehaviorCodelet extends BehaviorCodelet {
 	@Override
 	public void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan) {
 		
-		if(actionSequencePlan == null || actionSequencePlan.getActionIdSequence() == null) {
+		if(actionSequencePlan == null || actionSequencePlan.getActionStepSequence() == null) {
 			return;
 		}
 					

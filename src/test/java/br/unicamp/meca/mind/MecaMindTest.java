@@ -28,6 +28,7 @@ import br.unicamp.meca.mind.perceptual.TestPerceptualCodelet;
 import br.unicamp.meca.mind.sensory.TestPerceptionSensoryCodelet;
 import br.unicamp.meca.mind.sensory.TestPlanningSensoryCodelet;
 import br.unicamp.meca.models.ActionSequencePlan;
+import br.unicamp.meca.models.ActionStep;
 import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
 import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
 import br.unicamp.meca.system1.codelets.BehaviorCodelet;
@@ -152,7 +153,9 @@ public class MecaMindTest {
 
 		List<BehaviorCodelet> behaviorCodelets = new ArrayList<>();
 
-		ActionSequencePlan test1Test2ActionSequence = new ActionSequencePlan(new String[] {"Test1ActionFromPlanningCodelet","Test2ActionFromPlanningCodelets"});
+		ActionStep as1 = new ActionStep("Test1ActionFromPlanningCodelet");
+                ActionStep as2 = new ActionStep("Test2ActionFromPlanningCodelet");
+                ActionSequencePlan test1Test2ActionSequence = new ActionSequencePlan(new ActionStep[] {as1,as2});
 
 		Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualCodeletsIds, testMotivationalFromPlanningCodeletIds, null, test1Test2ActionSequence);
 		behaviorCodelets.add(test1AndTest2BehaviorCodelet);
