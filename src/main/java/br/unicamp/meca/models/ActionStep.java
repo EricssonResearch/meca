@@ -29,12 +29,12 @@ public class ActionStep {
     }
     
     public ActionStep(String acId) {
-        super();
+        this();
         actionId = acId;
     }
     
     public ActionStep(String acId, Map<String,Object> par) {
-        super();
+        this();
         actionId = acId;
         parameters = par;
     }
@@ -48,6 +48,7 @@ public class ActionStep {
     }
     
     public Object getParameter(String paramId) {
+        if (parameters == null) System.out.println("Parameters is null");
         return(parameters.get(paramId));
     }
     
@@ -56,6 +57,23 @@ public class ActionStep {
             parameters.put(paramId, param);
         else
             parameters.replace(paramId, param);
+    }
+    
+    public Map<String,Object> getParameters() {
+        return(parameters);
+    }
+    
+    public void setParameters(Map<String,Object> par) {
+        parameters = par;
+    }
+    
+    public int getNumberOfParameters() {
+        if(parameters == null) return(-1);
+        return(parameters.size());
+    }
+    
+    public void unsetParameter(String param) {
+        parameters.remove(param);
     }
     
 }

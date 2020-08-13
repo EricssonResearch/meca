@@ -79,4 +79,9 @@ public class ActionSequencePlan {
 	public void setCurrentActionIdIndex(int currentActionIdIndex) {
 		this.currentActionIdIndex = currentActionIdIndex;
 	}
+        
+        public void gotoNextAction() {
+            if (currentActionIdIndex < actionIdSequence.length-1)
+                currentActionIdIndex++;
+        }
 }
