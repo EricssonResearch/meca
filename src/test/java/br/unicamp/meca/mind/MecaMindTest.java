@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.unicamp.cst.core.entities.Codelet;
+import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.cst.util.MindViewer;
@@ -31,6 +32,7 @@ import br.unicamp.meca.models.ActionSequencePlan;
 import br.unicamp.meca.models.ActionStep;
 import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
 import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
+import br.unicamp.meca.system1.codelets.ActivityTrackingCodelet;
 import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 import br.unicamp.meca.system1.codelets.IMotorCodelet;
 import br.unicamp.meca.system1.codelets.ISensoryCodelet;
@@ -150,15 +152,28 @@ public class MecaMindTest {
 
 		Test2ActionFromPlanningCodelets test2ActionFromPlanningCodelets = new Test2ActionFromPlanningCodelets("Test2ActionFromPlanningCodelets", perceptualCodeletsIds, testMotorCodelet.getId(), null);
 		actionFromPlanningCodelets.add(test2ActionFromPlanningCodelets);
+		
+		ActivityTrackingCodelet activityTrackingCodelet = new ActivityTrackingCodelet("ActivityTrackingCodelet", perceptualCodeletsIds) {
+			
+			@Override
+			public void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan) {
+				
+				if(actionSequencePlan == null || actionSequencePlan.getActionStepSequence() == null) {
+					return;
+				}
+							
+				actionSequencePlan.setCurrentActionIdIndex(0);
+				
+				//In this test, will never go on to the second action. We could have limit on perceptual memory to move on, though.
+			}
+		};
 
 		List<BehaviorCodelet> behaviorCodelets = new ArrayList<>();
 
-		ActionStep as1 = new ActionStep("Test1ActionFromPlanningCodelet");
-                ActionStep as2 = new ActionStep("Test2ActionFromPlanningCodelet");
-                ActionSequencePlan test1Test2ActionSequence = new ActionSequencePlan(new ActionStep[] {as1,as2});
-
-		Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualCodeletsIds, testMotivationalFromPlanningCodeletIds, null, test1Test2ActionSequence);
+		Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualCodeletsIds, testMotivationalFromPlanningCodeletIds, null);
 		behaviorCodelets.add(test1AndTest2BehaviorCodelet);
+		
+		
 
 		/*
 		 * Inserting the System 1 codelets inside MECA mind
@@ -170,6 +185,7 @@ public class MecaMindTest {
 		mecaMind.setActionFromPerceptionCodelets(actionFromPerceptionCodelets);
 		mecaMind.setActionFromPlanningCodelets(actionFromPlanningCodelets);
 		mecaMind.setBehaviorCodelets(behaviorCodelets);
+		mecaMind.setActivityTrackingCodelet(activityTrackingCodelet);
 
 		/*
 		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
