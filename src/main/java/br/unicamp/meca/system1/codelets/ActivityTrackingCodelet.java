@@ -10,6 +10,7 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.mind.MecaMind;
 import br.unicamp.meca.models.ActionSequencePlan;
+import br.unicamp.meca.models.ActionStep;
 
 /**
  * This class represents the MECA Activity Tracking Codelet. This
@@ -24,7 +25,7 @@ import br.unicamp.meca.models.ActionSequencePlan;
  * @author A. L. O. Paraense
  *
  */
-public abstract class ActivityTrackingCodelet extends Codelet {
+public class ActivityTrackingCodelet extends Codelet {
 	
 	protected String id;
 	
@@ -72,7 +73,7 @@ public abstract class ActivityTrackingCodelet extends Codelet {
 		}
 		
 		if(actionSequencePlanMemoryContainer == null)
-			actionSequencePlanMemoryContainer = this.getOutput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
+			actionSequencePlanMemoryContainer = this.getInput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
 
 	}
 
@@ -85,17 +86,26 @@ public abstract class ActivityTrackingCodelet extends Codelet {
 		}
 	}
 	
-	/**
-	 * Track and advance actions in the sequence plan.
-	 * 
-	 * @param actionSequencePlan
-	 * 				the ActionSequencePlan.
-	 * @param perceptualMemories
-	 *            the list Perceptual Memories coming from Perceptual Codelets.
-	 */
-	public abstract void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan);
+    /**
+     * Track and advance actions in the sequence plan.
+     * 
+     * @param actionSequencePlan
+     * 				the ActionSequencePlan.
+     * @param perceptualMemories
+     *            the list Perceptual Memories coming from Perceptual Codelets.
+     */
+    public void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan) {
+        if(actionSequencePlan != null && 
+          actionSequencePlan.getActionStepSequence() != null && 
+          perceptualMemories != null && 
+          perceptualMemories.size() > 0) {
+          ActionStep currentActionStep = actionSequencePlan.getCurrentActionStep();
+          if (currentActionStep.stopCondition(perceptualMemories)) {
+            actionSequencePlan.gotoNextAction();       
+          }        
+        }
+    }
 	
-
 	@Override
 	public void proc() {
 		

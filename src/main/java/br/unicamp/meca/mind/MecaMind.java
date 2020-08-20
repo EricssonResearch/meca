@@ -54,8 +54,8 @@ import br.unicamp.meca.system2.codelets.SoarCodelet;
  */
 public class MecaMind extends Mind {
 
-	public static final String ACTION_SEQUENCE_PLAN_ID = "ACTION_SEQUENCE_PLAN_ID";
-	public static final String ACTION_SEQUENCE_PLAN_REQUEST_ID = "ACTION_SEQUENCE_PLAN_REQUEST_ID";
+	public static final String ACTION_SEQUENCE_PLAN_ID = "ExecutivePlan";
+	public static final String ACTION_SEQUENCE_PLAN_REQUEST_ID = "PlanRequest";
 
 	/*
 	 * System 1
@@ -97,6 +97,19 @@ public class MecaMind extends Mind {
 	public MecaMind() {
 		setId(UUID.randomUUID().toString());
 		setWorkingMemory(new WorkingMemory(getId()));
+                createCodeletGroup("Sensory");
+                createCodeletGroup("Motor");
+                createCodeletGroup("Perception");
+                createCodeletGroup("ActionFromPerception");
+                createCodeletGroup("ActionFromPlanning");
+                createCodeletGroup("Motivational");
+                createCodeletGroup("Behavioral");
+                createCodeletGroup("ActivityTracking");
+                createMemoryGroup("Sensors");
+                createMemoryGroup("Actuators");
+                createMemoryGroup("Percepts");
+                createMemoryGroup("Drives");
+                createMemoryGroup("Plans");
 	}
 
 	/**
@@ -108,6 +121,19 @@ public class MecaMind extends Mind {
 	public MecaMind(String id) {
 		setId(id);
 		setWorkingMemory(new WorkingMemory(getId()));
+                createCodeletGroup("Sensory");
+                createCodeletGroup("Motor");
+                createCodeletGroup("Perception");
+                createCodeletGroup("ActionFromPerception");
+                createCodeletGroup("ActionFromPlanning");
+                createCodeletGroup("Motivational");
+                createCodeletGroup("Behavioral");
+                createCodeletGroup("ActivityTracking");
+                createMemoryGroup("Sensors");
+                createMemoryGroup("Actuators");
+                createMemoryGroup("Percepts");
+                createMemoryGroup("Drives");
+                createMemoryGroup("Plans");
 	}
 
 	/**
@@ -141,13 +167,6 @@ public class MecaMind extends Mind {
 	}
 
 	private void mountModules() {
-		//	if (getMotivationalCodelets() != null) {
-		//            if (getMotivationalCodelets().size() > 0) {
-		//		List<? extends br.unicamp.cst.motivational.MotivationalCodelet> mtcodelets = getMotivationalCodelets();
-		////				getMotivationalSubsystemModule()
-		////				.setMotivationalCodelets((List<br.unicamp.cst.motivational.MotivationalCodelet>) mtcodelets);
-		//            }
-		//	}
 		if (getSoarCodelet() != null) {
 			getPlansSubsystemModule().setjSoarCodelet(getSoarCodelet());
 		}
@@ -238,7 +257,7 @@ public class MecaMind extends Mind {
 				/*
 				 * Output Drives
 				 */
-				MemoryObject outputDrive = this.createMemoryObject(motivationalCodelet.getId() + "_DRIVE_MO");
+				MemoryObject outputDrive = this.createMemoryObject(motivationalCodelet.getId() + "Drive");
 				motivationalCodelet.addOutput(outputDrive);
 				insertCodelet(motivationalCodelet);
 			}
@@ -246,16 +265,23 @@ public class MecaMind extends Mind {
 	}
 	
 	private void mountActivityTrackingCodelet() {
+            
+            ArrayList<String> perceptualIds = new ArrayList<>();
+            for (PerceptualCodelet perception : perceptualCodelets)
+                perceptualIds.add(perception.getId());
+            activityTrackingCodelet = new ActivityTrackingCodelet("ActivityTracking", perceptualIds);
+            registerCodelet(activityTrackingCodelet, "ActivityTracking");
+            registerMemory(ACTION_SEQUENCE_PLAN_ID,"Plans");
+            registerMemory(ACTION_SEQUENCE_PLAN_REQUEST_ID,"Plans");
 
-		if (activityTrackingCodelet != null && activityTrackingCodelet.getId() != null
+            if (activityTrackingCodelet != null && activityTrackingCodelet.getId() != null
 				&& activityTrackingCodelet.getPerceptualCodeletsIds() != null) {	
+		/*
+		 * Inputs
+		 */
+		activityTrackingCodelet.addInput(actionSequencePlanMemoryContainer);
 
-			/*
-			 * Inputs
-			 */
-			activityTrackingCodelet.addInput(actionSequencePlanMemoryContainer);
-
-			if(perceptualCodelets != null) {
+		if(perceptualCodelets != null) {
 				for(PerceptualCodelet perceptualCodelet : perceptualCodelets) {
 					if(perceptualCodelet != null && perceptualCodelet.getId() != null) {
 						ArrayList<String> perceptualCodeletsIds = activityTrackingCodelet.getPerceptualCodeletsIds();

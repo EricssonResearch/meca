@@ -12,14 +12,16 @@
  ******************************************************************************/
 package br.unicamp.meca.models;
 
+import br.unicamp.cst.core.entities.Memory;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  *
  * @author rgudwin
  */
-public class ActionStep {
+public abstract class ActionStep {
     String actionId;
     Map<String,Object> parameters;
     
@@ -75,5 +77,7 @@ public class ActionStep {
     public void unsetParameter(String param) {
         parameters.remove(param);
     }
+    
+    public abstract boolean stopCondition(List<Memory> perception);
     
 }

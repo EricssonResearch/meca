@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package br.unicamp.meca.models;
-import java.util.logging.Logger;
+import br.unicamp.cst.core.entities.Memory;
+import java.util.List;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -12,18 +13,30 @@ import org.junit.Test;
  *
  * @author rgudwin
  */
-public class ActionStepTest {
+public class ActionStepTest extends ActionStep {
     
+    public ActionStepTest() {
+        
+    }
+    
+    public ActionStepTest(String s) {
+        super(s);
+    }
     
      public void setUp() {
         System.out.println("########## ActionStep TESTS ##########");
     }
+     
+    @Override 
+    public boolean stopCondition(List<Memory> perceptions) {
+        return(true);
+    }
     
     @Test
     public void testActionStep() {
-        ActionStep as1 = new ActionStep();
+        ActionStep as1 = new ActionStepTest();
         assertEquals(as1.getNumberOfParameters(),0);
-        ActionStep as2 = new ActionStep("TestAction");
+        ActionStep as2 = new ActionStepTest("TestAction");
         assertEquals(as2.getNumberOfParameters(),0);
         assertEquals(as2.getActionId(),"TestAction");
         as2.setParameter("param", "value");

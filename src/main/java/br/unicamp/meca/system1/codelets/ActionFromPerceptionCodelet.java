@@ -106,7 +106,7 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 
 				for(String motivationalCodeletsId : motivationalCodeletsIds)
 				{
-					Memory inputDrive = this.getInput(motivationalCodeletsId + "_DRIVE_MO");
+					Memory inputDrive = this.getInput(motivationalCodeletsId + "Drive");
 					driveMemories.add(inputDrive);
 				}
 			}
