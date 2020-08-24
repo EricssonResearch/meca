@@ -78,6 +78,10 @@ public abstract class ActionStep {
         parameters.remove(param);
     }
     
+    public String toString() {
+        return(actionId);
+    }
+    
     public abstract boolean stopCondition(List<Memory> perception);
     
 }

@@ -84,4 +84,17 @@ public class ActionSequencePlan {
             if (currentActionIdIndex < actionIdSequence.length-1)
                 currentActionIdIndex++;
         }
+        
+        public String toString() {
+            String output = "{ ";
+            int i=0;
+            for (ActionStep a : actionIdSequence) {
+                output += a.toString();
+                i++;
+                if (i < actionIdSequence.length)
+                    output += ", ";
+            }
+            output += "}";
+            return(output);
+        }
 }
