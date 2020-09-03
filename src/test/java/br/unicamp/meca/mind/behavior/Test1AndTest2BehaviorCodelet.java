@@ -16,6 +16,8 @@ import br.unicamp.meca.system1.codelets.BehaviorCodelet;
  *
  */
 public class Test1AndTest2BehaviorCodelet extends BehaviorCodelet {
+	
+	private ActionSequencePlan actionSequencePlan;
 
 	public Test1AndTest2BehaviorCodelet(String id, ArrayList<String> perceptualCodeletsIds,
 			ArrayList<String> motivationalCodeletsIds, String soarCodeletId) {
@@ -25,11 +27,13 @@ public class Test1AndTest2BehaviorCodelet extends BehaviorCodelet {
 	@Override
 	protected ActionSequencePlan buildActionSequencePlan(ArrayList<Memory> perceptualMemories) {
 		
-		ActionStep as1 = new ActionStepTest("Test1ActionFromPlanningCodelet");
-        ActionStep as2 = new ActionStepTest("Test2ActionFromPlanningCodelet");
-        ActionSequencePlan test1Test2ActionSequence = new ActionSequencePlan(new ActionStep[] {as1,as2});
-        
-		return test1Test2ActionSequence;
+		if(actionSequencePlan == null) {
+			ActionStep as1 = new ActionStepTest("Test2Activity");
+	        ActionStep as2 = new ActionStepTest("Test3Activity");
+	        actionSequencePlan = new ActionSequencePlan(new ActionStep[] {as1,as2});
+		}
+		    
+		return actionSequencePlan;
 	}
 
 }
