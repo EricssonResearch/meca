@@ -29,7 +29,7 @@ public class ActionStepTest extends ActionStep {
      
     @Override 
     public boolean stopCondition(List<Memory> perceptions) {
-        return(true);
+        return(false);
     }
     
     @Test

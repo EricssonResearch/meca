@@ -12,7 +12,7 @@
  ******************************************************************************/
 package br.unicamp.meca.models;
 
-import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
+import br.unicamp.meca.system1.codelets.ActivityCodelet;
 
 /**
  * This class represents the MECA Action Sequence Plan. This Action Sequence Plan
@@ -22,7 +22,7 @@ import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
  * them is the current action that should be undertaken in the plan.
  * 
  * @author A. L. O. Paraense
- * @see ActionFromPlanningCodelet
+ * @see ActivityCodelet
  *
  */
 public class ActionSequencePlan {
