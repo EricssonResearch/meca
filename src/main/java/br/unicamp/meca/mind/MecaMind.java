@@ -42,6 +42,7 @@ import br.unicamp.meca.system2.codelets.EpisodicRetrievalCodelet;
 import br.unicamp.meca.system2.codelets.ExpectationCodelet;
 import br.unicamp.meca.system2.codelets.GoalCodelet;
 import br.unicamp.meca.system2.codelets.SoarCodelet;
+import java.util.Iterator;
 
 /**
  * This class represents the MECA's agent mind.This is the main class to be used
@@ -49,6 +50,7 @@ import br.unicamp.meca.system2.codelets.SoarCodelet;
  * 
  * @author A. L. O. Paraense
  * @author E. Froes
+ * @author R. R. Gudwin
  * @see Mind
  */
 public class MecaMind extends Mind {
@@ -72,6 +74,7 @@ public class MecaMind extends Mind {
 	private Memory actionSequencePlanMemoryContainer;
 	private Memory actionSequencePlanRequestMemoryContainer;
 	private ActivityTrackingCodelet activityTrackingCodelet;
+        private static HashMap<String,String> memoryGroups = new HashMap();
 
 	/*
 	 * System 2
@@ -154,12 +157,23 @@ public class MecaMind extends Mind {
 		mountActivityTrackingCodelet();
 		mountActivityCodelets();
 		mountModules();
+                mountMemoryGroups();
 	}
 
 	private void mountActionSequencePlanMemory() {
 		actionSequencePlanMemoryContainer = createMemoryContainer(ACTION_SEQUENCE_PLAN_ID);
 		actionSequencePlanRequestMemoryContainer = createMemoryContainer(ACTION_SEQUENCE_PLAN_REQUEST_ID);
 	}
+        
+        
+        private void mountMemoryGroups() {
+            Iterator it = memoryGroups.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pair = (Map.Entry)it.next();
+                    registerMemory((String)pair.getKey(),(String)pair.getValue() );
+                    it.remove(); // avoids a ConcurrentModificationException
+                }
+        }
 
 	private void mountModules() {
 		if (getSoarCodelet() != null) {
@@ -844,6 +858,10 @@ public class MecaMind extends Mind {
 	public List<ActivityCodelet> getActivityCodelets() {
 		return activityCodelets;
 	}
+        
+        public void pregisterMemory(String memoryName, String memoryGroup) {
+            memoryGroups.put(memoryName, memoryGroup);
+        }
 
 	/**
 	 * @param activityCodelets the activityCodelets to set
