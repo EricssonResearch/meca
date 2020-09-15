@@ -41,6 +41,7 @@ import br.unicamp.meca.system2.codelets.EpisodicLearningCodelet;
 import br.unicamp.meca.system2.codelets.EpisodicRetrievalCodelet;
 import br.unicamp.meca.system2.codelets.ExpectationCodelet;
 import br.unicamp.meca.system2.codelets.GoalCodelet;
+import br.unicamp.meca.system2.codelets.PlanningCodelet;
 import br.unicamp.meca.system2.codelets.SoarCodelet;
 
 /**
@@ -102,6 +103,8 @@ public class MecaMind extends Mind {
 
 	private GoalCodelet goalCodelet;
 
+	private PlanningCodelet planningCodelet;
+
 	private AppraisalCodelet appraisalCodelet;
 
 	private WorkingMemory workingMemory;
@@ -148,7 +151,9 @@ public class MecaMind extends Mind {
 
 		mountWorkingMemory();
 
-		mountSoarCodelet();		
+		mountSoarCodelet();
+
+		mountPlannningCodelet();
 
 		mountMotivationalCodelets();
 
@@ -160,7 +165,12 @@ public class MecaMind extends Mind {
 
 		mountActionFromPerceptionCodelets();
 
-		mountModules();
+	}
+
+	private void mountPlannningCodelet() {
+		if(planningCodelet != null) {
+			insertCodelet(planningCodelet);
+		}
 
 	}
 
@@ -169,23 +179,6 @@ public class MecaMind extends Mind {
 		actionSequencePlanMemoryContainer = createMemoryContainer(ACTION_SEQUENCE_PLAN_ID);
 
 		actionSequencePlanRequestMemoryContainer = createMemoryContainer(ACTION_SEQUENCE_PLAN_REQUEST_ID);
-
-	}
-
-	private void mountModules() {
-
-		if (getMotivationalCodelets() != null) {
-			if (getMotivationalCodelets().size() > 0) {
-				List<? extends br.unicamp.cst.motivational.MotivationalCodelet> mtcodelets = getMotivationalCodelets();
-				getMotivationalSubsystemModule()
-				.setMotivationalCodelets((List<br.unicamp.cst.motivational.MotivationalCodelet>) mtcodelets);
-			}
-
-		}
-
-		if (getSoarCodelet() != null) {
-			getPlansSubsystemModule().setjSoarCodelet(getSoarCodelet());
-		}
 
 	}
 
