@@ -20,8 +20,10 @@ import java.util.UUID;
 
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.Memory;
+import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
+import br.unicamp.cst.planning.PlanningMemoryNames;
 import br.unicamp.meca.memory.WorkingMemory;
 import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
 import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
@@ -170,6 +172,17 @@ public class MecaMind extends Mind {
 	private void mountPlannningCodelet() {
 		if(planningCodelet != null) {
 			insertCodelet(planningCodelet);
+
+			MemoryContainer initialStateMemory =
+					createMemoryContainer(PlanningMemoryNames.INPUT_INITIAL_STATE_MAMORY.toString());
+
+			for (PerceptualCodelet perceptualCodelet: perceptualCodelets) {
+				for (Memory outputMO : perceptualCodelet.getOutputs()) {
+					initialStateMemory.add(outputMO);
+				}
+			}
+
+
 		}
 
 	}
