@@ -177,7 +177,7 @@ public class MecaMind extends Mind {
 			insertCodelet(planningCodelet);
 
 			MemoryContainer initialStateMemory =
-					createMemoryContainer(PlanningMemoryNames.INPUT_INITIAL_STATE_MEMORY.toString());
+					createMemoryContainer(PlanningMemoryNames.INPUT_INITIAL_STATE.toString());
 
 			Optional.ofNullable(attentionCodeletsSystem2).ifPresent(attentionCodelets -> {
 				attentionCodelets.stream()
@@ -192,7 +192,7 @@ public class MecaMind extends Mind {
 			planningCodelet.addInput(initialStateMemory);
 
 			MemoryContainer goalMemory =
-					createMemoryContainer(PlanningMemoryNames.INPUT_GOALS_MEMORY.toString());
+					createMemoryContainer(PlanningMemoryNames.INPUT_GOALS.toString());
 
 			Optional.ofNullable(goalCodelet).ifPresent(codelet -> {
 				codelet.getOutputs().stream().forEach(goalMemory::add);
@@ -200,11 +200,10 @@ public class MecaMind extends Mind {
 
 			planningCodelet.addInput(initialStateMemory);
 
-			MemoryContainer actionsMemory = createMemoryContainer(PlanningMemoryNames.INPUT_ACTIONS_MEMORY.toString());
-			actionsMemory.add(actionSequencePlanMemoryContainer);
+			MemoryContainer actionsMemory = createMemoryContainer(PlanningMemoryNames.INPUT_PLANNING_REQUEST.toString());
 			actionsMemory.add(actionSequencePlanRequestMemoryContainer);
 
-			MemoryContainer planMemory = createMemoryContainer(PlanningMemoryNames.OUTPUT_PLAN_MEMORY.toString());
+			MemoryContainer planMemory = createMemoryContainer(PlanningMemoryNames.OUTPUT_PLAN.toString());
 			planningCodelet.addOutput(planMemory);
 
 		}
