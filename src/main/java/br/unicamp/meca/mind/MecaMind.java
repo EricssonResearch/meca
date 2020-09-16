@@ -13,10 +13,13 @@
 package br.unicamp.meca.mind;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.Memory;
@@ -155,8 +158,6 @@ public class MecaMind extends Mind {
 
 		mountSoarCodelet();
 
-		mountPlannningCodelet();
-
 		mountMotivationalCodelets();
 
 		mountActionSequencePlanMemory();
@@ -167,6 +168,8 @@ public class MecaMind extends Mind {
 
 		mountActionFromPerceptionCodelets();
 
+		mountPlannningCodelet();
+
 	}
 
 	private void mountPlannningCodelet() {
@@ -174,14 +177,35 @@ public class MecaMind extends Mind {
 			insertCodelet(planningCodelet);
 
 			MemoryContainer initialStateMemory =
-					createMemoryContainer(PlanningMemoryNames.INPUT_INITIAL_STATE_MAMORY.toString());
+					createMemoryContainer(PlanningMemoryNames.INPUT_INITIAL_STATE_MEMORY.toString());
 
-			for (PerceptualCodelet perceptualCodelet: perceptualCodelets) {
-				for (Memory outputMO : perceptualCodelet.getOutputs()) {
-					initialStateMemory.add(outputMO);
-				}
-			}
+			Optional.ofNullable(attentionCodeletsSystem2).ifPresent(attentionCodelets -> {
+				attentionCodelets.stream()
+						.map(Codelet::getOutputs).collect(Collectors.toList())
+						.stream()
+						.flatMap(Collection::stream)
+						.distinct()
+						.collect(Collectors.toList())
+						.forEach(initialStateMemory::add);
+			});
 
+			planningCodelet.addInput(initialStateMemory);
+
+			MemoryContainer goalMemory =
+					createMemoryContainer(PlanningMemoryNames.INPUT_GOALS_MEMORY.toString());
+
+			Optional.ofNullable(goalCodelet).ifPresent(codelet -> {
+				codelet.getOutputs().stream().forEach(goalMemory::add);
+			});
+
+			planningCodelet.addInput(initialStateMemory);
+
+			MemoryContainer actionsMemory = createMemoryContainer(PlanningMemoryNames.INPUT_ACTIONS_MEMORY.toString());
+			actionsMemory.add(actionSequencePlanMemoryContainer);
+			actionsMemory.add(actionSequencePlanRequestMemoryContainer);
+
+			MemoryContainer planMemory = createMemoryContainer(PlanningMemoryNames.OUTPUT_PLAN_MEMORY.toString());
+			planningCodelet.addOutput(planMemory);
 
 		}
 
