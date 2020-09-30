@@ -183,6 +183,9 @@ public class MecaMind extends Mind {
 			MemoryContainer initialStateMemory =
 					createMemoryContainer(PlanningMemoryNames.INPUT_INITIAL_STATE.toString());
 
+			MemoryContainer observationMemory =
+					createMemoryContainer(PlanningMemoryNames.INPUT_OBSERVATIONS.toString());
+
 			Optional.ofNullable(attentionCodeletsSystem2).ifPresent(attentionCodelets -> {
 				attentionCodelets.stream()
 						.map(Codelet::getOutputs).collect(Collectors.toList())
@@ -190,7 +193,7 @@ public class MecaMind extends Mind {
 						.flatMap(Collection::stream)
 						.distinct()
 						.collect(Collectors.toList())
-						.forEach(initialStateMemory::add);
+						.forEach(observationMemory::add);
 			});
 
 			MemoryContainer goalMemory =
