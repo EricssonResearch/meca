@@ -7,22 +7,28 @@ import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
-import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
+import br.unicamp.meca.system1.codelets.ActivityCodelet;
 
 /**
  * @author andre
  *
  */
-public class Test1ActionFromPerceptionCodelet extends ActionFromPerceptionCodelet {
+public class Test3ActivityCodelet extends ActivityCodelet {
 
-	public Test1ActionFromPerceptionCodelet(String id, ArrayList<String> perceptualCodeletsIds,
+	/**
+	 * @param id
+	 * @param perceptualCodeletsIds
+	 * @param motivationalCodeletsIds
+	 * @param motorCodeletId
+	 * @param soarCodeletId
+	 */
+	public Test3ActivityCodelet(String id, ArrayList<String> perceptualCodeletsIds,
 			ArrayList<String> motivationalCodeletsIds, String motorCodeletId, String soarCodeletId) {
 		super(id, perceptualCodeletsIds, motivationalCodeletsIds, motorCodeletId, soarCodeletId);
 	}
 
 	@Override
 	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory) {
-		
 		if(perceptualMemories == null || perceptualMemories.size() == 0) {
 			return;
 		}
@@ -33,9 +39,8 @@ public class Test1ActionFromPerceptionCodelet extends ActionFromPerceptionCodele
 			if(memory.getI()!=null && memory.getI() instanceof String) {
 				String perceptualContent = (String) memory.getI();
 				
-				((MemoryContainer) motorMemory).setI("Test1ActionFromPerception - "+perceptualContent,getActivation(),id);
+				((MemoryContainer) motorMemory).setI("Test3Activity - "+perceptualContent,getActivation(),id);
 			}
 		}
 	}
-
 }

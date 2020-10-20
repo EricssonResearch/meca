@@ -14,12 +14,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.unicamp.cst.core.entities.Codelet;
+import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.cst.util.MindViewer;
-import br.unicamp.meca.mind.action.Test1ActionFromPerceptionCodelet;
-import br.unicamp.meca.mind.action.Test1ActionFromPlanningCodelet;
-import br.unicamp.meca.mind.action.Test2ActionFromPlanningCodelets;
+import br.unicamp.meca.mind.action.Test1ActivityCodelet;
+import br.unicamp.meca.mind.action.Test2ActivityCodelet;
+import br.unicamp.meca.mind.action.Test3ActivityCodelet;
 import br.unicamp.meca.mind.behavior.Test1AndTest2BehaviorCodelet;
 import br.unicamp.meca.mind.motivational.TestMotivationalFromPerceptionCodelet;
 import br.unicamp.meca.mind.motivational.TestMotivationalFromPlanningCodelet;
@@ -28,8 +29,8 @@ import br.unicamp.meca.mind.perceptual.TestPerceptualCodelet;
 import br.unicamp.meca.mind.sensory.TestPerceptionSensoryCodelet;
 import br.unicamp.meca.mind.sensory.TestPlanningSensoryCodelet;
 import br.unicamp.meca.models.ActionSequencePlan;
-import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
-import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
+import br.unicamp.meca.system1.codelets.ActivityCodelet;
+import br.unicamp.meca.system1.codelets.ActivityTrackingCodelet;
 import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 import br.unicamp.meca.system1.codelets.IMotorCodelet;
 import br.unicamp.meca.system1.codelets.ISensoryCodelet;
@@ -51,6 +52,14 @@ public class MecaMindTest {
 	private static TestPlanningSensoryCodelet testPlanningSensoryCodelet;
 
 	private static TestMotorCodelet testMotorCodelet;
+	
+	private static List<PerceptualCodelet> perceptualCodelets;
+	
+	private static List<ISensoryCodelet> sensoryCodelets;
+	
+	private static List<MotivationalCodelet> motivationalCodelets;
+	
+	private static List<ActivityCodelet> activityCodelets;
 
 	@BeforeClass
 	public static void setup() throws InterruptedException {
@@ -58,21 +67,18 @@ public class MecaMindTest {
 		mecaMind = new MecaMind("MecaMind");
 
 		/* Sensory codelets we are about to create for this Meca mind*/
-		List<ISensoryCodelet> sensoryCodelets = new ArrayList<>();
+		sensoryCodelets = new ArrayList<>();
 
 		/* Lists that will hold the codelets ids. This is important 
 		 * for the MECA mind mounting algorithm be able to glue the 
 		 * codelets according to the reference architecture
 		 * */
-		ArrayList<String> sensoryCodeletsIds = new ArrayList<>();
-
+		ArrayList<String> sensoryPerceptionCodeletsIds = new ArrayList<>();
+		
 		testPerceptionSensoryCodelet = new TestPerceptionSensoryCodelet("TestPerceptionSensoryCodelet");
 		sensoryCodelets.add(testPerceptionSensoryCodelet);
-		sensoryCodeletsIds.add(testPerceptionSensoryCodelet.getId());
+		sensoryPerceptionCodeletsIds.add(testPerceptionSensoryCodelet.getId());
 
-		testPlanningSensoryCodelet = new TestPlanningSensoryCodelet("TestPlanningSensoryCodelet");
-		sensoryCodelets.add(testPlanningSensoryCodelet);
-		sensoryCodeletsIds.add(testPlanningSensoryCodelet.getId());
 
 		/*
 		 * Now it is a good time to create the motor codelets, before the Behavioral ones,
@@ -90,42 +96,30 @@ public class MecaMindTest {
 		 * This codelet must receive the ids of the sensory codelets,
 		 * in order to be glued to them, receiving  their inputs.
 		 */
-		List<PerceptualCodelet> perceptualCodelets = new ArrayList<>();
-		ArrayList<String> perceptualCodeletsIds = new ArrayList<>();
+		perceptualCodelets = new ArrayList<>();
+		ArrayList<String> perceptualPerceptionCodeletsIds = new ArrayList<>();
 
-		TestPerceptualCodelet testPerceptualCodelet = new TestPerceptualCodelet("TestPerceptualCodelet", sensoryCodeletsIds);
-		perceptualCodeletsIds.add(testPerceptualCodelet.getId());
+		TestPerceptualCodelet testPerceptualCodelet = new TestPerceptualCodelet("TestPerceptualCodelet", sensoryPerceptionCodeletsIds);
+		perceptualPerceptionCodeletsIds.add(testPerceptualCodelet.getId());
 		perceptualCodelets.add(testPerceptualCodelet);
+		
 
 		/*
 		 * Next step is to create the motivational codelets.
 		 * This codelets must receive the ids of the sensory codelets,
 		 * in order to be glued to them, receiving  their inputs.
 		 */
-		List<MotivationalCodelet> motivationalCodelets = new ArrayList<>();
+		motivationalCodelets = new ArrayList<>();
 
 		ArrayList<String> testMotivationalFromPerceptionCodeletIds = new ArrayList<>();
 
 		TestMotivationalFromPerceptionCodelet testMotivationalFromPerceptionCodelet;
 
 		try {
-			testMotivationalFromPerceptionCodelet = new TestMotivationalFromPerceptionCodelet("TestMotivationalFromPerceptionCodelet", 0, 0.45, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
+			testMotivationalFromPerceptionCodelet = new TestMotivationalFromPerceptionCodelet("TestMotivationalFromPerceptionCodelet", 0, 0.45, 0.9, sensoryPerceptionCodeletsIds, new HashMap<String, Double>());
 			testMotivationalFromPerceptionCodeletIds.add(testMotivationalFromPerceptionCodelet.getId());
 			motivationalCodelets.add(testMotivationalFromPerceptionCodelet);
 
-		} catch (CodeletActivationBoundsException e) {
-			e.printStackTrace();
-		}
-
-		ArrayList<String> testMotivationalFromPlanningCodeletIds = new ArrayList<>();
-
-		TestMotivationalFromPlanningCodelet testMotivationalFromPlanningCodelet;
-
-		try {
-
-			testMotivationalFromPlanningCodelet = new TestMotivationalFromPlanningCodelet("TestMotivationalFromPlanningCodelet",  0, 0.5, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
-			testMotivationalFromPlanningCodeletIds.add(testMotivationalFromPlanningCodelet.getId());
-			motivationalCodelets.add(testMotivationalFromPlanningCodelet);    		
 		} catch (CodeletActivationBoundsException e) {
 			e.printStackTrace();
 		}
@@ -136,26 +130,12 @@ public class MecaMindTest {
 		 * motor codelets, in order to be glued to them, according
 		 * to the reference architecture.		
 		 */
+		
+		activityCodelets = new ArrayList<>();
 
-		List<ActionFromPerceptionCodelet> actionFromPerceptionCodelets = new ArrayList<>();
-
-		Test1ActionFromPerceptionCodelet test1ActionFromPerceptionCodelet = new Test1ActionFromPerceptionCodelet("Test1ActionFromPerceptionCodelet", perceptualCodeletsIds, testMotivationalFromPerceptionCodeletIds, testMotorCodelet.getId(), null);
-		actionFromPerceptionCodelets.add(test1ActionFromPerceptionCodelet);
-
-		List<ActionFromPlanningCodelet> actionFromPlanningCodelets = new ArrayList<>();
-
-		Test1ActionFromPlanningCodelet test1ActionFromPlanningCodelet = new Test1ActionFromPlanningCodelet("Test1ActionFromPlanningCodelet", perceptualCodeletsIds, testMotorCodelet.getId(), null);
-		actionFromPlanningCodelets.add(test1ActionFromPlanningCodelet);
-
-		Test2ActionFromPlanningCodelets test2ActionFromPlanningCodelets = new Test2ActionFromPlanningCodelets("Test2ActionFromPlanningCodelets", perceptualCodeletsIds, testMotorCodelet.getId(), null);
-		actionFromPlanningCodelets.add(test2ActionFromPlanningCodelets);
-
-		List<BehaviorCodelet> behaviorCodelets = new ArrayList<>();
-
-		ActionSequencePlan test1Test2ActionSequence = new ActionSequencePlan(new String[] {"Test1ActionFromPlanningCodelet","Test2ActionFromPlanningCodelets"});
-
-		Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualCodeletsIds, testMotivationalFromPlanningCodeletIds, null, test1Test2ActionSequence);
-		behaviorCodelets.add(test1AndTest2BehaviorCodelet);
+		Test1ActivityCodelet test1ActivityCodelet = new Test1ActivityCodelet("Test1Activity", perceptualPerceptionCodeletsIds, testMotivationalFromPerceptionCodeletIds, testMotorCodelet.getId(), null);
+		activityCodelets.add(test1ActivityCodelet);
+	
 
 		/*
 		 * Inserting the System 1 codelets inside MECA mind
@@ -164,10 +144,21 @@ public class MecaMindTest {
 		mecaMind.setIMotorCodelets(motorCodelets);
 		mecaMind.setPerceptualCodelets(perceptualCodelets);
 		mecaMind.setMotivationalCodelets(motivationalCodelets);
-		mecaMind.setActionFromPerceptionCodelets(actionFromPerceptionCodelets);
-		mecaMind.setActionFromPlanningCodelets(actionFromPlanningCodelets);
-		mecaMind.setBehaviorCodelets(behaviorCodelets);
+		mecaMind.setActivityCodelets(activityCodelets);
+	
 
+	}
+
+	@AfterClass
+	public static void tearDown() {
+
+		mv.setVisible(false);
+		mecaMind.shutDown();     
+	}
+
+	@Test
+	public void testMecaMindMountActivityReactWin() throws InterruptedException {
+		
 		/*
 		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
 		 * is responsible for wiring the MecaMind altogether according to the reference architecture, including
@@ -190,26 +181,12 @@ public class MecaMindTest {
 		 * codelets, which activation has a pivotal role.
 		 */
 		List<Codelet> listOfCodelets = new ArrayList<>();
-		listOfCodelets.addAll(mecaMind.getActionFromPerceptionCodelets());
-		listOfCodelets.addAll(mecaMind.getActionFromPlanningCodelets());
-		listOfCodelets.addAll(mecaMind.getBehaviorCodelets());
+		listOfCodelets.addAll(mecaMind.getActivityCodelets());
 
 		mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
 		mv.setVisible(true);
 
 		Thread.sleep(1000);
-
-	}
-
-	@AfterClass
-	public static void tearDown() {
-
-		mv.setVisible(false);
-		mecaMind.shutDown();     
-	}
-
-	@Test
-	public void testMecaMindMountActionFromPerceptionWin() throws InterruptedException {
 
 		//do something    	    
 
@@ -217,13 +194,11 @@ public class MecaMindTest {
 
 		testPerceptionSensoryCodelet.setSensoryContents(contentInTheEnvironment);
 
-		testPlanningSensoryCodelet.setSensoryContents(null);
-
 		Thread.sleep(1000);
 
 		//test something
 
-		String messageExpected = "Test1ActionFromPerception - A black dog";
+		String messageExpected = "Test1Activity - A black dog";
 
 		MemoryContainer motorMemory = (MemoryContainer) testMotorCodelet.getInput("TestMotorCodelet");
 
@@ -235,8 +210,92 @@ public class MecaMindTest {
 	}
 
 	@Test
-	public void testMecaMindMountActionFromPlanningWin() throws InterruptedException {
+	public void testMecaMindMountActivityFromPlanningWin() throws InterruptedException {
+		
+		ArrayList<String> sensoryPlanningCodeletsIds = new ArrayList<>();
+		testPlanningSensoryCodelet = new TestPlanningSensoryCodelet("TestPlanningSensoryCodelet");
+		sensoryCodelets.add(testPlanningSensoryCodelet);
+		sensoryPlanningCodeletsIds.add(testPlanningSensoryCodelet.getId());
+		
+		ArrayList<String> perceptualPlanningCodeletsIds = new ArrayList<>();
+		TestPerceptualCodelet testPlanningCodelet = new TestPerceptualCodelet("TestPlanningCodelet", sensoryPlanningCodeletsIds);
+		perceptualPlanningCodeletsIds.add(testPlanningCodelet.getId());
+		perceptualCodelets.add(testPlanningCodelet);
+		
+		ArrayList<String> testMotivationalFromPlanningCodeletIds = new ArrayList<>();
 
+		TestMotivationalFromPlanningCodelet testMotivationalFromPlanningCodelet;
+
+		try {
+
+			testMotivationalFromPlanningCodelet = new TestMotivationalFromPlanningCodelet("TestMotivationalFromPlanningCodelet",  0, 0.5, 0.9, sensoryPlanningCodeletsIds, new HashMap<String, Double>());
+			testMotivationalFromPlanningCodeletIds.add(testMotivationalFromPlanningCodelet.getId());
+			motivationalCodelets.add(testMotivationalFromPlanningCodelet);    		
+		} catch (CodeletActivationBoundsException e) {
+			e.printStackTrace();
+		}
+		
+		Test2ActivityCodelet test2ActivityCodelet = new Test2ActivityCodelet("Test2Activity", perceptualPlanningCodeletsIds, testMotivationalFromPlanningCodeletIds, testMotorCodelet.getId(), null);
+		activityCodelets.add(test2ActivityCodelet);
+
+		Test3ActivityCodelet test3ActivityCodelets = new Test3ActivityCodelet("Test3Activity", perceptualPlanningCodeletsIds, testMotivationalFromPlanningCodeletIds, testMotorCodelet.getId(), null);
+		activityCodelets.add(test3ActivityCodelets);
+		
+		ActivityTrackingCodelet activityTrackingCodelet = new ActivityTrackingCodelet("ActivityTrackingCodelet", perceptualPlanningCodeletsIds) {
+			
+			@Override
+			public void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan) {
+				
+				if(actionSequencePlan == null || actionSequencePlan.getActionStepSequence() == null) {
+					return;
+				}
+							
+				actionSequencePlan.setCurrentActionIdIndex(0);
+				
+				//In this test, will never go on to the second action. We could have limit on perceptual memory to move on, though.
+			}
+		};
+		
+	
+		List<BehaviorCodelet> behaviorCodelets = new ArrayList<>();
+
+		Test1AndTest2BehaviorCodelet test1AndTest2BehaviorCodelet = new Test1AndTest2BehaviorCodelet("Test1AndTest2BehaviorCodelet", perceptualPlanningCodeletsIds, testMotivationalFromPlanningCodeletIds, null);
+		behaviorCodelets.add(test1AndTest2BehaviorCodelet);
+
+		mecaMind.setBehaviorCodelets(behaviorCodelets);
+		mecaMind.setActivityTrackingCodelet(activityTrackingCodelet);
+		
+		/*
+		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
+		 * is responsible for wiring the MecaMind altogether according to the reference architecture, including
+		 * the creation of memory objects and containers which glue them together. This method is of pivotal
+		 * importance and inside it resides all the value from the reference architecture created - the idea is 
+		 * that the user only has to create the codelets, put them inside lists of differente types and call
+		 * this method, which transparently glue the codelets together accordingly to the MECA reference 
+		 * architecture.
+		 */		
+		mecaMind.mountMecaMind();		
+
+		/*
+		 * Starting the mind
+		 */
+		mecaMind.start();
+
+		/*
+		 * Instead of inserting the sensory codelets in the
+		 * CST visualization tool, let's insert the behaviroal
+		 * codelets, which activation has a pivotal role.
+		 */
+		List<Codelet> listOfCodelets = new ArrayList<>();
+		listOfCodelets.addAll(mecaMind.getActivityCodelets());
+		listOfCodelets.addAll(mecaMind.getBehaviorCodelets());
+
+		mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
+		mv.setVisible(true);
+
+		Thread.sleep(1000);
+
+		
 		//do something    	    
 
 		String contentInTheEnvironment = "Something";
@@ -249,7 +308,7 @@ public class MecaMindTest {
 
 		//test something
 
-		String messageExpected = "Test1ActionFromPlanning - A black dog";
+		String messageExpected = "Test2Activity - A black dog";
 
 		MemoryContainer motorMemory = (MemoryContainer) testMotorCodelet.getInput("TestMotorCodelet");
 

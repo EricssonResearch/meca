@@ -6,13 +6,13 @@
  * http://www.gnu.org/licenses/lgpl.html                                       *
  *                                                                             *
  * Contributors:                                                               *
- *     R. R. Gudwin, A. L. O. Paraense, E. Froes, W. Gibaut,				   * 
- *     and K. Raizer.	                            						   *
+ *     R. R. Gudwin, A. L. O. Paraense, E. Froes, W. Gibaut,		       * 
+ *     and K. Raizer.	                            			       *
  *                                                                             *
  ******************************************************************************/
 package br.unicamp.meca.models;
 
-import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
+import br.unicamp.meca.system1.codelets.ActivityCodelet;
 
 /**
  * This class represents the MECA Action Sequence Plan. This Action Sequence Plan
@@ -22,12 +22,12 @@ import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
  * them is the current action that should be undertaken in the plan.
  * 
  * @author A. L. O. Paraense
- * @see ActionFromPlanningCodelet
+ * @see ActivityCodelet
  *
  */
 public class ActionSequencePlan {
 	
-	private String[] actionIdSequence;
+	private ActionStep[] actionIdSequence;
 	
 	private int currentActionIdIndex = 0;
 
@@ -39,30 +39,30 @@ public class ActionSequencePlan {
 	 * 			the list of ids of ActionFromPlanningCodelet(s) to be executed
 	 * 			in sequence following this plan.
 	 */
-	public ActionSequencePlan(String[] actionIdSequence) {
+	public ActionSequencePlan(ActionStep[] actionIdSequence) {
 		this.actionIdSequence = actionIdSequence;
 	}
 	
 	/**
 	 * Returns the id of the current ActionFromPlanningCodelet to be undertaken in the plan.
 	 * 
-	 * @return
+	 * @return currentActionId
 	 */
-	public String getCurrentActionId() {
+	public ActionStep getCurrentActionStep() {
 		return actionIdSequence[currentActionIdIndex];
 	}
 
 	/**
 	 * @return the actionIdSequence
 	 */
-	public String[] getActionIdSequence() {
+	public ActionStep[] getActionStepSequence() {
 		return actionIdSequence;
 	}
 
 	/**
 	 * @param actionIdSequence the actionIdSequence to set
 	 */
-	public void setActionIdSequence(String[] actionIdSequence) {
+	public void setActionStepSequence(ActionStep[] actionIdSequence) {
 		this.actionIdSequence = actionIdSequence;
 	}
 
@@ -79,4 +79,22 @@ public class ActionSequencePlan {
 	public void setCurrentActionIdIndex(int currentActionIdIndex) {
 		this.currentActionIdIndex = currentActionIdIndex;
 	}
+        
+        public void gotoNextAction() {
+            if (currentActionIdIndex < actionIdSequence.length-1)
+                currentActionIdIndex++;
+        }
+        
+        public String toString() {
+            String output = "{ ";
+            int i=0;
+            for (ActionStep a : actionIdSequence) {
+                output += a.toString();
+                i++;
+                if (i < actionIdSequence.length)
+                    output += ", ";
+            }
+            output += "}";
+            return(output);
+        }
 }

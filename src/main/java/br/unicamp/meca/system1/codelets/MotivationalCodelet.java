@@ -73,14 +73,14 @@ public abstract class MotivationalCodelet extends br.unicamp.cst.motivational.Mo
 
 		if (getSensoryVariables().size() == 0) {
 			for (Memory sensoryMO : getInputs()) {
-				if (!sensoryMO.getName().contains("DRIVE"))
+				if (!sensoryMO.getName().contains("Drive"))
 					getSensoryVariables().add(sensoryMO);
 			}
 		}
 
 		if (getDrivesRelevance().size() == 0) {
 			for (Memory driveMO : getInputs()) {
-				if (driveMO.getName().contains("DRIVE")) {
+				if (driveMO.getName().contains("Drive")) {
 					getDrivesRelevance().putAll((Map<? extends Memory, ? extends Double>) driveMO.getI());
 				}
 			}

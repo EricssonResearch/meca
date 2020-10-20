@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.meca.models.ActionSequencePlan;
+import br.unicamp.meca.models.ActionStep;
+import br.unicamp.meca.models.ActionStepTest;
 import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 
 /**
@@ -14,22 +16,24 @@ import br.unicamp.meca.system1.codelets.BehaviorCodelet;
  *
  */
 public class Test1AndTest2BehaviorCodelet extends BehaviorCodelet {
+	
+	private ActionSequencePlan actionSequencePlan;
 
 	public Test1AndTest2BehaviorCodelet(String id, ArrayList<String> perceptualCodeletsIds,
-			ArrayList<String> motivationalCodeletsIds, String soarCodeletId, ActionSequencePlan actionSequencePlan) {
-		super(id, perceptualCodeletsIds, motivationalCodeletsIds, soarCodeletId, actionSequencePlan);
+			ArrayList<String> motivationalCodeletsIds, String soarCodeletId) {
+		super(id, perceptualCodeletsIds, motivationalCodeletsIds, soarCodeletId);
 	}
 
 	@Override
-	public void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan) {
+	protected ActionSequencePlan buildActionSequencePlan(ArrayList<Memory> perceptualMemories) {
 		
-		if(actionSequencePlan == null || actionSequencePlan.getActionIdSequence() == null) {
-			return;
+		if(actionSequencePlan == null) {
+			ActionStep as1 = new ActionStepTest("Test2Activity");
+	        ActionStep as2 = new ActionStepTest("Test3Activity");
+	        actionSequencePlan = new ActionSequencePlan(new ActionStep[] {as1,as2});
 		}
-					
-		actionSequencePlan.setCurrentActionIdIndex(0);
-		
-		//In this test, will never go on to the second action. We could have limit on perceptual memory to move on, though.
+		    
+		return actionSequencePlan;
 	}
 
 }

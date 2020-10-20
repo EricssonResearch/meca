@@ -1,15 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2019  DCA-FEEC-UNICAMP and Ericsson Research                  *
- * All rights reserved. This program and the accompanying materials            *
- * are made available under the terms of the GNU Lesser Public License v3      *
- * which accompanies this distribution, and is available at                    *
- * http://www.gnu.org/licenses/lgpl.html                                       *
- *                                                                             *
- * Contributors:                                                               *
- *     R. R. Gudwin, A. L. O. Paraense, E. Froes, W. Gibaut,				   * 
- *     and K. Raizer.	                            						   *
- *                                                                             *
- ******************************************************************************/
+/**
+ * 
+ */
 package br.unicamp.meca.system1.codelets;
 
 import java.util.ArrayList;
@@ -17,15 +8,20 @@ import java.util.ArrayList;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
+import br.unicamp.meca.mind.MecaMind;
+import br.unicamp.meca.models.ActionSequencePlan;
+import br.unicamp.meca.models.ActionStep;
 
 /**
- * This class represents the MECA Action From Perception Codelet. This Action From Perception
- * Codelet allows inputs from one or more of the PerceptualCodelets and 
- * inputs from one or more of the MotivationalCodelets. It outputs
+ * This class represents the MECA Activity Codelet. This Activity
+ * Codelet allows inputs from one or more of the PerceptualCodelets,  
+ * inputs from one or more of the MotivationalCodelets and the ActionSequencePlan
+ * with greatest activation. It outputs
  * necessarily to a MotorCodelet. As the name suggests, the idea behind this
- * action from perception codelet is to provide an action as a purely reaction to the environment in System 1.
+ * activity codelet is to provide an action as a purely reaction to the environment
+ * or else based on a plan in System 1.
  * <p>
- * Usually, Action From Perception Codelets are application-specific, and the MECA
+ * Usually, Activity Codelets are application-specific, and the MECA
  * software implementation just provides basic template class, which is a
  * wrapper to CST's {@link Codelet}, to be reused while building an application
  * using MECA.
@@ -33,8 +29,8 @@ import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
  * @author A. L. O. Paraense
  *
  */
-public abstract class ActionFromPerceptionCodelet extends Codelet {
-
+public abstract class ActivityCodelet extends Codelet {
+	
 	protected String id;
 
 	protected ArrayList<String> perceptualCodeletsIds;
@@ -46,32 +42,37 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 	protected String soarCodeletId;
 	protected Memory broadcastMemory;
 	
+	protected Memory actionSequencePlanMemoryContainer;
+	
 	protected String motorCodeletId;
 	protected Memory motorMemory;
-	
+
 	/**
 	 * 
-	 * Creates a MECA Action From Perception Codelet.
+	 * Creates a MECA Activity Codelet.
 	 * 
 	 * @param id
-	 *            the id of the Action From Perception Codelet. Must be unique per
-	 *            Action From Perception Codelet.
+	 *            the id of the Activity Codelet. Must be unique per
+	 *            Activity Codelet.
 	 * @param perceptualCodeletsIds
 	 *            the list of ids of the Perceptual Codelets whose outputs will
-	 *            be read by this Action From Perception Codelet.
+	 *            be read by this Activity Codelet.
 	 * @param motivationalCodeletsIds
 	 *            the list of ids of the Motivational Codelets whose outputs will
-	 *            be read by this Action From Perception Codelet.
+	 *            be read by this Activity Codelet.
 	 * @param motorCodeletId
 	 *            the id of the Motor Codelet which will read the outputs of
-	 *            this Action From Perception Codelet.
+	 *            this Activity Codelet.
 	 * @param soarCodeletId
 	 *            the id of the Soar Codelet whose outputs will be read by this
-	 *            Action From Perception Codelet.
+	 *            Activity Codelet.
 	 */
-	public ActionFromPerceptionCodelet(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds, String motorCodeletId,
+	public ActivityCodelet(
+			String id, 
+			ArrayList<String> perceptualCodeletsIds, 
+			ArrayList<String> motivationalCodeletsIds, 
+			String motorCodeletId,
 			String soarCodeletId) {
-		super();
 		setName(id);
 		this.id = id;
 		this.motorCodeletId = motorCodeletId;
@@ -79,10 +80,9 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 		this.soarCodeletId = soarCodeletId;
 		this.motivationalCodeletsIds = motivationalCodeletsIds;
 	}
-	
+
 	@Override
 	public void accessMemoryObjects() {
-		
 		int index=0;
 		
 		if(perceptualMemories == null || perceptualMemories.size() == 0) {
@@ -106,7 +106,7 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 
 				for(String motivationalCodeletsId : motivationalCodeletsIds)
 				{
-					Memory inputDrive = this.getInput(motivationalCodeletsId + "_DRIVE_MO");
+					Memory inputDrive = this.getInput(motivationalCodeletsId + "Drive");
 					driveMemories.add(inputDrive);
 				}
 			}
@@ -119,14 +119,26 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 
 		if(motorMemory==null && motorCodeletId!=null)
 			motorMemory = this.getOutput(motorCodeletId, index);
+		
+		if(actionSequencePlanMemoryContainer == null)
+			actionSequencePlanMemoryContainer = this.getInput(MecaMind.ACTION_SEQUENCE_PLAN_ID, index);
 	}
-	
+
 	@Override
 	public void calculateActivation() {
-		
 		double activation = 0;
 		
-		if (driveMemories!=null && driveMemories.size() > 0){
+		if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
+
+			ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
+			ActionStep currentActionId = actionSequencePlan.getCurrentActionStep();
+			
+			if(currentActionId != null && currentActionId.getActionId().equalsIgnoreCase(id)) {
+				activation = actionSequencePlanMemoryContainer.getEvaluation();
+			}else {
+				activation = 0.0d;
+			}
+		}else if (driveMemories!=null && driveMemories.size() > 0){
 
 			for (Memory driveMO: driveMemories) {
 				activation += driveMO.getEvaluation();
@@ -153,13 +165,21 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 	}
 
 	@Override
-	public void proc() {
-		
-		proc(perceptualMemories, broadcastMemory, motorMemory);
+	public void proc() {		
+		if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
+			ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
+			String currentActionId = actionSequencePlan.getCurrentActionStep().getActionId();
+
+			if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
+				proc(perceptualMemories, broadcastMemory, motorMemory);
+			}
+		}else {
+			proc(perceptualMemories, broadcastMemory, motorMemory);
+		}
 	}
 	
 	/**
-	 * Main method of the Action From Perception Codelet called passing all input and output necessary memories.
+	 * Main method of the Activity Codelet called passing all input and output necessary memories.
 	 * 
 	 * @param perceptualMemories
 	 * 			the input memories coming from perception.
@@ -169,10 +189,10 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 	 * 			the output motor memory.
 	 */
 	public abstract void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory);
-	
+
 	/**
 	 * Returns the id of the Soar Codelet whose outputs will be read by this
-	 * Action From Perception Codelet.
+	 * Activity Codelet.
 	 * 
 	 * @return the soarCodeletId
 	 */
@@ -182,7 +202,7 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 
 	/**
 	 * Sets the id of the Soar Codelet whose outputs will be read by this
-	 * Action From Perception Codelet.
+	 * Activity Codelet.
 	 * 
 	 * @param soarCodeletId
 	 *            the soarCodeletId to set
@@ -193,7 +213,7 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 
 	/**
 	 * Returns the list of the Perceptual Codelet's ids whose outputs will be
-	 * read by this Action From Perception Codelet.
+	 * read by this Activity Codelet.
 	 * 
 	 * @return the perceptualCodeletsIds
 	 */
@@ -203,7 +223,7 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 
 	/**
 	 * Sets the list of the Perceptual Codelet's ids whose outputs will be read
-	 * by this Action From Perception Codelet.
+	 * by this Activity Codelet.
 	 * 
 	 * @param perceptualCodeletsIds
 	 *            the perceptualCodeletsIds to set
@@ -213,7 +233,7 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 	}
 
 	/**
-	 * Returns the id of this Action From Perception Codelet.
+	 * Returns the id of this Activity Codelet.
 	 * 
 	 * @return the id
 	 */
@@ -222,7 +242,7 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 	}
 
 	/**
-	 * Sets the id of this Action From Perception Codelet.
+	 * Sets the id of this Activity Codelet.
 	 * 
 	 * @param id
 	 *            the id to set
@@ -233,7 +253,7 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 
 	/**
 	 * Returns the id of the Motor Codelet which will read the outputs of this
-	 * Action From Perception Codelet.
+	 * Activity Codelet.
 	 * 
 	 * @return the motorCodeletId
 	 */
@@ -243,7 +263,7 @@ public abstract class ActionFromPerceptionCodelet extends Codelet {
 
 	/**
 	 * Sets the id of the Motor Codelet which will read the outputs of this
-	 * Action From Perception Codelet.
+	 * Activity Codelet.
 	 * 
 	 * @param motorCodeletId
 	 *            the motorCodeletId to set
