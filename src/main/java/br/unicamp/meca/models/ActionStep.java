@@ -24,6 +24,8 @@ import java.util.Map;
 public abstract class ActionStep {
     String actionId;
     Map<String,Object> parameters;
+    public boolean needsConclusion = false;
+    public boolean executed = false;
     
     public ActionStep() {
         actionId = "";

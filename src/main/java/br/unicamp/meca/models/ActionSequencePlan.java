@@ -44,15 +44,27 @@ public class ActionSequencePlan {
 	}
 	
 	/**
-	 * Returns the id of the current ActionFromPlanningCodelet to be undertaken in the plan.
+	 * Returns the ActionStep of the current ActionFromPlanningCodelet to be undertaken in the plan.
 	 * 
 	 * @return currentActionId
 	 */
 	public ActionStep getCurrentActionStep() {
 		return actionIdSequence[currentActionIdIndex];
 	}
+        
+        /**
+	 * Returns the ActionStep of the last ActionFromPlanningCodelet to be undertaken in the plan, or null if it is the first step.
+	 * 
+	 * @return currentActionId
+	 */
+	public ActionStep getLastActionStep() {
+            if (currentActionIdIndex == 0) return(actionIdSequence[actionIdSequence.length-1]);
+            else return actionIdSequence[currentActionIdIndex-1];
+	}
 
 	/**
+         * get the array of ActionSteps which are related to the ActionSequencePlan
+         * 
 	 * @return the actionIdSequence
 	 */
 	public ActionStep[] getActionStepSequence() {
@@ -60,6 +72,8 @@ public class ActionSequencePlan {
 	}
 
 	/**
+         * Forces a new actionStepSequence
+         * 
 	 * @param actionIdSequence the actionIdSequence to set
 	 */
 	public void setActionStepSequence(ActionStep[] actionIdSequence) {
@@ -80,13 +94,18 @@ public class ActionSequencePlan {
 		this.currentActionIdIndex = currentActionIdIndex;
 	}
         
+        /**
+	 * Go to next action. If the action is the last in the plan, go to the first action 
+	 */
         public void gotoNextAction() {
+            actionIdSequence[currentActionIdIndex].executed = true;
             if (currentActionIdIndex < actionIdSequence.length-1)
                 currentActionIdIndex++;
+            else currentActionIdIndex = 0;
         }
         
         public String toString() {
-            String output = "{ ";
+            String output = "{";
             int i=0;
             for (ActionStep a : actionIdSequence) {
                 output += a.toString();
@@ -96,5 +115,14 @@ public class ActionSequencePlan {
             }
             output += "}";
             return(output);
+        }
+        
+        /**
+         * Reset the plan. Set all the action steps executed flag to false. 
+         */
+        public void resetPlan() {
+            for (ActionStep as : actionIdSequence) {
+                as.executed = false;
+            }
         }
 }
