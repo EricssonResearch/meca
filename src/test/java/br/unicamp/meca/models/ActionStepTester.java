@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package br.unicamp.meca.models;
-import br.unicamp.cst.core.entities.Memory;
-import java.util.List;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 

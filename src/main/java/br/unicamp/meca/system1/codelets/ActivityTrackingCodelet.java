@@ -100,18 +100,22 @@ public class ActivityTrackingCodelet extends Codelet {
           perceptualMemories != null && 
           perceptualMemories.size() > 0) {
           ActionStep currentActionStep = actionSequencePlan.getCurrentActionStep();
-          if (currentActionStep.stopCondition(perceptualMemories)) {
-            actionSequencePlan.gotoNextAction();       
-          }        
+          ActionStep lastActionStep = actionSequencePlan.getLastActionStep();
+          if (actionSequencePlan.getCurrentActionIdIndex() == 0 || lastActionStep.needsConclusion == false) {
+            if (currentActionStep != null  && currentActionStep.executed == false && currentActionStep.stopCondition(perceptualMemories)) {
+                currentActionStep.needsConclusion = true;
+                actionSequencePlan.gotoNextAction();       
+            }        
+          }
         }
     }
 	
 	@Override
 	public void proc() {
-		
-		actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
-		
-		trackActionSequencePlan(perceptualMemories, actionSequencePlan);
+		if (actionSequencePlanMemoryContainer != null) {
+                    actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
+                    trackActionSequencePlan(perceptualMemories, actionSequencePlan);
+                }    
 	}
 
 	/**

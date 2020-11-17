@@ -26,6 +26,11 @@ public class Test2ActivityCodelet extends ActivityCodelet {
 			ArrayList<String> motivationalCodeletsIds, String motorCodeletId, String soarCodeletId) {
 		super(id, perceptualCodeletsIds, motivationalCodeletsIds, motorCodeletId, soarCodeletId);		
 	}
+        
+        @Override
+	public void doConclusion(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory) {
+            System.out.println("Concluding Test2Activity");
+        }
 
 	@Override
 	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory) {
