@@ -53,7 +53,7 @@ Sometimes, the version number (tag) in this README gets out of date, as maintain
 	<dependency>
 	    <groupId>com.github.CST-Group</groupId>
 	    <artifactId>meca</artifactId>
-	    <version>0.4.2</version>
+	    <version>0.4.3</version>
 	</dependency>
 ```
 
