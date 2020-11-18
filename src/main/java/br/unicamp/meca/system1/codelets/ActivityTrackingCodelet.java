@@ -100,18 +100,24 @@ public class ActivityTrackingCodelet extends Codelet {
           perceptualMemories != null && 
           perceptualMemories.size() > 0) {
           ActionStep currentActionStep = actionSequencePlan.getCurrentActionStep();
-          if (currentActionStep.stopCondition(perceptualMemories)) {
-            actionSequencePlan.gotoNextAction();       
-          }        
+          ActionStep lastActionStep = actionSequencePlan.getLastExecutedActionStep();
+          if ((actionSequencePlan.getCurrentActionIdIndex() == 0 
+                || lastActionStep.needsConclusion == false) // you can go to next step if it is the first step of the plan or if the last step is clear
+                && (currentActionStep != null // then just check if current ActionStep is not null to avoid breaking the next tests
+                && currentActionStep.executed == false // the ActionStep was not already executed
+                && currentActionStep.stopCondition(perceptualMemories)) ) { // and the ActionStep reached its final destination 
+                    currentActionStep.needsConclusion = true;
+                    actionSequencePlan.gotoNextAction();       
+          }
         }
     }
 	
 	@Override
 	public void proc() {
-		
-		actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
-		
-		trackActionSequencePlan(perceptualMemories, actionSequencePlan);
+		if (actionSequencePlanMemoryContainer != null) {
+                    actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
+                    trackActionSequencePlan(perceptualMemories, actionSequencePlan);
+                }    
 	}
 
 	/**

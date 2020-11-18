@@ -26,6 +26,11 @@ public class Test3ActivityCodelet extends ActivityCodelet {
 			ArrayList<String> motivationalCodeletsIds, String motorCodeletId, String soarCodeletId) {
 		super(id, perceptualCodeletsIds, motivationalCodeletsIds, motorCodeletId, soarCodeletId);
 	}
+        
+        @Override
+	public void doConclusion(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory) {
+            System.out.println("Concluding Test3Activity");
+        }
 
 	@Override
 	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory) {
@@ -33,7 +38,7 @@ public class Test3ActivityCodelet extends ActivityCodelet {
 			return;
 		}
 		
-		motorMemory.setI(null);
+		((MemoryContainer) motorMemory).setI(null,0.0,id);
 		
 		for(Memory memory: perceptualMemories) {			
 			if(memory.getI()!=null && memory.getI() instanceof String) {

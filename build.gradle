@@ -10,7 +10,7 @@ description = "The Multipurpose Enhanced Cognitive Architecture (MECA)"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-version = '0.4.2'
+version = '0.4.3'
 
 repositories {
     mavenCentral()

@@ -93,7 +93,8 @@ public abstract class ActivityCodelet extends Codelet {
 				
 				for(String perceptualCodeletId : perceptualCodeletsIds) {
 					Memory perceptualMemory = this.getInput(perceptualCodeletId, index);
-					perceptualMemories.add(perceptualMemory);
+					if (perceptualMemory != null)
+                                            perceptualMemories.add(perceptualMemory);
 				}
 			}
 		}
@@ -107,7 +108,8 @@ public abstract class ActivityCodelet extends Codelet {
 				for(String motivationalCodeletsId : motivationalCodeletsIds)
 				{
 					Memory inputDrive = this.getInput(motivationalCodeletsId + "Drive");
-					driveMemories.add(inputDrive);
+                                        if (inputDrive != null)
+                                            driveMemories.add(inputDrive);
 				}
 			}
 		}
@@ -168,11 +170,20 @@ public abstract class ActivityCodelet extends Codelet {
 	public void proc() {		
 		if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
 			ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
-			String currentActionId = actionSequencePlan.getCurrentActionStep().getActionId();
+			ActionStep currentAction = actionSequencePlan.getCurrentActionStep();
+                        String currentActionId = currentAction.getActionId();
 
-			if(currentActionId != null && currentActionId.equalsIgnoreCase(id)) {
+			if(currentActionId != null && currentActionId.equalsIgnoreCase(id) && currentAction.executed == false) {
 				proc(perceptualMemories, broadcastMemory, motorMemory);
 			}
+                        else {
+                            ActionStep lastActionStep = actionSequencePlan.getLastExecutedActionStep();
+                            String lastActionId = lastActionStep.getActionId();
+                            if (lastActionStep != null && lastActionStep.needsConclusion && lastActionId.equalsIgnoreCase(id)) {
+                                doConclusion(perceptualMemories, broadcastMemory, motorMemory);
+                                lastActionStep.needsConclusion = false;
+                            }
+                        }
 		}else {
 			proc(perceptualMemories, broadcastMemory, motorMemory);
 		}
@@ -189,6 +200,19 @@ public abstract class ActivityCodelet extends Codelet {
 	 * 			the output motor memory.
 	 */
 	public abstract void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory);
+        
+        /**
+	 * Method to be called to do the Conclusion of an ActionStep, after its activities are over. 
+         * Similar to the proc method, but to be called one last time to clean whatever needs to be cleaned at the motorMemory
+	 * 
+	 * @param perceptualMemories
+	 * 			the input memories coming from perception.
+	 * @param broadcastMemory
+	 * 			the input memory coming from the conscious planner broadcast.
+	 * @param motorMemory
+	 * 			the output motor memory.
+	 */
+	public abstract void doConclusion(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory);
 
 	/**
 	 * Returns the id of the Soar Codelet whose outputs will be read by this
@@ -278,4 +302,24 @@ public abstract class ActivityCodelet extends Codelet {
 	public ArrayList<String> getMotivationalCodeletsIds() {
 		return motivationalCodeletsIds;
 	}
+        
+        public ArrayList<Memory> getPerceptionMemories() {
+            return(perceptualMemories);
+        }
+        
+        public ArrayList<Memory> getDriveMemories() {
+            return(driveMemories);
+        }
+        
+        public Memory getBroadcastMemory() {
+            return(broadcastMemory);
+        }
+        
+        public Memory getActionSequencePlanMemoryContainer() {
+            return(actionSequencePlanMemoryContainer);
+        }
+        
+        public Memory getMotorMemory() {
+            return(motorMemory);
+        }
 }
