@@ -46,7 +46,7 @@ public class ActionSequencePlan {
 	/**
 	 * Returns the ActionStep of the current ActionFromPlanningCodelet to be undertaken in the plan.
 	 * 
-	 * @return currentActionId
+	 * @return the current ActionStep 
 	 */
 	public ActionStep getCurrentActionStep() {
 		return actionIdSequence[currentActionIdIndex];
@@ -55,9 +55,9 @@ public class ActionSequencePlan {
         /**
 	 * Returns the ActionStep of the last ActionFromPlanningCodelet to be undertaken in the plan, or null if it is the first step.
 	 * 
-	 * @return currentActionId
+	 * @return the last ActionStep
 	 */
-	public ActionStep getLastActionStep() {
+	public ActionStep getLastExecutedActionStep() {
             if (currentActionIdIndex == 0) return(actionIdSequence[actionIdSequence.length-1]);
             else return actionIdSequence[currentActionIdIndex-1];
 	}
@@ -74,10 +74,10 @@ public class ActionSequencePlan {
 	/**
          * Forces a new actionStepSequence
          * 
-	 * @param actionIdSequence the actionIdSequence to set
+	 * @param actionStepSequence the actionIdSequence to set
 	 */
-	public void setActionStepSequence(ActionStep[] actionIdSequence) {
-		this.actionIdSequence = actionIdSequence;
+	public void setActionStepSequence(ActionStep[] actionStepSequence) {
+		this.actionIdSequence = actionStepSequence;
 	}
 
 	/**

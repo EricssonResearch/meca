@@ -38,7 +38,7 @@ public class Test3ActivityCodelet extends ActivityCodelet {
 			return;
 		}
 		
-		motorMemory.setI(null);
+		((MemoryContainer) motorMemory).setI(null,0.0,id);
 		
 		for(Memory memory: perceptualMemories) {			
 			if(memory.getI()!=null && memory.getI() instanceof String) {

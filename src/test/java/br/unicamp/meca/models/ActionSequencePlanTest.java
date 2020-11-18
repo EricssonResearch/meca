@@ -53,13 +53,13 @@ public class ActionSequencePlanTest {
     @Test
     public void testLastActionStep() {
         landAndStopSequencePlan.setCurrentActionIdIndex(0);
-        ActionStep lastAS = landAndStopSequencePlan.getLastActionStep();
+        ActionStep lastAS = landAndStopSequencePlan.getLastExecutedActionStep();
         assertEquals(lastAS,as2);
         assertEquals(lastAS.executed,false);
         assertEquals(lastAS.needsConclusion,false);
         
         landAndStopSequencePlan.setCurrentActionIdIndex(1);
-        lastAS = landAndStopSequencePlan.getLastActionStep();
+        lastAS = landAndStopSequencePlan.getLastExecutedActionStep();
         assertEquals(lastAS,as1);
         assertEquals(lastAS.executed,false);
         assertEquals(lastAS.needsConclusion,false);

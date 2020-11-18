@@ -100,12 +100,14 @@ public class ActivityTrackingCodelet extends Codelet {
           perceptualMemories != null && 
           perceptualMemories.size() > 0) {
           ActionStep currentActionStep = actionSequencePlan.getCurrentActionStep();
-          ActionStep lastActionStep = actionSequencePlan.getLastActionStep();
-          if (actionSequencePlan.getCurrentActionIdIndex() == 0 || lastActionStep.needsConclusion == false) {
-            if (currentActionStep != null  && currentActionStep.executed == false && currentActionStep.stopCondition(perceptualMemories)) {
-                currentActionStep.needsConclusion = true;
-                actionSequencePlan.gotoNextAction();       
-            }        
+          ActionStep lastActionStep = actionSequencePlan.getLastExecutedActionStep();
+          if ((actionSequencePlan.getCurrentActionIdIndex() == 0 
+                || lastActionStep.needsConclusion == false) // you can go to next step if it is the first step of the plan or if the last step is clear
+                && (currentActionStep != null // then just check if current ActionStep is not null to avoid breaking the next tests
+                && currentActionStep.executed == false // the ActionStep was not already executed
+                && currentActionStep.stopCondition(perceptualMemories)) ) { // and the ActionStep reached its final destination 
+                    currentActionStep.needsConclusion = true;
+                    actionSequencePlan.gotoNextAction();       
           }
         }
     }

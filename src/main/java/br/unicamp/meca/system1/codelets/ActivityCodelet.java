@@ -177,7 +177,7 @@ public abstract class ActivityCodelet extends Codelet {
 				proc(perceptualMemories, broadcastMemory, motorMemory);
 			}
                         else {
-                            ActionStep lastActionStep = actionSequencePlan.getLastActionStep();
+                            ActionStep lastActionStep = actionSequencePlan.getLastExecutedActionStep();
                             String lastActionId = lastActionStep.getActionId();
                             if (lastActionStep != null && lastActionStep.needsConclusion && lastActionId.equalsIgnoreCase(id)) {
                                 doConclusion(perceptualMemories, broadcastMemory, motorMemory);
