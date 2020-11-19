@@ -168,23 +168,27 @@ public abstract class ActivityCodelet extends Codelet {
 
 	@Override
 	public void proc() {		
+                // This is the case when this ActivityCodelet is following a plan - there is a plan available
 		if(actionSequencePlanMemoryContainer != null && actionSequencePlanMemoryContainer.getI() != null && actionSequencePlanMemoryContainer.getI() instanceof ActionSequencePlan) {
 			ActionSequencePlan actionSequencePlan = (ActionSequencePlan) actionSequencePlanMemoryContainer.getI();
 			ActionStep currentAction = actionSequencePlan.getCurrentActionStep();
-                        String currentActionId = currentAction.getActionId();
-
-			if(currentActionId != null && currentActionId.equalsIgnoreCase(id) && currentAction.executed == false) {
-				proc(perceptualMemories, broadcastMemory, motorMemory);
-			}
-                        else {
-                            ActionStep lastActionStep = actionSequencePlan.getLastExecutedActionStep();
-                            String lastActionId = lastActionStep.getActionId();
-                            if (lastActionStep != null && lastActionStep.needsConclusion && lastActionId.equalsIgnoreCase(id)) {
+                        ActionStep lastActionStep = actionSequencePlan.getLastExecutedActionStep();
+                        String lastActionId;
+                        if (lastActionStep != null) {
+                            lastActionId = lastActionStep.getActionId();
+                            if (lastActionId != null && lastActionId.equalsIgnoreCase(id) && lastActionStep.needsConclusion) {
                                 doConclusion(perceptualMemories, broadcastMemory, motorMemory);
                                 lastActionStep.needsConclusion = false;
                             }
                         }
-		}else {
+                        String currentActionId;
+                        if (currentAction != null) {
+                            currentActionId = currentAction.getActionId();
+                            if(currentActionId != null && currentActionId.equalsIgnoreCase(id) && currentAction.executed == false) {
+				proc(perceptualMemories, broadcastMemory, motorMemory);
+                            }
+                        }
+		}else { // This is the case when there is NO plan available, and the ActivityCodelet should be run only with Perception
 			proc(perceptualMemories, broadcastMemory, motorMemory);
 		}
 	}

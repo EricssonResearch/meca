@@ -175,6 +175,65 @@ public class testActivityTrackingCodelet {
         
     }
     
+    @Test
+    public void testTwoActionStepsOfSameType() {
+        // Creation of the Perception Memory
+        ArrayList<String> lop = new ArrayList();
+        MemoryObject per = new MemoryObject();
+        per.setType("perception");
+        per.setI("perception");
+        lop.add("perception");
+        atc = new ActivityTrackingCodelet("tracking",lop);
+        atc.addInput(per);
+        // Creation of the ActionSequencePlan
+        MemoryContainer planContainer = new MemoryContainer();
+        planContainer.setType(MecaMind.ACTION_SEQUENCE_PLAN_ID);
+        ActionStep as1 = new ActionStepTest("activity1");
+        ActionStep as2 = new ActionStepTest("activity1"); // The 2nd actionstep is treated by the same ActivityCodelet
+        ActionSequencePlan asp = new ActionSequencePlan(new ActionStep[] {as1,as2});
+        planContainer.setI(asp,0.2,"plan");
+        atc.addInput(planContainer);
+        // Creation of the MotorMemory
+        MemoryContainer motorMemory = new MemoryContainer();
+        motorMemory.setType("motor");
+        // Now creating the ActivityCodelet which will serve the ActionStep
+        actc1 = new Test1ActivityCodelet("activity1",lop,null,"motor",null);
+        actc1.addInput(per);
+        actc1.addInput(planContainer);
+        actc1.addOutput(motorMemory);
+        // Execute the 1st time step
+        step2();
+        // Verifying if the activity1 modified the motor codelet
+        assertEquals(motorMemory.getI(),"activity1 - perception");
+        // now let's cause the ActivityTrackingCodelet to conclude step 1 and move to step 2
+        per.setEvaluation(1.0);
+        // And change the activation to a lower value than activity1 ... 
+        // if activity1 is not concluded by doConclusion, it will stay at the motor codelet and ruin the output of motorCodelet
+        planContainer.setI(asp,0.1,"plan");
+        step2();
+        // Let's first verify if the plan was advanced to step 2
+        assertEquals(asp.getCurrentActionIdIndex(),1);
+        // The conclusion of step1 can only be verified by the log, as the motorMemory is immediately rewritten by step2
+        // A "Concluding activity1" message should have appeared in the log
+        // But we can still check the needsConclusion flag, which should be cleared
+        assertEquals(asp.getLastExecutedActionStep().needsConclusion,false);
+        // Now let's do one more step to conclude the plan 
+        step2();
+        // And verify the plan is back to step 1 and executed
+        assertEquals(asp.getCurrentActionIdIndex(),0);
+        assertEquals(asp.getCurrentActionStep().needsConclusion,false);
+        assertEquals(asp.getCurrentActionStep().executed,true);
+        assertEquals(asp.getLastExecutedActionStep().needsConclusion,false);
+        assertEquals(asp.getLastExecutedActionStep().executed,true);
+        // Let's do a final step and check if everything remains the same
+        step2();
+        assertEquals(asp.getCurrentActionIdIndex(),0);
+        assertEquals(asp.getCurrentActionStep().needsConclusion,false);
+        assertEquals(asp.getCurrentActionStep().executed,true);
+        assertEquals(asp.getLastExecutedActionStep().needsConclusion,false);
+        assertEquals(asp.getLastExecutedActionStep().executed,true);
+    }
+    
     private void step() {
         atc.accessMemoryObjects();
         atc.calculateActivation();
@@ -186,6 +245,15 @@ public class testActivityTrackingCodelet {
         actc2.calculateActivation();
         actc2.proc();
     }
-            
+    
+    
+     private void step2() {
+        atc.accessMemoryObjects();
+        atc.calculateActivation();
+        atc.proc();
+        actc1.accessMemoryObjects();
+        actc1.calculateActivation();
+        actc1.proc();
+    }       
     
 }
