@@ -194,8 +194,9 @@ public class MecaMindTest {
 		listOfCodelets.addAll(mecaMind.getActionFromPlanningCodelets());
 		listOfCodelets.addAll(mecaMind.getBehaviorCodelets());
 
-		mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
-		mv.setVisible(true);
+		// TODO: verify the MindViewer how to the process working...
+//		mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
+//		mv.setVisible(true);
 
 		Thread.sleep(1000);
 
@@ -204,7 +205,7 @@ public class MecaMindTest {
 	@AfterClass
 	public static void tearDown() {
 
-		mv.setVisible(false);
+//		mv.setVisible(false);
 		mecaMind.shutDown();     
 	}
 

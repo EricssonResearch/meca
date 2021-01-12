@@ -13,15 +13,21 @@
 package br.unicamp.meca.mind;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.Memory;
+import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.entities.MemoryObject;
 import br.unicamp.cst.core.entities.Mind;
+import br.unicamp.cst.planning.PlanningMemoryNames;
+import br.unicamp.meca.memory.ProceduralMemory;
 import br.unicamp.meca.memory.WorkingMemory;
 import br.unicamp.meca.system1.codelets.ActionFromPerceptionCodelet;
 import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
@@ -41,6 +47,7 @@ import br.unicamp.meca.system2.codelets.EpisodicLearningCodelet;
 import br.unicamp.meca.system2.codelets.EpisodicRetrievalCodelet;
 import br.unicamp.meca.system2.codelets.ExpectationCodelet;
 import br.unicamp.meca.system2.codelets.GoalCodelet;
+import br.unicamp.meca.system2.codelets.PlanningCodelet;
 import br.unicamp.meca.system2.codelets.SoarCodelet;
 
 /**
@@ -102,9 +109,13 @@ public class MecaMind extends Mind {
 
 	private GoalCodelet goalCodelet;
 
+	private PlanningCodelet planningCodelet;
+
 	private AppraisalCodelet appraisalCodelet;
 
 	private WorkingMemory workingMemory;
+
+	private ProceduralMemory proceduralMemory;
 
 	private String id;
 
@@ -114,6 +125,7 @@ public class MecaMind extends Mind {
 	public MecaMind() {
 		setId(UUID.randomUUID().toString());
 		setWorkingMemory(new WorkingMemory(getId()));
+		setProceduralMemory(new ProceduralMemory(getId()));
 	}
 
 	/**
@@ -148,7 +160,7 @@ public class MecaMind extends Mind {
 
 		mountWorkingMemory();
 
-		mountSoarCodelet();		
+		mountSoarCodelet();
 
 		mountMotivationalCodelets();
 
@@ -160,8 +172,51 @@ public class MecaMind extends Mind {
 
 		mountActionFromPerceptionCodelets();
 
-		mountModules();
+		mountPlannningCodelet();
 
+	}
+
+	private void mountPlannningCodelet() {
+		if(getPlanningCodelet() != null) {
+			insertCodelet(getPlanningCodelet());
+
+			MemoryContainer initialStateMemory =
+					createMemoryContainer(PlanningMemoryNames.INPUT_INITIAL_STATE.toString());
+
+			MemoryContainer observationMemory =
+					createMemoryContainer(PlanningMemoryNames.INPUT_OBSERVATIONS.toString());
+
+			Optional.ofNullable(attentionCodeletsSystem2).ifPresent(attentionCodelets -> {
+				attentionCodelets.stream()
+						.map(Codelet::getOutputs).collect(Collectors.toList())
+						.stream()
+						.flatMap(Collection::stream)
+						.distinct()
+						.collect(Collectors.toList())
+						.forEach(observationMemory::add);
+			});
+
+			MemoryContainer goalMemory =
+					createMemoryContainer(PlanningMemoryNames.INPUT_GOALS.toString());
+
+			Optional.ofNullable(goalCodelet).ifPresent(codelet -> {
+				codelet.getOutputs().stream().forEach(goalMemory::add);
+			});
+
+			MemoryContainer planningRequest = createMemoryContainer(PlanningMemoryNames.INPUT_PLANNING_REQUEST.toString());
+			planningRequest.add(actionSequencePlanRequestMemoryContainer);
+
+			MemoryObject proceduralMemory = createMemoryObject(PlanningMemoryNames.INPUT_PROCEDURAL_MEMORY.toString());
+			proceduralMemory.setI(getProceduralMemory());
+
+			getPlanningCodelet().addInput(initialStateMemory);
+			getPlanningCodelet().addInput(goalMemory);
+			getPlanningCodelet().addInput(planningRequest);
+			getPlanningCodelet().addInput(proceduralMemory);
+
+			MemoryContainer planMemory = createMemoryContainer(PlanningMemoryNames.OUTPUT_PLAN.toString());
+			getPlanningCodelet().addOutput(planMemory);
+		}
 	}
 
 	private void mountActionSequencePlanMemory() {
@@ -169,23 +224,6 @@ public class MecaMind extends Mind {
 		actionSequencePlanMemoryContainer = createMemoryContainer(ACTION_SEQUENCE_PLAN_ID);
 
 		actionSequencePlanRequestMemoryContainer = createMemoryContainer(ACTION_SEQUENCE_PLAN_REQUEST_ID);
-
-	}
-
-	private void mountModules() {
-
-		if (getMotivationalCodelets() != null) {
-			if (getMotivationalCodelets().size() > 0) {
-				List<? extends br.unicamp.cst.motivational.MotivationalCodelet> mtcodelets = getMotivationalCodelets();
-				getMotivationalSubsystemModule()
-				.setMotivationalCodelets((List<br.unicamp.cst.motivational.MotivationalCodelet>) mtcodelets);
-			}
-
-		}
-
-		if (getSoarCodelet() != null) {
-			getPlansSubsystemModule().setjSoarCodelet(getSoarCodelet());
-		}
 
 	}
 
@@ -929,5 +967,21 @@ public class MecaMind extends Mind {
 	 */
 	public List<ActionFromPerceptionCodelet> getActionFromPerceptionCodelets() {
 		return actionFromPerceptionCodelets;
+	}
+
+	public PlanningCodelet getPlanningCodelet() {
+		return planningCodelet;
+	}
+
+	public void setPlanningCodelet(PlanningCodelet planningCodelet) {
+		this.planningCodelet = planningCodelet;
+	}
+
+	public ProceduralMemory getProceduralMemory() {
+		return proceduralMemory;
+	}
+
+	public void setProceduralMemory(ProceduralMemory proceduralMemory) {
+		this.proceduralMemory = proceduralMemory;
 	}
 }

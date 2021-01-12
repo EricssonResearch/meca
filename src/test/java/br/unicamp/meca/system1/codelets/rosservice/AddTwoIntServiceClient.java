@@ -23,12 +23,16 @@ public class AddTwoIntServiceClient extends RosServiceClientMotorCodelet<AddTwoI
 	}
 
 	@Override
-	public void formatServiceRequest(Memory motorMemory, AddTwoIntsRequest serviceMessageRequest) {
-		if(motorMemory != null && motorMemory.getI() != null) {
-			Integer[] numsToSum = (Integer[]) motorMemory.getI();
-			serviceMessageRequest.setA(numsToSum[0]);
-			serviceMessageRequest.setB(numsToSum[1]);
+	public boolean formatServiceRequest(Memory motorMemory, AddTwoIntsRequest serviceMessageRequest) {
+		if(motorMemory == null || motorMemory.getI() == null) {
+			return false;
 		}
+		
+		Integer[] numsToSum = (Integer[]) motorMemory.getI();
+		serviceMessageRequest.setA(numsToSum[0]);
+		serviceMessageRequest.setB(numsToSum[1]);
+		
+		return true;
 	}
 
 	@Override
