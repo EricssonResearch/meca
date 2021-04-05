@@ -86,7 +86,7 @@ public class MecaMind extends Mind {
 	private ExpectationCodelet expectationCodelet;
 	private ConsciousnessCodelet consciousnessCodelet;
 	private SoarCodelet soarCodelet;
-	private GoalCodelet goalCodelet;
+	private List<GoalCodelet> goalCodelets;
 	private AppraisalCodelet appraisalCodelet;
 	private WorkingMemory workingMemory;
 
@@ -156,6 +156,7 @@ public class MecaMind extends Mind {
 		mountBehaviorCodelets();
 		mountActivityTrackingCodelet();
 		mountActivityCodelets();
+                mountGoalCodelets();
 		mountModules();
                 mountMemoryGroups();
 	}
@@ -480,6 +481,17 @@ public class MecaMind extends Mind {
 			}
 		}
 	}
+        
+        private void mountGoalCodelets() {
+		if (getGoalCodelets() != null) {
+			if (goalCodelets != null) {
+				for (GoalCodelet gc : goalCodelets) {
+                                    gc.setActionSequencePlanRequestMemoryContainer(actionSequencePlanRequestMemoryContainer);
+                                    gc.setWm(workingMemory);
+                                }
+			}
+		}
+	}
 
 	/**
 	 * Sets the Sensory Codelets.
@@ -625,8 +637,8 @@ public class MecaMind extends Mind {
 	 * @param goalCodelet
 	 *            the goalCodelet to set
 	 */
-	public void setGoalCodelet(GoalCodelet goalCodelet) {
-		this.goalCodelet = goalCodelet;
+	public void setGoalCodelets(List<GoalCodelet> goalCodelets) {
+		this.goalCodelets = goalCodelets;
 	}
 
 	/**
@@ -711,8 +723,8 @@ public class MecaMind extends Mind {
 	 * 
 	 * @return the Goal Codelet.
 	 */
-	public GoalCodelet getGoalCodelet() {
-		return goalCodelet;
+	public List<GoalCodelet> getGoalCodelets() {
+		return goalCodelets;
 	}
 
 	/**
